@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:37:29 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/02 20:23:24 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/03 12:00:39 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ int main(int argc, char ** argv)
 	try {
 		Node node = readPuzzle(argv[1]);
 		node.printNode();
+
+		Node new_node = node;
+		new_node.printNode();
+		std::cout << std::boolalpha << (node == new_node) << std::endl;
+		std::cout << std::boolalpha << (node != new_node) << std::endl;
 	} catch (PuzzExcept & err) {
 		std::cout << err.what() << std::endl;
 	} catch (...) {

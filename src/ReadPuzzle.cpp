@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 19:50:58 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/02 20:16:57 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/03 11:59:18 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,13 @@ static bool fillField(std::ifstream & pfile, std::string & str, Node & puzzle)
 	for (size_t i = 0; i != puzzle.side && !pfile.eof(); ++i) {
 		std::istringstream strStream(str);
 		for (size_t j = 0; j != puzzle.side && !strStream.eof(); ++j) {
-			strStream >> puzzle.field[i][j];
+			strStream >> puzzle(i, j);
 			if (strStream.fail())
 				return false;
+			if (puzzle(i, j) == 0) {
+				puzzle.zx = j;
+				puzzle.zy = i;
+			}
 			order.insert(puzzle.field[i][j]);
 		}
 		if (!strStream.eof() && (strStream >> str) && str[0] != '#')

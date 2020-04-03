@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/02 17:57:14 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/02 20:20:18 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/03 12:03:15 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #define E_FIELD_COM	"Incorrect field or comment in map"
 #define E_SFIELDS	"Same fields on map"
 #define E_ORDER		"Wrong map order"
+#define E_INDEX		"Incorrect indexes"
 
 #include <exception>
 #include <string>

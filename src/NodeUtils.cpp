@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/02 18:27:54 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/02 20:06:53 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/03 11:37:42 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void Node::swap(Node & src)
 {
 	std::swap(side, src.side);
 	std::swap(field, src.field);
+	std::swap(zx, src.zx);
+	std::swap(zy, src.zy);
 }
 
 // эта часть добавление в readPuzzle
