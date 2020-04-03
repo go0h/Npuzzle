@@ -1,35 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   NodeUtils.cpp                                      :+:      :+:    :+:   */
+/*   NodeHeuristic.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/04/02 18:27:54 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/03 17:39:11 by astripeb         ###   ########.fr       */
+/*   Created: 2020/04/03 13:07:28 by astripeb          #+#    #+#             */
+/*   Updated: 2020/04/03 17:56:58 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <set>
-#include <iostream>
+#include <cmath>
 
 #include "Node.h"
 #include "PuzzExcept.h"
 
-void Node::swap(Node & src)
+CELL manhattanScore(Node const & src)
 {
-	std::swap(side, src.side);
-	std::swap(length, src.length);
-	std::swap(zero, src.zero);
-	std::swap(field, src.field);
-}
+	CELL score = 0;
 
-void Node::printNode(void) noexcept
-{
-	for (size_t i = 0; i != side; ++i) {
-		for (size_t j = 0; j != side; ++j)
-			printf("%-3u ", (*this)(i, j));
-		std::cout << '\n';
+	for (size_t i = 0; i != src.side; ++i) {
+		for (size_t j = 0; j != src.side; ++j) {
+			CELL num = src(i, j) - 1;
+			if (!(num + 1) || (num / src.side == i && num % src.side == j))
+				continue;
+			int dy = num / src.side - i;
+			int dx = num % src.side - j;
+			score += std::abs(dx) + std::abs(dy);
+		}
 	}
-	std::cout << '\n';
+	return score;
 }

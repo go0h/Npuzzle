@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 19:50:58 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/03 11:59:18 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/03 20:49:18 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,21 @@
 
 #include "Node.h"
 #include "PuzzExcept.h"
+
+// static bool solvable(Node const & puzzle)
+// {
+// 	size_t	sum = 0;
+
+// 	for (size_t i = 0; i != puzzle.length; ++i) {
+// 		for (size_t j = i + 1; j != puzzle.length; ++j) {
+// 			if (puzzle.field[i] && puzzle.field[j]) {
+// 				if (puzzle.field[i] > puzzle.field[j])
+// 					sum++;
+// 			}
+// 		}
+// 	}
+// 	return (sum + ((puzzle.zero / puzzle.side) + 1)) % 2 == 0;
+// }
 
 static void	skipComments(std::ifstream & pfile, std::string & str)
 {
@@ -42,9 +57,8 @@ static CELL	getFieldSize(std::ifstream & pfile, std::string & str)
 
 static bool fillField(std::ifstream & pfile, std::string & str, Node & puzzle)
 {
-	size_t	num = puzzle.side * puzzle.side;
 	std::unordered_set<CELL> order;
-	order.reserve(num);
+	order.reserve(puzzle.length);
 
 	for (size_t i = 0; i != puzzle.side && !pfile.eof(); ++i) {
 		std::istringstream strStream(str);
@@ -52,21 +66,19 @@ static bool fillField(std::ifstream & pfile, std::string & str, Node & puzzle)
 			strStream >> puzzle(i, j);
 			if (strStream.fail())
 				return false;
-			if (puzzle(i, j) == 0) {
-				puzzle.zx = j;
-				puzzle.zy = i;
-			}
-			order.insert(puzzle.field[i][j]);
+			if (puzzle(i, j) == 0)
+				puzzle.zero = i * puzzle.side + j;
+			order.insert(puzzle(i, j));
 		}
 		if (!strStream.eof() && (strStream >> str) && str[0] != '#')
 			return false;
 		getline(pfile, str, '\n');
 	}
-	for (size_t i = 0; i != num; ++i) {
+	for (size_t i = 0; i != puzzle.length; ++i) {
 		if (order.find(i) == order.end())
 			return false;
 	}
-	return order.size() == num;
+	return order.size() == puzzle.length;
 }
 
 Node		readPuzzle(char * filename)
@@ -89,5 +101,7 @@ Node		readPuzzle(char * filename)
 	if (!pfile.eof())
 		throw PuzzExcept(E_MAP);
 	pfile.close();
+	// if (!solvable(puzzle))
+	// 	throw PuzzExcept(E_UNSOLVBL);
 	return puzzle;
 }
