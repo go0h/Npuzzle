@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:06:09 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/05 14:39:44 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/05 17:21:00 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,15 @@ typedef	enum {
 	LEFT
 } MOVE;
 
-
 struct Node
 {
 public:
-	CELL	zero = 0;
-	CELL	score = 0;
-	MOVE	move = NONE;
-	CELL *	field = nullptr;
+	CELL		zero = 0;
+	MOVE		move = NONE;
+	unsigned	depth = 0;
+	CELL *		field = nullptr;
 	Node(void);
-	Node(CELL side);
-	explicit Node(char const **str, size_t side);		//constructor
+	Node(CELL side);								//constructor
 	Node(Node const & src);							//copy constructor
 	Node(Node && src);								//move constructor
 	~Node();										//destructor
@@ -43,12 +41,17 @@ public:
 	Node &	operator=(Node && src);
 	CELL & operator()(size_t i, size_t j);
 	CELL operator()(size_t i, size_t j) const;
-	CELL	getScore(bool);
+	size_t	getScore(void) const;
 	void 	printNode(void) noexcept;
 	void 	validate(void);
 
 private:
 	void swap(Node & src);
+};
+
+class hashNode {
+public:
+	size_t operator()(Node const & puzzle) const;
 };
 
 bool		operator==(Node const & n1, Node const & n2);
@@ -58,16 +61,5 @@ bool		operator!=(Node const & n1, Node const & n2);
 bool		operator<(Node const & n1, Node const & n2);
 
 Node 		readPuzzle(char * filename);
-
-CELL		manhattanScore(Node const & src);
-
-bool 		up(Node & puzzle);
-
-bool 		down(Node & puzzle);
-
-bool 		right(Node & puzzle);
-
-bool 		left(Node & puzzle);
-
 
 #endif

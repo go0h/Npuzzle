@@ -6,14 +6,15 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 14:16:28 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/05 12:34:33 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/05 17:31:27 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Node.h"
-#include <iostream>
+#include "Npuzzle.h"
 
-extern size_t g_side;
+move_func 		g_move[] = {nullptr, &up, &down, &right, &left};
+extern size_t	g_side;
 
 static void swap(CELL & a, CELL & b)
 {

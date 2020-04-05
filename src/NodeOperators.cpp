@@ -6,13 +6,12 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 21:38:37 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/05 12:35:42 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/05 17:33:48 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Node.h"
 #include "PuzzExcept.h"
-#include <cstring>
 
 extern size_t g_length;
 extern size_t g_side;
@@ -36,7 +35,8 @@ Node &	Node::operator=(Node && src)
 
 bool operator==(Node const & n1, Node const & n2)
 {
-	for (size_t i = 0; i != g_length; ++i) {
+	for (size_t i = 0; i != g_length; ++i)
+	{
 		if (n1.field[i] != n2.field[i])
 			return false;
 	}
@@ -50,7 +50,7 @@ bool operator!=(Node const & n1, Node const & n2)
 
 bool operator<(Node const & n1, Node const & n2)
 {
-	if (n1.score > n2.score)
+	if (n1.getScore() > n2.getScore())
 		return true;
 	return false;
 }
@@ -67,6 +67,16 @@ CELL Node::operator()(size_t i, size_t j) const
 	if (i >= g_side && j >= g_side)
 		throw PuzzExcept(E_INDEX);
 	return field[i * g_side + j];
+}
+
+size_t hashNode::operator()(Node const & puzzle) const
+{
+	size_t hash = 0;
+	for (size_t i = 0; i != g_length; ++i)
+	{
+		hash += puzzle.field[i] * (1ull << i);
+	}
+	return hash;
 }
 
 /*
@@ -86,7 +96,8 @@ class EqualNode
 public:
     bool operator() (Node const & n1, Node const & n2) const
     {
-		for (size_t i = 0; i != g_length; ++i) {
+		for (size_t i = 0; i != g_length; ++i)
+		{
 			if (n1.field[i] != n2.field[i])
 				return false;
 		}

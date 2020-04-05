@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 19:51:21 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/03 21:24:48 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/05 17:25:05 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,20 @@
 #include <iostream>
 #include <list>
 
-std::list<int> Search(Node & src);
+using solution = std::list<MOVE>;
+using move_func = bool (*)(Node &);
+
+
+bool 		up(Node & puzzle);
+
+bool 		down(Node & puzzle);
+
+bool 		right(Node & puzzle);
+
+bool 		left(Node & puzzle);
+
+solution	Search(Node & src);
+
+void		printMoves(Node src, solution & movSet);
 
 #endif

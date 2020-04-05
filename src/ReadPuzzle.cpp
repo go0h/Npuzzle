@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 19:50:58 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/05 12:33:26 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/05 17:34:33 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,12 @@ static bool solvable(Node const & puzzle)
 {
 	size_t	sum = 0;
 
-	for (size_t i = 0; i != g_length; ++i) {
-		for (size_t j = i + 1; j != g_length; ++j) {
-			if (puzzle.field[i] && puzzle.field[j]) {
+	for (size_t i = 0; i != g_length; ++i)
+	{
+		for (size_t j = i + 1; j != g_length; ++j)
+		{
+			if (puzzle.field[i] && puzzle.field[j])
+			{
 				if (puzzle.field[i] > puzzle.field[j])
 					sum++;
 			}
@@ -38,7 +41,8 @@ static bool solvable(Node const & puzzle)
 
 static void	skipComments(std::ifstream & pfile, std::string & str)
 {
-	while (!pfile.eof()) {
+	while (!pfile.eof())
+	{
 		getline(pfile, str, '\n');
 		if (str[0] != '#')
 			break ;
@@ -63,9 +67,11 @@ static bool fillField(std::ifstream & pfile, std::string & str, Node & puzzle)
 	std::unordered_set<CELL> order;
 	order.reserve(g_length);
 
-	for (size_t i = 0; i != g_side && !pfile.eof(); ++i) {
+	for (size_t i = 0; i != g_side && !pfile.eof(); ++i)
+	{
 		std::istringstream strStream(str);
-		for (size_t j = 0; j != g_side && !strStream.eof(); ++j) {
+		for (size_t j = 0; j != g_side && !strStream.eof(); ++j)
+		{
 			strStream >> puzzle(i, j);
 			if (strStream.fail())
 				return false;
@@ -77,7 +83,8 @@ static bool fillField(std::ifstream & pfile, std::string & str, Node & puzzle)
 			return false;
 		getline(pfile, str, '\n');
 	}
-	for (size_t i = 0; i != g_length; ++i) {
+	for (size_t i = 0; i != g_length; ++i)
+	{
 		if (order.find(i) == order.end())
 			return false;
 	}
