@@ -6,12 +6,14 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 14:16:28 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/03 20:28:11 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/05 12:34:33 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Node.h"
 #include <iostream>
+
+extern size_t g_side;
 
 static void swap(CELL & a, CELL & b)
 {
@@ -22,13 +24,14 @@ static void swap(CELL & a, CELL & b)
 
 bool up(Node & puzzle)
 {
-	CELL x = puzzle.zero % puzzle.side;
-	CELL y = puzzle.zero / puzzle.side;
+	CELL x = puzzle.zero % g_side;
+	CELL y = puzzle.zero / g_side;
 
-	if (y > 0)
+	if (y > 0 && puzzle.move != DOWN)
 	{
 		swap(puzzle(y, x), puzzle(y - 1, x));
-		puzzle.zero -= puzzle.side;
+		puzzle.zero -= g_side;
+		puzzle.move = UP;
 		return true;
 	}
 	return false;
@@ -36,13 +39,14 @@ bool up(Node & puzzle)
 
 bool down(Node & puzzle)
 {
-	CELL x = puzzle.zero % puzzle.side;
-	CELL y = puzzle.zero / puzzle.side;
+	CELL x = puzzle.zero % g_side;
+	CELL y = puzzle.zero / g_side;
 
-	if (y < puzzle.side - 1)
+	if (y < g_side - 1 && puzzle.move != UP)
 	{
 		swap(puzzle(y, x), puzzle(y + 1, x));
-		puzzle.zero += puzzle.side;
+		puzzle.zero += g_side;
+		puzzle.move = DOWN;
 		return true;
 	}
 	return false;
@@ -50,13 +54,14 @@ bool down(Node & puzzle)
 
 bool left(Node & puzzle)
 {
-	CELL x = puzzle.zero % puzzle.side;
-	CELL y = puzzle.zero / puzzle.side;
+	CELL x = puzzle.zero % g_side;
+	CELL y = puzzle.zero / g_side;
 
-	if (x > 0)
+	if (x > 0 && puzzle.move != RIGHT)
 	{
 		swap(puzzle(y, x), puzzle(y, x - 1));
 		puzzle.zero -= 1;
+		puzzle.move = LEFT;
 		return true;
 	}
 	return false;
@@ -64,13 +69,14 @@ bool left(Node & puzzle)
 
 bool right(Node & puzzle)
 {
-	CELL x = puzzle.zero % puzzle.side;
-	CELL y = puzzle.zero / puzzle.side;
+	CELL x = puzzle.zero % g_side;
+	CELL y = puzzle.zero / g_side;
 
-	if (x < puzzle.side - 1)
+	if (x < g_side - 1 && puzzle.move != LEFT)
 	{
 		swap(puzzle(y, x), puzzle(y, x + 1));
 		puzzle.zero += 1;
+		puzzle.move = RIGHT;
 		return true;
 	}
 	return false;

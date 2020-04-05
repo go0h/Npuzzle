@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:06:09 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/03 21:48:24 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/05 14:39:44 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,28 @@
 # define NODE_H
 #include <cstddef>
 
-# define CELL unsigned
+# define CELL			unsigned
+# define DEFAULT_SIDE	4
+
+typedef	enum {
+	NONE,
+	UP,
+	DOWN,
+	RIGHT,
+	LEFT
+} MOVE;
+
 
 struct Node
 {
 public:
-	CELL	side;
-	CELL	length;
-	CELL	zero;
-	CELL *	field;
+	CELL	zero = 0;
+	CELL	score = 0;
+	MOVE	move = NONE;
+	CELL *	field = nullptr;
 	Node(void);
 	Node(CELL side);
-	explicit Node(char const **str, CELL side);		//constructor
+	explicit Node(char const **str, size_t side);		//constructor
 	Node(Node const & src);							//copy constructor
 	Node(Node && src);								//move constructor
 	~Node();										//destructor
@@ -33,6 +43,7 @@ public:
 	Node &	operator=(Node && src);
 	CELL & operator()(size_t i, size_t j);
 	CELL operator()(size_t i, size_t j) const;
+	CELL	getScore(bool);
 	void 	printNode(void) noexcept;
 	void 	validate(void);
 

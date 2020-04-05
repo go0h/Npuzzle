@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:17:23 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/03 21:48:01 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/05 14:39:57 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,35 @@
 #include "Node.h"
 #include "PuzzExcept.h"
 
-Node::Node(void) : side(0), field(nullptr) { }
+extern size_t g_length;
+extern size_t g_side;
 
-Node::Node(CELL size) : side(size), length(size * size), zero(0)
+Node::Node(void) { }
+
+Node::Node(CELL size)
 {
-	field = new CELL[side * side];
+	field = new CELL[size * size];
 }
 
-Node::Node(char const **str, CELL size) : side(size), length(size * size)
+Node::Node(char const **str, size_t size)
 {
-	field = new CELL[length];
-	for (size_t i = 0, j = 0; i != side; ++i, j += side) {
-		memcpy(&field[j], str[i], sizeof(CELL) * side);
+	field = new CELL[size * size];
+	for (size_t i = 0, j = 0; i != size; ++i, j += size) {
+		memcpy(&field[j], str[i], sizeof(CELL) * size);
 	}
-	for (size_t i = 0; i != length; ++i) {
+	for (size_t i = 0; i != size * size; ++i) {
 		if (field[i] == 0)
 			zero = i;
 	}
 }
 
-Node::Node(Node const & src) : side(src.side), length(side * side), zero(src.zero)
+Node::Node(Node const & src)
+	: zero(src.zero),
+	score(src.score),
+	move(src.move)
 {
-	field = new CELL[length];
-	memcpy(field, src.field, sizeof(CELL) * length);
+	field = new CELL[g_length];
+	memcpy(field, src.field, sizeof(CELL) * g_length);
 }
 
 Node::Node(Node && src) {

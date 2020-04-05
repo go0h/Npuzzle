@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 17:46:34 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/03 22:41:55 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/05 14:51:17 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,64 +14,75 @@
 #include <unordered_map>
 #include <queue>
 #include <list>
+#include <functional>
 
 #include "Node.h"
 
-typedef	bool (*move_func)(Node &);
+extern size_t g_length;
+extern size_t g_side;
 
-typedef	enum {
-	UP,
-	DOWN,
-	RIGHT,
-	LEFT
-} MOVE;
-
-move_func moves[] = {&up, &down, &right, &left};
-
-namespace std {
-template<>
-class hash<Node> {
+class hashNode {
 public:
 	size_t operator()(Node const & puzzle) const
 	{
 		size_t hash = 0;
-		for (size_t i = 0; i != puzzle.length; ++i) {
-			hash = hash ^ std::hash<CELL>()(puzzle.field[i]);
+		for (size_t i = 0; i != g_length; ++i) {
+			hash += puzzle.field[i] * (1ull << i);
 		}
 		return hash;
 	}
 };
+
+typedef	bool (*move_func)(Node &);
+
+using priority_queue = std::priority_queue<Node, std::vector<Node>>;
+using hash_table = std::unordered_map<Node, CELL, hashNode>;
+using solution = std::list<char>;
+
+move_func moves[] = {nullptr, &up, &down, &right, &left};
+
+static void undo(Node & node, size_t & i)
+{
+	node.move = NONE;
+	if (i % 2 == 0)
+		moves[i - 1](node);
+	else
+		moves[i + 1](node);
 }
 
-std::list<int> Search(Node & src)
+solution Search(Node & src)
 {
-	CELL 							score = 0;
-	std::unordered_map<Node, CELL>	close;
-	std::queue<Node>				queqe;
-	std::list<int>					solution;
+	hash_table		close;
+	priority_queue	open;
+	solution		solut;
 
-	queqe.push(src);
-	score = manhattanScore(src);
-	if (!score)
-		return solution;
+	close.reserve(g_length * g_side);
 
-	close.emplace(src, score);
-	while (!queqe.empty()) {
-		Node cur = queqe.front();
-		queqe.pop();
-		Node temp(cur);
-		close.emplace(cur, manhattanScore(src));
+	if (!src.getScore(true))
+		return solut;
+
+	open.push(src);
+	close.emplace(src, src.getScore(true));
+
+	Node temp;
+	while (!open.empty()) {
+		temp = open.top();
+		open.pop();
+		close.emplace(temp, temp.getScore(false));
 		for (size_t i = UP; i <= LEFT; ++i) {
 			if (moves[i](temp)) {
 				if (close.find(temp) == close.end()) {
-					if (!(score = manhattanScore(temp)))
-						return solution;
-					queqe.push(temp);
-					solution.push_back(i);
-					temp = cur;
+					temp.getScore(true);
+					open.push(temp);
+					solut.push_back(i);
+					if (!temp.score) {
+						temp.printNode();
+						return solut ;
+					}
 				}
+				undo(temp, i);
 			}
 		}
 	}
-	return solution;
+	return solut;
 }
