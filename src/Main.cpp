@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:37:29 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/05 17:45:34 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/06 08:43:22 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ int main(int argc, char ** argv)
 		{
 			std::cout << "Empty\n";
 		}
-		else
-		{
-//			printMoves(node, Solution);
-		}
+		// else
+		// {
+		// 	printMoves(node, Solution);
+		// }
 		std::cout << "Moves: " << Solution.size() << std::endl;
 	} catch (PuzzExcept & err) {
 		std::cout << err.what() << std::endl;

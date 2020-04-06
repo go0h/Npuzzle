@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:06:09 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/05 17:21:00 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/05 22:14:28 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef	enum {
 	LEFT
 } MOVE;
 
-struct Node
+class Node
 {
 public:
 	CELL		zero = 0;

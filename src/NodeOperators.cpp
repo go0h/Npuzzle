@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 21:38:37 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/05 17:33:48 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/05 23:08:44 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ bool operator!=(Node const & n1, Node const & n2)
 
 bool operator<(Node const & n1, Node const & n2)
 {
-	if (n1.getScore() > n2.getScore())
+	if (n1.getScore() < n2.getScore())
 		return true;
 	return false;
 }
@@ -69,12 +69,24 @@ CELL Node::operator()(size_t i, size_t j) const
 	return field[i * g_side + j];
 }
 
+// size_t hashNode::operator()(Node const & puzzle) const
+// {
+// 	size_t hash = 0;
+// 	for (size_t i = 0; i != g_length; ++i)
+// 	{
+// 		hash += puzzle.field[i] * (1ull << i);
+// 	}
+// 	return hash;
+// }
+
 size_t hashNode::operator()(Node const & puzzle) const
 {
 	size_t hash = 0;
+	size_t pow = 31;
 	for (size_t i = 0; i != g_length; ++i)
 	{
-		hash += puzzle.field[i] * (1ull << i);
+		hash = hash + (puzzle.field[i] * pow);
+		pow *= 31;
 	}
 	return hash;
 }

@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/02 18:27:54 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/05 17:32:28 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/05 22:20:48 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void Node::printNode(void) noexcept
 
 void printMoves(Node src, solution & movSet)
 {
-	for (auto i = movSet.begin(); i != movSet.end(); ++i)
+	for (auto i = std::next(movSet.begin()); i != movSet.end(); ++i)
 	{
 		g_move[*i](src);
 		src.printNode();
