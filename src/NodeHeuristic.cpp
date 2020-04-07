@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 13:07:28 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/07 16:02:40 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/07 18:27:36 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,46 @@
 extern size_t g_length;
 extern size_t g_side;
 
-// unsigned corners(CELL * field)
-// {
-// 	unsigned score = 0;
+unsigned lastMove(CELL * field)
+{
+	unsigned score = 0;
 
-// 	if (field[0] != 1 && field[1] == 2)
-// 		score += 2;
-// 	if (field[0] != 1 && field[g_side] == g_side + 1)
-// 		score += 2;
-// 	if (field[g_side - 1] != g_side && field[g_side - 2] == g_side - 1)
-// 		score += 2;
-// 	return score;
-// }
+	if (field[g_length - 1] != 0)
+		return score;
+
+	if (field[g_length - 1] != g_length - 1)
+		score += 1;
+
+	if (field[g_length - g_side - 1] != g_length - g_side)
+		score += 1;
+	return score;
+}
+
+// LEFT UP CORNER
+#define LU 0
+
+// RIGHT UP CORNER
+#define RU (g_side - 1)
+
+// LEFT DOWN CORNER
+#define LD (g_side * g_side - g_side)
+
+unsigned corners(CELL * field)
+{
+	unsigned score = 0;
+
+	if (field[LU] != 1 && field[LU + 1] == 2)
+		score += 1;
+	if (field[LU] != 1 && field[g_side] == g_side + 1)
+		score += 1;
+	if (field[RU] != g_side && field[RU - 1] == g_side - 1)
+		score += 1;
+	if (field[RU] != g_side && field[g_side * 2 - 1] == g_side * 2)
+		score += 1;
+	if (field[LD] != LD + 1 && field[LD + 1] == g_side * g_side - g_side + 2)
+		score += 1;
+	return score;
+}
 
 unsigned rowConflict(CELL * field)
 {
@@ -93,6 +121,9 @@ unsigned Node::getScore(bool again = false)
 		}
 		score += rowConflict(field);
 		score += colConflict(field);
+		score += corners(field);
+		// if (score)
+		// 	score += lastMove(field);
 	}
 	return score;
 }

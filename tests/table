@@ -1,12 +1,20 @@
 
-		MAN	 MAN+DEPTH	MAN+DEPTH+ROW   MAN+DEPTH+ROW+COL
+M = manhattan
+D = depth
+R = rowConflict
+C = colConflict
+CR = corners
 
-f4_1	403		156			152				174
 
-f4_2	223		176			226				160
 
-f4_3	201		156			122				102
+		resetius.ru		M	 	M+D	   M+D+R   M+D+R+C	M+D+R+C+CR
 
-f4_4	225		140			98				176
+f4_1		60			403		156		152		158			152
 
-f4_5	281		124			202				126
+f4_2		62			223		176		226		112			140
+
+f4_3		58			201		156		122		156			120
+
+f4_4		56			225		140		98		140			94
+
+f4_5		54			281		124		202		124			220

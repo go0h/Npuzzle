@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 17:46:34 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/06 21:21:55 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/07 18:27:21 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ solution Search(Node & src)
 			{
 				if (!temp.getScore(true))
 					return GenerateMoves(temp, close);
-				if (close.find(temp) == close.end())
+				auto closeIt = close.find(temp);
+				if (closeIt == close.end())
 				{
 					auto it = open.find(temp);
 					if (it != open.end() && temp.depth < (*it).depth)
@@ -78,6 +79,14 @@ solution Search(Node & src)
 					}
 					open.insert(temp);
 				}
+				// else
+				// {
+				// 	if (temp.depth < closeIt->depth)
+				// 	{
+				// 		close.erase(closeIt);
+				// 		close.insert(temp);
+				// 	}
+				// }
 				temp.score = score;
 				undo(temp, i);
 			}
