@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:06:09 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/05 22:14:28 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/06 21:12:35 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,39 @@
 # define NODE_H
 #include <cstddef>
 
-# define CELL			unsigned
 # define DEFAULT_SIDE	4
 
-typedef	enum {
+using CELL =			unsigned;
+using t_move = 			unsigned char;
+
+enum {
 	NONE,
 	UP,
 	DOWN,
 	RIGHT,
 	LEFT
-} MOVE;
+};
 
 class Node
 {
 public:
 	CELL		zero = 0;
-	MOVE		move = NONE;
+	t_move		move = NONE;
 	unsigned	depth = 0;
+	unsigned	score = 0;
 	CELL *		field = nullptr;
 	Node(void);
 	Node(CELL side);								//constructor
 	Node(Node const & src);							//copy constructor
 	Node(Node && src);								//move constructor
 	~Node();										//destructor
-	Node &	operator=(Node const & src);
-	Node &	operator=(Node && src);
-	CELL & operator()(size_t i, size_t j);
-	CELL operator()(size_t i, size_t j) const;
-	size_t	getScore(void) const;
-	void 	printNode(void) noexcept;
-	void 	validate(void);
+	Node &		operator=(Node const & src);
+	Node &		operator=(Node && src);
+	CELL &		operator()(size_t i, size_t j);
+	CELL 		operator()(size_t i, size_t j) const;
+	unsigned	getScore(bool);
+	void 		printNode(void) noexcept;
+	void 		validate(void);
 
 private:
 	void swap(Node & src);

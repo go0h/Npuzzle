@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 19:51:21 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/05 17:25:05 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/06 21:13:22 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,16 @@
 # define NPUZZLE_H
 
 #include <iostream>
+#include <unordered_set>
 #include <list>
+#include <set>
 
-using solution = std::list<MOVE>;
-using move_func = bool (*)(Node &);
+#include "Node.h"
+
+using solution 			= std::list<t_move>;
+using move_func 		= bool (*)(Node &);
+using PriorityQueue		= std::set<Node>;
+using HashTable			= std::unordered_set<Node, hashNode>;
 
 
 bool 		up(Node & puzzle);

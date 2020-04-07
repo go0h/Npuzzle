@@ -6,25 +6,15 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 17:46:34 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/06 08:43:53 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/06 21:21:55 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include <queue>
-#include <unordered_set>
-
-#include "Node.h"
 #include "Npuzzle.h"
-#include "PriorityQueue.h"
 
 extern size_t			g_length;
 extern size_t			g_side;
 extern move_func		g_move[];
-
-using priority_queue	= std::priority_queue<Node>;
-using hash_table		= std::unordered_set<Node, hashNode>;
-
 
 static void undo(Node & node, size_t i)
 {
@@ -35,7 +25,7 @@ static void undo(Node & node, size_t i)
 		g_move[i + 1](node);
 }
 
-static solution GenerateMoves(Node target, hash_table & close)
+static solution GenerateMoves(Node target, HashTable & close)
 {
 	solution	moves;
 
@@ -52,39 +42,43 @@ static solution GenerateMoves(Node target, hash_table & close)
 
 solution Search(Node & src)
 {
-	hash_table		close;
+	HashTable		close;
 	PriorityQueue	open;
 	Node			temp;
+	unsigned		score = 0;
 
 	// close.reserve(g_length * g_side);
 
-	if (!src.getScore())
+	if (!src.getScore(true))
 		return solution();
 
-	open.push(src);
+	open.insert(src);
 	close.insert(src);
 
 	while (!open.empty())
 	{
-		temp = open.pop();
+		temp = *(open.begin());
+		open.erase(temp);
 		temp.depth += 1;
+		score = temp.getScore(false);
+
 		close.insert(temp);
 		for (size_t i = UP; i <= LEFT; ++i)
 		{
 			if (g_move[i](temp))
 			{
+				if (!temp.getScore(true))
+					return GenerateMoves(temp, close);
 				if (close.find(temp) == close.end())
 				{
 					auto it = open.find(temp);
-					if (it != open.end())
+					if (it != open.end() && temp.depth < (*it).depth)
 					{
-						if (temp.depth < (*it).depth)
-							open.remove(it);
+						open.erase(it);
 					}
-					open.push(temp);
-					if (!temp.getScore())
-						return GenerateMoves(temp, close);
+					open.insert(temp);
 				}
+				temp.score = score;
 				undo(temp, i);
 			}
 		}
