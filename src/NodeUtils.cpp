@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/02 18:27:54 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/06 21:17:42 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/07 21:24:41 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void Node::swap(Node & src)
 {
 	std::swap(zero, src.zero);
 	std::swap(move, src.move);
-	std::swap(depth, src.depth);
 	std::swap(score, src.score);
 	std::swap(field, src.field);
 }

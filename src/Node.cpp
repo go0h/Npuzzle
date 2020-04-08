@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:17:23 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/06 21:17:21 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/07 21:24:32 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ Node::Node(CELL size)
 Node::Node(Node const & src)
 	: zero(src.zero),
 	move(src.move),
-	depth(src.depth),
 	score(src.score)
 {
 	field = new CELL[g_length];

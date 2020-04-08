@@ -4,17 +4,17 @@ D = depth
 R = rowConflict
 C = colConflict
 CR = corners
+LM = lastMove
 
 
+		resetius.ru		M	 	M+D	   M+D+R   M+D+R+C	M+D+R+C+CR	M+D+R+C+CR+LM
 
-		resetius.ru		M	 	M+D	   M+D+R   M+D+R+C	M+D+R+C+CR
+f4_1		60			403		156		152		158			152			96
 
-f4_1		60			403		156		152		158			152
+f4_2		62			223		176		226		112			140			94
 
-f4_2		62			223		176		226		112			140
+f4_3		58			201		156		122		156			120			154
 
-f4_3		58			201		156		122		156			120
+f4_4		56			225		140		98		140			94			102
 
-f4_4		56			225		140		98		140			94
-
-f4_5		54			281		124		202		124			220
+f4_5		54			281		124		202		124			220			128

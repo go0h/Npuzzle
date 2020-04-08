@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:06:09 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/07 16:09:59 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/07 21:24:25 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ class Node
 public:
 	unsigned short		zero = 0;
 	t_move				move = NONE;
-	unsigned			depth = 0;
 	unsigned			score = 0;
 	CELL *				field = nullptr;
 	Node(void);

@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 13:07:28 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/07 18:27:36 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/08 10:55:12 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,13 @@ unsigned rowConflict(CELL * field)
 		for (size_t j = 0; j != g_side - 1; ++j)
 		{
 			unsigned a = i * g_side + j;
-			if (field[a] != a + 1  && (field[a] - 1) / g_side == i)
+			if (field[a] && field[a] != a + 1  && (field[a] - 1) / g_side == i)
 			{
 				for (size_t k = j + 1; k != g_side; ++k)
 				{
 					unsigned b = i * g_side + k;
 					if (field[b] != b + 1  && (field[b] - 1) / g_side == i)
-						score += 1;
+						score += b - a;
 				}
 			}
 		}
@@ -91,13 +91,13 @@ unsigned colConflict(CELL * field)
 		for (size_t j = 0; j != g_side - 1; ++j)
 		{
 			unsigned a = j * g_side + i;
-			if (field[a] != a + 1 && (field[a] - 1) % g_side == i)
+			if (field[a] && field[a] != a + 1 && (field[a] - 1) % g_side == i)
 			{
 				for (size_t k = j + 1; k != g_side; ++k)
 				{
 					unsigned b = j * g_side + k;
 					if (field[b] != b + 1 && (field[b] - 1) % g_side == i)
-						score += 1;
+						score += b - a;
 				}
 			}
 		}
@@ -122,8 +122,8 @@ unsigned Node::getScore(bool again = false)
 		score += rowConflict(field);
 		score += colConflict(field);
 		score += corners(field);
-		// if (score)
-		// 	score += lastMove(field);
+		if (score)
+			score += lastMove(field);
 	}
 	return score;
 }

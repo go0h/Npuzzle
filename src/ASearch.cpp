@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 17:46:34 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/07 18:27:21 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/08 09:58:23 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 extern size_t			g_length;
 extern size_t			g_side;
 extern move_func		g_move[];
+
+#define STATE			first
+#define DEPTH			second
 
 static void undo(Node & node, size_t i)
 {
@@ -29,6 +32,7 @@ static solution GenerateMoves(Node target, HashTable & close)
 {
 	solution	moves;
 
+	printf("States in close: %lu\n", close.size());
 	target.printNode();
 	moves.push_front(target.move);
 	while (target.move != NONE)
@@ -44,54 +48,43 @@ solution Search(Node & src)
 {
 	HashTable		close;
 	PriorityQueue	open;
-	Node			temp;
-	unsigned		score = 0;
-
-	// close.reserve(g_length * g_side);
+	Desk			desk;
+	unsigned		depth = 0;
 
 	if (!src.getScore(true))
 		return solution();
 
-	open.insert(src);
+	open.insert(std::make_pair(src, 0));
 	close.insert(src);
 
 	while (!open.empty())
 	{
-		temp = *(open.begin());
-		open.erase(temp);
-		temp.depth += 1;
-		score = temp.getScore(false);
+		desk = *(open.begin());
+		open.erase(desk.STATE);
+		depth = desk.DEPTH + 1;
 
-		close.insert(temp);
+		close.insert(desk.STATE);
 		for (size_t i = UP; i <= LEFT; ++i)
 		{
-			if (g_move[i](temp))
+			if (g_move[i](desk.STATE))
 			{
-				if (!temp.getScore(true))
-					return GenerateMoves(temp, close);
-				auto closeIt = close.find(temp);
+				if (!desk.STATE.getScore(true))
+					return GenerateMoves(desk.STATE, close);
+				auto closeIt = close.find(desk.STATE);
 				if (closeIt == close.end())
 				{
-					auto it = open.find(temp);
-					if (it != open.end() && temp.depth < (*it).depth)
+					auto openIt = open.find(desk.STATE);
+					if (openIt == open.end() || depth < openIt->DEPTH)
 					{
-						open.erase(it);
+						if (openIt != open.end())
+							open.erase(openIt);
+						open.insert(std::make_pair(desk.STATE, depth));
 					}
-					open.insert(temp);
 				}
-				// else
-				// {
-				// 	if (temp.depth < closeIt->depth)
-				// 	{
-				// 		close.erase(closeIt);
-				// 		close.insert(temp);
-				// 	}
-				// }
-				temp.score = score;
-				undo(temp, i);
+				undo(desk.STATE, i);
 			}
 		}
 	}
-	temp.printNode();
+	desk.STATE.printNode();
 	return solution();
 }
