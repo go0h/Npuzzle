@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/02 18:27:54 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/07 21:24:41 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/10 15:55:32 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,6 @@ void printMoves(Node src, solution & movSet)
 		g_move[*i](src);
 		src.printNode();
 	}
-	if (!src.getScore(false))
+	if (!src.score)
 		printf("Well done!\n");
 }

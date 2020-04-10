@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 17:46:34 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/08 09:58:23 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/10 21:04:38 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void undo(Node & node, size_t i)
 		g_move[i + 1](node);
 }
 
-static solution GenerateMoves(Node target, HashTable & close)
+static solution GenerateMoves(Node & target, HashTable & close)
 {
 	solution	moves;
 
@@ -38,7 +38,7 @@ static solution GenerateMoves(Node target, HashTable & close)
 	while (target.move != NONE)
 	{
 		undo(target, target.move);
-		target = *(close.find(target));
+		target = close.find(target)->STATE;
 		moves.push_front(target.move);
 	}
 	return moves;
@@ -51,26 +51,27 @@ solution Search(Node & src)
 	Desk			desk;
 	unsigned		depth = 0;
 
-	if (!src.getScore(true))
+	if (!src.getScore())
 		return solution();
 
-	open.insert(std::make_pair(src, 0));
-	close.insert(src);
+	open.emplace(src, 0);
+	close.emplace(src, 0);
 
 	while (!open.empty())
 	{
 		desk = *(open.begin());
 		open.erase(desk.STATE);
-		depth = desk.DEPTH + 1;
+		if (!desk.STATE.score)
+			break ;
+		close.emplace(desk.STATE, desk.DEPTH);
 
-		close.insert(desk.STATE);
+		depth = desk.DEPTH + 1;
 		for (size_t i = UP; i <= LEFT; ++i)
 		{
 			if (g_move[i](desk.STATE))
 			{
-				if (!desk.STATE.getScore(true))
-					return GenerateMoves(desk.STATE, close);
 				auto closeIt = close.find(desk.STATE);
+				desk.STATE.getScore();
 				if (closeIt == close.end())
 				{
 					auto openIt = open.find(desk.STATE);
@@ -78,13 +79,18 @@ solution Search(Node & src)
 					{
 						if (openIt != open.end())
 							open.erase(openIt);
-						open.insert(std::make_pair(desk.STATE, depth));
+						open.emplace(desk.STATE, depth);
 					}
+				}
+				else if (depth < closeIt->DEPTH)
+				{
+					close.erase(desk.STATE);
+					open.emplace(desk.STATE, depth);
 				}
 				undo(desk.STATE, i);
 			}
 		}
 	}
-	desk.STATE.printNode();
-	return solution();
+	printf("States in open:  %lu\n", open.size());
+	return GenerateMoves(desk.STATE, close);
 }

@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:06:09 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/07 21:24:25 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/10 21:04:08 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ public:
 	Node &		operator=(Node && src);
 	CELL &		operator()(size_t i, size_t j);
 	CELL 		operator()(size_t i, size_t j) const;
-	unsigned	getScore(bool);
+	unsigned	getScore(void);
 	void 		printNode(void) noexcept;
 	void 		validate(void);
 
