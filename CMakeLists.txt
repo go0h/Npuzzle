@@ -17,9 +17,10 @@ set(SOURCE
 	${SOURCE_DIR}/NodeOperators.cpp
 	${SOURCE_DIR}/PuzzExcept.cpp
 	${SOURCE_DIR}/ReadPuzzle.cpp
-	${SOURCE_DIR}/NodeHeuristic.cpp
+	${SOURCE_DIR}/Heuristic.cpp
+	${SOURCE_DIR}/ManhattanNode.cpp
 	${SOURCE_DIR}/NodeMove.cpp
-	${SOURCE_DIR}/ASearch.cpp)
+	${SOURCE_DIR}/ASearchOptimal.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE})
 

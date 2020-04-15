@@ -6,14 +6,14 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 13:07:28 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/10 21:06:07 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/12 21:09:19 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cmath>
 #include <cstring>
 
-#include "Node.h"
+#include "Npuzzle.h"
 #include "PuzzExcept.h"
 
 extern size_t g_length;
@@ -276,7 +276,7 @@ unsigned 	linearConflict2(CELL * field, int * rowCon, int * colCon, int * line)
 		while (line[max])
 		{
 			line[max] = 0;
-			score += 2;
+			score += 1;
 			a = i * g_side + max;
 			for (size_t j = 0; j != g_side; ++j)
 			{
@@ -297,7 +297,7 @@ unsigned 	linearConflict2(CELL * field, int * rowCon, int * colCon, int * line)
 		max = find_max(line);
 		while (line[max])
 		{
-			score += 2;
+			score += 1;
 			line[max] = 0;
 			a = g_side * max + i;
 			for (size_t j = 0; j != g_side; ++j)
@@ -314,30 +314,36 @@ unsigned 	linearConflict2(CELL * field, int * rowCon, int * colCon, int * line)
 	return score;
 }
 
-
-unsigned 	Node::getScore()
+unsigned 	Node::getScore(bool again)
 {
-	score 		= 0;
-	int * 		rowCon = new int[g_length];	// номер ряда в котором должна быть ячейка
-	int * 		colCon = new int[g_length];	// номер колонки в которой должна быть ячейка
-	int * 		line = new int[g_side];		// количество конфликтов в ряду/колонке
-
-	initialStates(field, colCon, rowCon);
-	for (size_t i = 0; i != g_length; ++i)
+	if (again)
 	{
-		if (field[i])
-		{
-			score += std::abs((int)(i / g_side) - rowCon[i]);
-			score += std::abs((int)(i % g_side) - colCon[i]);
-		}
-	}
-	score += linearConflict2(field, rowCon, colCon, line);
-	score += corners(field);
-	if (score)
-		score += lastMove(field);
+		score 		= 0;
+		// int * 		rowCon = new int[g_length];	// номер ряда в котором должна быть ячейка
+		// int * 		colCon = new int[g_length];	// номер колонки в которой должна быть ячейка
+		// int * 		line = new int[g_side];		// количество конфликтов в ряду/колонке
 
-	delete [] rowCon;
-	delete [] colCon;
-	delete [] line;
+		int  rowCon[g_length];	// номер ряда в котором должна быть ячейка
+		int  colCon[g_length];	// номер колонки в которой должна быть ячейка
+		int  line[g_side];
+
+		initialStates(field, colCon, rowCon);
+		for (size_t i = 0; i != g_length; ++i)
+		{
+			if (field[i])
+			{
+				score += std::abs((int)(i / g_side) - rowCon[i]);
+				score += std::abs((int)(i % g_side) - colCon[i]);
+			}
+		}
+		score += 2 * linearConflict2(field, rowCon, colCon, line);
+		score += corners(field);
+		if (score)
+			score += lastMove(field);
+
+		// delete [] rowCon;
+		// delete [] colCon;
+		// delete [] line;
+	}
 	return score;
 }

@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 19:50:58 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/05 17:34:33 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/12 18:13:18 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,13 @@
 #include "Node.h"
 #include "PuzzExcept.h"
 
-size_t	g_side = DEFAULT_SIDE;
-size_t	g_length = (DEFAULT_SIDE * DEFAULT_SIDE);
-
-static bool solvable(Node const & puzzle)
+static bool solvable(Node const & puzzle, size_t side, size_t length)
 {
 	size_t	sum = 0;
 
-	for (size_t i = 0; i != g_length; ++i)
+	for (size_t i = 0; i != length; ++i)
 	{
-		for (size_t j = i + 1; j != g_length; ++j)
+		for (size_t j = i + 1; j != length; ++j)
 		{
 			if (puzzle.field[i] && puzzle.field[j])
 			{
@@ -36,7 +33,7 @@ static bool solvable(Node const & puzzle)
 			}
 		}
 	}
-	return (sum + ((puzzle.zero / g_side) + 1)) % 2 == 0;
+	return (sum + ((puzzle.zero / side) + 1)) % 2 == 0;
 }
 
 static void	skipComments(std::ifstream & pfile, std::string & str)
@@ -62,56 +59,57 @@ static CELL	getFieldSize(std::ifstream & pfile, std::string & str)
 	return size;
 }
 
-static bool fillField(std::ifstream & pfile, std::string & str, Node & puzzle)
+static bool fillField(std::ifstream & pfile, std::string & str, \
+					Node & puzzle, size_t side)
 {
 	std::unordered_set<CELL> order;
-	order.reserve(g_length);
+	order.reserve(side * side);
 
-	for (size_t i = 0; i != g_side && !pfile.eof(); ++i)
+	for (size_t i = 0; i != side && !pfile.eof(); ++i)
 	{
 		std::istringstream strStream(str);
-		for (size_t j = 0; j != g_side && !strStream.eof(); ++j)
+		for (size_t j = 0; j != side && !strStream.eof(); ++j)
 		{
 			strStream >> puzzle(i, j);
 			if (strStream.fail())
 				return false;
 			if (puzzle(i, j) == 0)
-				puzzle.zero = i * g_side + j;
+				puzzle.zero = i * side + j;
 			order.insert(puzzle(i, j));
 		}
 		if (!strStream.eof() && (strStream >> str) && str[0] != '#')
 			return false;
 		getline(pfile, str, '\n');
 	}
-	for (size_t i = 0; i != g_length; ++i)
+	for (size_t i = 0; i != side * side; ++i)
 	{
 		if (order.find(i) == order.end())
 			return false;
 	}
-	return order.size() == g_length;
+	return order.size() == side * side;
 }
 
-Node		readPuzzle(char * filename)
+size_t		readPuzzle(char * filename, Node & node)
 {
 	std::string		str;
 	std::ifstream	pfile(filename);
+	size_t			side = 0;
 
 	if (!pfile.is_open())
 		throw PuzzExcept(E_OPEN_FILE);
 
-	if (!(g_side = getFieldSize(pfile, str)))
+	if (!(side = getFieldSize(pfile, str)))
 		throw PuzzExcept(E_SIDE);
-	g_length = g_side * g_side;
 
-	Node			puzzle(g_side);
-	if (!fillField(pfile, str, puzzle))
+	node.createField(side);
+	if (!fillField(pfile, str, node, side))
 		throw PuzzExcept(E_FIELD_COM);
 	skipComments(pfile, str);
 
 	if (!pfile.eof())
 		throw PuzzExcept(E_MAP);
 	pfile.close();
-	if (!solvable(puzzle))
+	if (!solvable(node, side, side * side))
 		throw PuzzExcept(E_UNSOLVBL);
-	return puzzle;
+	return side;
 }

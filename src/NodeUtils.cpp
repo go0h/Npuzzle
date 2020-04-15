@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/02 18:27:54 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/10 15:55:32 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/12 18:13:04 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void Node::swap(Node & src)
 	std::swap(field, src.field);
 }
 
-void Node::printNode(void) noexcept
+void Node::printNode(void) const
 {
 	for (size_t i = 0; i != g_side; ++i)
 	{
@@ -39,14 +39,16 @@ void Node::printNode(void) noexcept
 	printf("\n");
 }
 
+// void printMoves(Node src, Solution & movSet)
+// {
+// 	unsigned i = 1;
 
-void printMoves(Node src, solution & movSet)
-{
-	for (auto i = std::next(movSet.begin()); i != movSet.end(); ++i)
-	{
-		g_move[*i](src);
-		src.printNode();
-	}
-	if (!src.score)
-		printf("Well done!\n");
-}
+// 	printf("Step #0:\n");
+// 	src.printNode();
+// 	for (auto it = std::next(movSet.begin()); it != movSet.end(); ++i, ++it)
+// 	{
+// 		printf("Step #%u:\n", i);
+// 		g_move[*it](src);
+// 		src.printNode();
+// 	}
+// }

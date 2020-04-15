@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:06:09 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/10 21:04:08 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/15 18:06:24 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 # define NODE_H
 #include <cstddef>
 
-# define DEFAULT_SIDE	4
-
-using CELL =			unsigned;
-using t_move = 			unsigned char;
+using CELL 		= unsigned;
+using t_move 	= unsigned char;
 
 enum {
 	NONE,
@@ -30,9 +28,9 @@ enum {
 class Node
 {
 public:
-	unsigned short		zero = 0;
-	t_move				move = NONE;
+	unsigned			zero = 0;
 	unsigned			score = 0;
+	t_move				move = NONE;
 	CELL *				field = nullptr;
 	Node(void);
 	Node(CELL side);								//constructor
@@ -43,13 +41,16 @@ public:
 	Node &		operator=(Node && src);
 	CELL &		operator()(size_t i, size_t j);
 	CELL 		operator()(size_t i, size_t j) const;
-	unsigned	getScore(void);
-	void 		printNode(void) noexcept;
+	void		createField(size_t side);
+	// unsigned	getScore(bool again);
+	void 		printNode(void) const;
 	void 		validate(void);
 
 private:
 	void swap(Node & src);
 };
+
+using move_func = bool (*)(Node &);
 
 class hashNode {
 public:
@@ -62,6 +63,14 @@ bool		operator!=(Node const & n1, Node const & n2);
 
 bool		operator<(Node const & n1, Node const & n2);
 
-Node 		readPuzzle(char * filename);
+size_t 		readPuzzle(char * filename, Node & node);
+
+bool 		up(Node & puzzle);
+
+bool 		down(Node & puzzle);
+
+bool 		right(Node & puzzle);
+
+bool 		left(Node & puzzle);
 
 #endif

@@ -6,12 +6,13 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 21:38:37 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/08 12:34:01 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/15 20:23:09 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Node.h"
 #include "PuzzExcept.h"
+#include <cstring>
 
 extern size_t g_length;
 extern size_t g_side;
@@ -35,16 +36,19 @@ Node &	Node::operator=(Node && src)
 
 bool operator==(Node const & n1, Node const & n2)
 {
-	for (size_t i = 0; i != g_length; ++i)
-	{
-		if (n1.field[i] != n2.field[i])
-			return false;
-	}
-	return true;
+	// for (size_t i = 0; i != g_length; ++i)
+	// {
+	// 	if (n1.field[i] != n2.field[i])
+	// 		return false;
+	// }
+	// return true;
+	return !std::memcmp(n1.field, n2.field, sizeof(CELL) * g_length);
 }
 
 bool operator!=(Node const & n1, Node const & n2)
 {
+	// if (n1 < n2 || n2 < n1)
+	// 	return true;
 	return !(n1 == n2);
 }
 
@@ -52,6 +56,8 @@ bool operator<(Node const & n1, Node const & n2)
 {
 	if (n1.score < n2.score)
 		return true;
+	if (n1.score == n2.score)
+		return n1.zero > n2.zero;
 	return false;
 }
 

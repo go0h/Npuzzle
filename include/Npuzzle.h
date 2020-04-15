@@ -6,36 +6,30 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 19:51:21 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/10 21:02:37 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/13 09:23:51 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef NPUZZLE_H
 # define NPUZZLE_H
 
+#include <cstddef>
 #include <iostream>
 #include <unordered_map>
 #include <list>
 #include <map>
+#include <set>
 
 #include "Node.h"
+#include "Heuristic.h"
 
-using solution 			= std::list<t_move>;
-using move_func 		= bool (*)(Node &);
-using Desk				= std::pair<Node, unsigned>;
-using PriorityQueue		= std::map<Node, unsigned>;
-using HashTable			= std::unordered_map<Node, unsigned, hashNode>;
+using Desk				= std::pair< unsigned, Node >;
+using PriorityQueue		= std::map< unsigned, std::set< Node > >;
+using HashTable			= std::unordered_map< Node, unsigned, hashNode >;
+using ItOpen 			= std::pair< typename PriorityQueue::iterator, \
+									typename std::set< Node >::iterator >;
+using Solution			= std::list<unsigned>;
 
-bool 		up(Node & puzzle);
-
-bool 		down(Node & puzzle);
-
-bool 		right(Node & puzzle);
-
-bool 		left(Node & puzzle);
-
-solution	Search(Node & src);
-
-void		printMoves(Node src, solution & movSet);
+Solution	ASearch(Node & src, ManhattanNode & hev);
 
 #endif
