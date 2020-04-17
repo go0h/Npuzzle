@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 17:46:34 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/15 20:40:14 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/17 13:04:52 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@ extern move_func		g_move[];
 
 #define DEPTH			first
 #define STATE			second
+
+using Desk				= std::pair< unsigned, Node >;
+using PriorityQueue		= std::map< unsigned, std::set< Node > >;
+using HashTable			= std::unordered_map< Node, unsigned, hashNode >;
+using ItOpen 			= std::pair< typename PriorityQueue::iterator, \
+									typename std::set< Node >::iterator >;
 
 static void		undo(Node & node, size_t i)
 {
@@ -47,7 +53,7 @@ static Desk &	getFirstDesk(PriorityQueue & open, Desk & desk)
 {
 	auto it = open.begin();
 	desk.STATE = *(it->second.begin());
-	desk.DEPTH = it->first - desk.STATE.score;
+	desk.DEPTH = it->first - desk.STATE.getScore(false);
 
 	open[it->first].erase(it->second.begin());
 	if (open[it->first].empty())
@@ -70,7 +76,7 @@ static bool		inOpen(PriorityQueue & open, Desk & desk, ItOpen & it)
 	return false;
 }
 
-Solution		ASearch(Node & src, ManhattanNode & getScore)
+Solution			ASearch(Node & src)
 {
 	HashTable		close;
 	PriorityQueue	open;
@@ -78,14 +84,14 @@ Solution		ASearch(Node & src, ManhattanNode & getScore)
 	ItOpen			openIt;
 	unsigned		depth, score;
 
-	if (!getScore(src))
+	if (!src.getScore(true))
 		return Solution();
-	open[src.score].insert(src);
+	open[src.getScore(false)].insert(src);
 
 	while (!open.empty())
 	{
 		desk = getFirstDesk(open, desk);
-		if (!desk.STATE.score)
+		if (!desk.STATE.getScore(false))
 			break;
 		close.emplace(desk.STATE, desk.DEPTH);
 		depth = desk.DEPTH + 1;
@@ -95,7 +101,7 @@ Solution		ASearch(Node & src, ManhattanNode & getScore)
 			if (g_move[i](desk.STATE))
 			{
 				auto closeIt = close.find(desk.STATE);
-				score = getScore(desk.STATE) + depth;
+				score = desk.STATE.getScore(true) + depth;
 				if (closeIt == close.end())
 				{
 					bool exist = inOpen(open, desk, openIt);

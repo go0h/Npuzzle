@@ -6,13 +6,16 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:06:09 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/15 18:06:24 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/17 12:59:40 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef NODE_H
 # define NODE_H
 #include <cstddef>
+
+#define DEFAULT_SIZE 4
+#define DEFAULT_LENGTH (DEFAULT_SIZE * DEFAULT_SIZE)
 
 using CELL 		= unsigned;
 using t_move 	= unsigned char;
@@ -42,7 +45,7 @@ public:
 	CELL &		operator()(size_t i, size_t j);
 	CELL 		operator()(size_t i, size_t j) const;
 	void		createField(size_t side);
-	// unsigned	getScore(bool again);
+	unsigned	getScore(bool again);
 	void 		printNode(void) const;
 	void 		validate(void);
 

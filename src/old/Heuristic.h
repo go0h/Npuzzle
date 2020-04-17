@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/12 21:38:16 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/15 20:21:45 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/17 12:59:32 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 
 #include "Node.h"
 
-#define DEFAULT_SIZE 4
-#define DEFAULT_LENGTH (DEFAULT_SIZE * DEFAULT_SIZE)
+
 
 class ManhattanNode
 {

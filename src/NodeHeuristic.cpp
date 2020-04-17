@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 13:07:28 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/12 21:09:19 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/17 13:06:52 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -340,10 +340,6 @@ unsigned 	Node::getScore(bool again)
 		score += corners(field);
 		if (score)
 			score += lastMove(field);
-
-		// delete [] rowCon;
-		// delete [] colCon;
-		// delete [] line;
 	}
 	return score;
 }

@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 17:46:34 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/13 08:55:57 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/15 20:40:14 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,6 @@ extern move_func		g_move[];
 
 #define DEPTH			first
 #define STATE			second
-
-using Desk				= std::pair< unsigned, Node >;
-using PriorityQueue		= std::map< unsigned, std::set< Node > >;
-using HashTable			= std::unordered_map< Node, unsigned, hashNode >;
-using ItOpen 			= std::pair< typename PriorityQueue::iterator, \
-									typename std::set< Node >::iterator >;
-
-using Solution			= typename Npuzzle::Solution;
 
 static void		undo(Node & node, size_t i)
 {
@@ -51,11 +43,11 @@ static Solution GenerateMoves(Node & src, Node & target, HashTable & close)
 	return moves;
 }
 
-static Desk &	getFirstDesk(PriorityQueue & open, Desk & desk, ManhattanNode & getScore)
+static Desk &	getFirstDesk(PriorityQueue & open, Desk & desk)
 {
 	auto it = open.begin();
 	desk.STATE = *(it->second.begin());
-	desk.DEPTH = it->first - getScore(desk.STATE);
+	desk.DEPTH = it->first - desk.STATE.score;
 
 	open[it->first].erase(it->second.begin());
 	if (open[it->first].empty())
@@ -78,7 +70,7 @@ static bool		inOpen(PriorityQueue & open, Desk & desk, ItOpen & it)
 	return false;
 }
 
-Solution		Npuzzle::ASearch(Node & src, ManhattanNode & getScore)
+Solution		ASearch(Node & src, ManhattanNode & getScore)
 {
 	HashTable		close;
 	PriorityQueue	open;
@@ -88,12 +80,12 @@ Solution		Npuzzle::ASearch(Node & src, ManhattanNode & getScore)
 
 	if (!getScore(src))
 		return Solution();
-	open[getScore(src)].insert(src);
+	open[src.score].insert(src);
 
 	while (!open.empty())
 	{
-		desk = getFirstDesk(open, desk, getScore);
-		if (!getScore(desk.STATE))
+		desk = getFirstDesk(open, desk);
+		if (!desk.STATE.score)
 			break;
 		close.emplace(desk.STATE, desk.DEPTH);
 		depth = desk.DEPTH + 1;
