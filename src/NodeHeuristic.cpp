@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 13:07:28 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/17 13:06:52 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/17 20:11:00 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,18 @@
 #include "Npuzzle.h"
 #include "PuzzExcept.h"
 
-extern size_t g_length;
-extern size_t g_side;
+size_t g_side = DEFAULT_SIZE;
 
-unsigned lastMove(CELL * field)
+unsigned lastMove(CELL * field, size_t side, size_t length)
 {
 	unsigned score = 0;
 
-	if (field[g_length - 1] != 0)
+	if (field[length - 1] != 0)
 		return score;
 
-	if (field[g_length - 1] != g_length - 1)
+	if (field[length - 1] != length - 1)
 		score += 1;
-	if (field[g_length - g_side - 1] != g_length - g_side)
+	if (field[length - side - 1] != length - side)
 		score += 1;
 	return score;
 }
@@ -37,10 +36,10 @@ unsigned lastMove(CELL * field)
 #define LU 0
 
 // RIGHT UP CORNER
-#define RU (g_side - 1)
+#define RU (side - 1)
 
 // LEFT DOWN CORNER
-#define LD (g_side * g_side - g_side)
+#define LD (side * side - side)
 
 void		printField(int * field)
 {
@@ -53,132 +52,9 @@ void		printField(int * field)
 	printf("\n");
 }
 
-unsigned	corners(CELL * field)
+void		initialStates(CELL * field, int * colCon, int * rowCon, size_t length)
 {
-	unsigned score = 0;
-
-	if (field[LU] != 1 && field[LU + 1] == 2)
-		score += 1;
-	if (field[LU] != 1 && field[g_side] == g_side + 1)
-		score += 1;
-	if (field[RU] != g_side && field[RU - 1] == g_side - 1)
-		score += 1;
-	if (field[RU] != g_side && field[g_side * 2 - 1] == g_side * 2)
-		score += 1;
-	if (field[LD] != LD + 1 && field[LD + 1] == g_side * g_side - g_side + 2)
-		score += 1;
-	return score;
-}
-
-unsigned	rowConflict(CELL * field)
-{
-	unsigned score = 0;
-
-	for (size_t i = 0; i != g_side; ++i)
-	{
-		for (size_t j = 0; j != g_side - 1; ++j)
-		{
-			unsigned a = i * g_side + j;
-			if (field[a] && field[a] != a + 1  && (field[a] - 1) / g_side == i)
-			{
-				for (size_t k = j + 1; k != g_side; ++k)
-				{
-					unsigned b = i * g_side + k;
-					if (field[b] != b + 1  && (field[b] - 1) / g_side == i)
-						score += b - a;
-				}
-			}
-		}
-	}
-	return score;
-}
-
-unsigned	colConflict(CELL * field)
-{
-	unsigned score = 0;
-
-	for (size_t i = 0; i != g_side; ++i)
-	{
-		for (size_t j = 0; j != g_side - 1; ++j)
-		{
-			unsigned a = j * g_side + i;
-			if (field[a] && field[a] != a + 1 && (field[a] - 1) % g_side == i)
-			{
-				for (size_t k = j + 1; k != g_side; ++k)
-				{
-					unsigned b = j * g_side + k;
-					if (field[b] != b + 1 && (field[b] - 1) % g_side == i)
-						score += b - a;
-				}
-			}
-		}
-	}
-	return score;
-}
-
-unsigned	linearConflict(CELL * field, int * rowCon, int * colCon, int * line)
-{
-	unsigned score = 0, lineScore, count;
-
-	for (size_t i = 0; i != g_side; ++i)
-	{
-		// для каждого ряда записываем числа которые стоят в своем ряду
-		// и запоминаем их количество
-		count = 0;
-		for (size_t j = 0; j != g_side; ++j)
-		{
-			unsigned pos = i * g_side + j;
-			if (field[pos] && rowCon[field[pos]] == (int)i)
-			{
-				line[count] = field[pos];
-				count++;
-			}
-		}
-
-		lineScore = 0;
-		for (size_t j = 0; j < count; ++j)
-		{
-			for (size_t k = j + 1; k < count; ++k)
-			{
-				if (colCon[line[j]] > colCon[line[k]])
-					lineScore += 1;
-			}
-		}
-		score += lineScore + (lineScore % 2);
-	}
-
-	for (size_t i = 0; i != g_side; ++i)
-	{
-		// для каждой колонки записываем числа которые стоят в своем ряду
-		// и запоминаем их количество
-		count = 0;
-		for (size_t j = 0; j != g_side; ++j)
-		{
-			unsigned pos = j * g_side + i;
-			if (field[pos] && colCon[field[pos]] == (int)i)
-			{
-				line[count] = field[pos];
-				count++;
-			}
-		}
-
-		lineScore = 0;
-		for (size_t j = 0; j < count; ++j)
-		{
-			for (size_t k = j + 1; k < count; ++k)
-			{
-				if (rowCon[line[j]] > rowCon[line[k]])
-					lineScore += 1;
-			}
-		}
-		score += lineScore + (lineScore % 2);
-	}
-	return score;
-}
-
-void		initialStates(CELL * field, int * colCon, int * rowCon)
-{
-	for (size_t i = 0; i != g_length; ++i)
+	for (size_t i = 0; i != length; ++i)
 	{
 		if (field[i])
 		{
@@ -192,6 +68,24 @@ void		initialStates(CELL * field, int * colCon, int * rowCon)
 		}
 	}
 }
+
+unsigned	corners(CELL * field, size_t side)
+{
+	unsigned score = 0;
+
+	if (field[LU] != 1 && field[LU + 1] == 2)
+		score += 1;
+	if (field[LU] != 1 && field[side] == side + 1)
+		score += 1;
+	if (field[RU] != side && field[RU - 1] == side - 1)
+		score += 1;
+	if (field[RU] != side && field[side * 2 - 1] == side * 2)
+		score += 1;
+	if (field[LD] != LD + 1 && field[LD + 1] == side * side - side + 2)
+		score += 1;
+	return score;
+}
+
 
 void		countRowConflict(CELL * field, int row,
 			int * rowCon, int * colCon, int * line)
@@ -249,11 +143,11 @@ void		countColConflict(CELL * field, int col,
 	}
 }
 
-size_t		find_max(int * line)
+size_t		find_max(int * line, size_t side)
 {
 	size_t max = 0;
 
-	for (size_t i = 0; i != g_side; ++i)
+	for (size_t i = 0; i != side; ++i)
 	{
 		if (line[i] > line[max])
 			max = i;
@@ -272,7 +166,7 @@ unsigned 	linearConflict2(CELL * field, int * rowCon, int * colCon, int * line)
 	for (size_t i = 0; i != g_side; ++i)
 	{
 		countRowConflict(field, i, rowCon, colCon, line);
-		max = find_max(line);
+		max = find_max(line, g_side);
 		while (line[max])
 		{
 			line[max] = 0;
@@ -286,7 +180,7 @@ unsigned 	linearConflict2(CELL * field, int * rowCon, int * colCon, int * line)
 				else if (colCon[a] > colCon[b] && j < max)
 					line[j] -= 1;
 			}
-			max = find_max(line);
+			max = find_max(line, g_side);
 		}
 	}
 
@@ -294,7 +188,7 @@ unsigned 	linearConflict2(CELL * field, int * rowCon, int * colCon, int * line)
 	for (size_t i = 0; i != g_side; ++i)
 	{
 		countColConflict(field, i, rowCon, colCon, line);
-		max = find_max(line);
+		max = find_max(line, g_side);
 		while (line[max])
 		{
 			score += 1;
@@ -303,12 +197,12 @@ unsigned 	linearConflict2(CELL * field, int * rowCon, int * colCon, int * line)
 			for (size_t j = 0; j != g_side; ++j)
 			{
 				b = g_side * j + i;
-				if (colCon[a] < colCon[b] && j > max)
+				if (rowCon[a] < rowCon[b] && j > max)
 					line[j] -= 1;
-				else if (colCon[a] > colCon[b] && j < max)
+				else if (rowCon[a] > rowCon[b] && j < max)
 					line[j] -= 1;
 			}
-			max = find_max(line);
+			max = find_max(line, g_side);
 		}
 	}
 	return score;
@@ -318,28 +212,24 @@ unsigned 	Node::getScore(bool again)
 {
 	if (again)
 	{
-		score 		= 0;
-		// int * 		rowCon = new int[g_length];	// номер ряда в котором должна быть ячейка
-		// int * 		colCon = new int[g_length];	// номер колонки в которой должна быть ячейка
-		// int * 		line = new int[g_side];		// количество конфликтов в ряду/колонке
+		score = 0;
+		static int *	rowCon = new int[length_];	// номер ряда в котором должна быть ячейка
+		static int *	colCon = new int[length_];	// номер колонки в которой должна быть ячейка
+		static int *	line = new int[side_];		// количество конфликтов в ряду/колонке
 
-		int  rowCon[g_length];	// номер ряда в котором должна быть ячейка
-		int  colCon[g_length];	// номер колонки в которой должна быть ячейка
-		int  line[g_side];
-
-		initialStates(field, colCon, rowCon);
-		for (size_t i = 0; i != g_length; ++i)
+		initialStates(field, colCon, rowCon, length_);
+		for (size_t i = 0; i != length_; ++i)
 		{
 			if (field[i])
 			{
-				score += std::abs((int)(i / g_side) - rowCon[i]);
-				score += std::abs((int)(i % g_side) - colCon[i]);
+				score += std::abs((int)(i / side_) - rowCon[i]);
+				score += std::abs((int)(i % side_) - colCon[i]);
 			}
 		}
 		score += 2 * linearConflict2(field, rowCon, colCon, line);
-		score += corners(field);
+		score += corners(field, side_);
 		if (score)
-			score += lastMove(field);
+			score += lastMove(field, side_, length_);
 	}
 	return score;
 }

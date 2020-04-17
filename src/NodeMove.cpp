@@ -6,15 +6,12 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 14:16:28 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/17 13:02:34 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/17 18:20:42 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Node.h"
 #include "Npuzzle.h"
-
-move_func 		g_move[] = {nullptr, &up, &down, &right, &left};
-extern size_t	g_side;
 
 static void swap(CELL & a, CELL & b)
 {
@@ -25,13 +22,13 @@ static void swap(CELL & a, CELL & b)
 
 bool up(Node & puzzle)
 {
-	CELL x = puzzle.zero % g_side;
-	CELL y = puzzle.zero / g_side;
+	CELL x = puzzle.zero % Node::side_;
+	CELL y = puzzle.zero / Node::side_;
 
 	if (y > 0 && puzzle.move != DOWN)
 	{
 		swap(puzzle(y, x), puzzle(y - 1, x));
-		puzzle.zero -= g_side;
+		puzzle.zero -= Node::side_;
 		puzzle.move = UP;
 		return true;
 	}
@@ -40,13 +37,13 @@ bool up(Node & puzzle)
 
 bool down(Node & puzzle)
 {
-	CELL x = puzzle.zero % g_side;
-	CELL y = puzzle.zero / g_side;
+	CELL x = puzzle.zero % Node::side_;
+	CELL y = puzzle.zero / Node::side_;
 
-	if (y < g_side - 1 && puzzle.move != UP)
+	if (y < Node::side_ - 1 && puzzle.move != UP)
 	{
 		swap(puzzle(y, x), puzzle(y + 1, x));
-		puzzle.zero += g_side;
+		puzzle.zero += Node::side_;
 		puzzle.move = DOWN;
 		return true;
 	}
@@ -55,8 +52,8 @@ bool down(Node & puzzle)
 
 bool left(Node & puzzle)
 {
-	CELL x = puzzle.zero % g_side;
-	CELL y = puzzle.zero / g_side;
+	CELL x = puzzle.zero % Node::side_;
+	CELL y = puzzle.zero / Node::side_;
 
 	if (x > 0 && puzzle.move != RIGHT)
 	{
@@ -70,10 +67,10 @@ bool left(Node & puzzle)
 
 bool right(Node & puzzle)
 {
-	CELL x = puzzle.zero % g_side;
-	CELL y = puzzle.zero / g_side;
+	CELL x = puzzle.zero % Node::side_;
+	CELL y = puzzle.zero / Node::side_;
 
-	if (x < g_side - 1 && puzzle.move != LEFT)
+	if (x < Node::side_ - 1 && puzzle.move != LEFT)
 	{
 		swap(puzzle(y, x), puzzle(y, x + 1));
 		puzzle.zero += 1;
@@ -83,3 +80,4 @@ bool right(Node & puzzle)
 	return false;
 }
 
+move_func 		g_move[] = {nullptr, &up, &down, &right, &left};

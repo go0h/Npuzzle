@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:17:23 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/12 18:08:52 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/17 20:12:12 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,16 @@
 #include "Node.h"
 #include "PuzzExcept.h"
 
-extern size_t g_length;
-extern size_t g_side;
+size_t Node::side_		= DEFAULT_SIZE;
+size_t Node::length_	= (DEFAULT_SIZE * DEFAULT_SIZE);
 
 Node::Node(void) { }
 
-Node::Node(CELL size)
+Node::Node(CELL side)
 {
-	field = new CELL[size * size];
+	side_ = side;
+	length_ = side * side;
+	field = new CELL[side * side];
 }
 
 Node::Node(Node const & src)
@@ -31,8 +33,8 @@ Node::Node(Node const & src)
 	score(src.score),
 	move(src.move)
 {
-	field = new CELL[g_length];
-	memcpy(field, src.field, sizeof(CELL) * g_length);
+	field = new CELL[length_];
+	memcpy(field, src.field, sizeof(CELL) * length_);
 }
 
 Node::Node(Node && src)
@@ -43,9 +45,4 @@ Node::Node(Node && src)
 Node::~Node()
 {
 	delete [] field;
-}
-
-void	Node::createField(size_t side)
-{
-	field = new CELL[side * side];
 }

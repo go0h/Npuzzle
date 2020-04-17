@@ -6,14 +6,12 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 17:46:34 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/17 13:04:52 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/17 19:18:43 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Npuzzle.h"
 
-extern size_t			g_length;
-extern size_t			g_side;
 extern move_func		g_move[];
 
 #define DEPTH			first
@@ -34,7 +32,7 @@ static void		undo(Node & node, size_t i)
 		g_move[i + 1](node);
 }
 
-static Solution GenerateMoves(Node & src, Node & target, HashTable & close)
+static Solution	GenerateMoves(Node & src, Node & target, HashTable & close)
 {
 	Solution	moves;
 
@@ -76,7 +74,7 @@ static bool		inOpen(PriorityQueue & open, Desk & desk, ItOpen & it)
 	return false;
 }
 
-Solution			ASearch(Node & src)
+Solution		ASearch(Node & src)
 {
 	HashTable		close;
 	PriorityQueue	open;
@@ -84,6 +82,7 @@ Solution			ASearch(Node & src)
 	ItOpen			openIt;
 	unsigned		depth, score;
 
+	close.reserve(1000000);
 	if (!src.getScore(true))
 		return Solution();
 	open[src.getScore(false)].insert(src);

@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/12 21:38:16 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/17 12:59:32 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/17 20:22:01 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,10 @@
 
 #include "Node.h"
 
-
-
 class ManhattanNode
 {
-	size_t g_side = 0;
-	size_t g_length = 0;
+	static size_t side_;
+	static size_t length_;
 
 
 	int *	line = nullptr;		// количество конфликтов в ряду/колонке

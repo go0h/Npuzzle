@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 19:50:58 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/12 18:13:18 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/17 20:11:38 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,12 @@ static bool fillField(std::ifstream & pfile, std::string & str, \
 	return order.size() == side * side;
 }
 
-size_t		readPuzzle(char * filename, Node & node)
+Node		readPuzzle(char * filename)
 {
 	std::string		str;
 	std::ifstream	pfile(filename);
-	size_t			side = 0;
+
+	size_t			side = DEFAULT_SIZE;
 
 	if (!pfile.is_open())
 		throw PuzzExcept(E_OPEN_FILE);
@@ -101,7 +102,7 @@ size_t		readPuzzle(char * filename, Node & node)
 	if (!(side = getFieldSize(pfile, str)))
 		throw PuzzExcept(E_SIDE);
 
-	node.createField(side);
+	Node	node(side);
 	if (!fillField(pfile, str, node, side))
 		throw PuzzExcept(E_FIELD_COM);
 	skipComments(pfile, str);
@@ -111,5 +112,5 @@ size_t		readPuzzle(char * filename, Node & node)
 	pfile.close();
 	if (!solvable(node, side, side * side))
 		throw PuzzExcept(E_UNSOLVBL);
-	return side;
+	return node;
 }

@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:06:09 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/17 12:59:40 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/17 20:16:29 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ enum {
 class Node
 {
 public:
-	unsigned			zero = 0;
-	unsigned			score = 0;
-	t_move				move = NONE;
-	CELL *				field = nullptr;
+	unsigned		zero = 0;
+	unsigned		score = 0;
+	t_move			move = NONE;
+	CELL *			field = nullptr;
 	Node(void);
 	Node(CELL side);								//constructor
 	Node(Node const & src);							//copy constructor
@@ -44,36 +44,33 @@ public:
 	Node &		operator=(Node && src);
 	CELL &		operator()(size_t i, size_t j);
 	CELL 		operator()(size_t i, size_t j) const;
-	void		createField(size_t side);
+	bool		operator==(Node const & n) const;
+	bool		operator!=(Node const & n) const;
+	bool		operator<(Node const & n) const;
 	unsigned	getScore(bool again);
 	void 		printNode(void) const;
-	void 		validate(void);
-
+	friend bool	up(Node & src);
+	friend bool	down(Node & src);
+	friend bool	left(Node & src);
+	friend bool	right(Node & src);
 private:
-	void swap(Node & src);
+	friend class 	hashNode;
+	static size_t	side_;
+	static size_t	length_;
+	void 			swap(Node & src);
+	size_t			getHash(void) const;
 };
 
 using move_func = bool (*)(Node &);
 
 class hashNode {
 public:
-	size_t operator()(Node const & puzzle) const;
+	size_t operator()(Node const & puzzle) const
+	{
+		return puzzle.getHash();
+	}
 };
 
-bool		operator==(Node const & n1, Node const & n2);
-
-bool		operator!=(Node const & n1, Node const & n2);
-
-bool		operator<(Node const & n1, Node const & n2);
-
-size_t 		readPuzzle(char * filename, Node & node);
-
-bool 		up(Node & puzzle);
-
-bool 		down(Node & puzzle);
-
-bool 		right(Node & puzzle);
-
-bool 		left(Node & puzzle);
+Node		readPuzzle(char * filename);
 
 #endif

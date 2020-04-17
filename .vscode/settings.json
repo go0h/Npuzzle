@@ -1,4 +1,7 @@
 {
 	"python.pythonPath": "/usr/bin/python",
-	"cmake.cmakePath": "/usr/bin/cmake"
+	"cmake.cmakePath": "/usr/bin/cmake",
+	"files.associations": {
+		"string_view": "cpp"
+	}
 }
