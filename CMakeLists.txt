@@ -13,13 +13,14 @@ set(SOURCE_DIR src)
 set(SOURCE
 	${SOURCE_DIR}/Main.cpp
 	${SOURCE_DIR}/Node.cpp
+	${SOURCE_DIR}/NodeMove.cpp
 	${SOURCE_DIR}/NodeUtils.cpp
-	${SOURCE_DIR}/NodeOperators.cpp
 	${SOURCE_DIR}/PuzzExcept.cpp
 	${SOURCE_DIR}/ReadPuzzle.cpp
-	${SOURCE_DIR}/NodeHeuristic.cpp
-	${SOURCE_DIR}/NodeMove.cpp
-	${SOURCE_DIR}/ASearchOptimal.cpp)
+	${SOURCE_DIR}/Manhattan.cpp
+	${SOURCE_DIR}/LinearConflict.cpp
+	${SOURCE_DIR}/OptimalH.cpp
+	${SOURCE_DIR}/ASearch.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE})
 

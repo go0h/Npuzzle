@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ManhattanNode.cpp                                  :+:      :+:    :+:   */
+/*   ALL_HEURISTIC.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 13:07:28 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/15 20:35:00 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/18 20:06:02 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,17 @@
 
 #include "Heuristic.h"
 #include "PuzzExcept.h"
+
+void		printField(int * field, size_t side)
+{
+	for (size_t i = 0; i != side; ++i)
+	{
+		for (size_t j = 0; j != side; ++j)
+			printf("%-3u ", field[i * side + j]);
+		printf("\n");
+	}
+	printf("\n");
+}
 
 unsigned lastMove(CELL * field, size_t g_side, size_t g_length)
 {
@@ -39,16 +50,6 @@ unsigned lastMove(CELL * field, size_t g_side, size_t g_length)
 // LEFT DOWN CORNER
 #define LD (g_side * g_side - g_side)
 
-void		printField(int * field, size_t side)
-{
-	for (size_t i = 0; i != side; ++i)
-	{
-		for (size_t j = 0; j != side; ++j)
-			printf("%-3u ", field[i * side + j]);
-		printf("\n");
-	}
-	printf("\n");
-}
 
 unsigned	corners(CELL * field, size_t g_side)
 {
@@ -241,7 +242,7 @@ size_t		find_max(int * line, size_t & side)
 	return max;
 }
 
-unsigned 	ManhattanNode::linearConflict2(CELL * field)
+unsigned 	Manhattan::linearConflict2(CELL * field)
 {
 	unsigned	score = 0;
 	int			a, b;
@@ -294,20 +295,20 @@ unsigned 	ManhattanNode::linearConflict2(CELL * field)
 	return score;
 }
 
-unsigned	ManhattanNode::operator()(Node & src)
+unsigned	Manhattan::operator()(Node & src)
 {
 	size_t score = 0;
 
 	initialStates(src.field, colCur, rowCur);
-	for (size_t i = 0; i != g_length; ++i)
+	for (size_t i = 0; i != length_; ++i)
 	{
 		score += std::abs(rowTrg[i] - rowCur[i]);
 		score += std::abs(colTrg[i] - colCur[i]);
 	}
 	score += 2 * linearConflict2(src.field);
-	score += corners(src.field, g_side);
+	score += corners(src.field, side_);
 	if (score)
-		score += lastMove(src.field, g_side, g_length);
+		score += lastMove(src.field, side_, length_);
 	src.score = score;
 	return score;
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ASearchOptimal.cpp                                 :+:      :+:    :+:   */
+/*   ASearch.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 17:46:34 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/17 19:18:43 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/18 14:09:30 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void		undo(Node & node, size_t i)
 		g_move[i + 1](node);
 }
 
-static Solution	GenerateMoves(Node & src, Node & target, HashTable & close)
+static Solution	GenerateMoves(Node & src, Node & target,HashTable & close)
 {
 	Solution	moves;
 
@@ -51,7 +51,7 @@ static Desk &	getFirstDesk(PriorityQueue & open, Desk & desk)
 {
 	auto it = open.begin();
 	desk.STATE = *(it->second.begin());
-	desk.DEPTH = it->first - desk.STATE.getScore(false);
+	desk.DEPTH = it->first - desk.STATE.getScore();
 
 	open[it->first].erase(it->second.begin());
 	if (open[it->first].empty())
@@ -74,7 +74,7 @@ static bool		inOpen(PriorityQueue & open, Desk & desk, ItOpen & it)
 	return false;
 }
 
-Solution		ASearch(Node & src)
+Solution		ASearch(Node & src, IHeuristic * h)
 {
 	HashTable		close;
 	PriorityQueue	open;
@@ -83,14 +83,14 @@ Solution		ASearch(Node & src)
 	unsigned		depth, score;
 
 	close.reserve(1000000);
-	if (!src.getScore(true))
+	if (!h->operator()(src))
 		return Solution();
-	open[src.getScore(false)].insert(src);
+	open[src.getScore()].insert(src);
 
 	while (!open.empty())
 	{
 		desk = getFirstDesk(open, desk);
-		if (!desk.STATE.getScore(false))
+		if (!desk.STATE.score)
 			break;
 		close.emplace(desk.STATE, desk.DEPTH);
 		depth = desk.DEPTH + 1;
@@ -100,7 +100,7 @@ Solution		ASearch(Node & src)
 			if (g_move[i](desk.STATE))
 			{
 				auto closeIt = close.find(desk.STATE);
-				score = desk.STATE.getScore(true) + depth;
+				score = h->operator()(desk.STATE) + depth;
 				if (closeIt == close.end())
 				{
 					bool exist = inOpen(open, desk, openIt);

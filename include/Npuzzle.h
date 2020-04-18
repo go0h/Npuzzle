@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 19:51:21 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/17 13:05:47 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/17 21:34:13 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <map>
 #include <set>
 
+#include "Heuristic.h"
 #include "Node.h"
 
 using Desk				= std::pair< unsigned, Node >;
@@ -29,6 +30,6 @@ using ItOpen 			= std::pair< typename PriorityQueue::iterator, \
 									typename std::set< Node >::iterator >;
 using Solution			= std::list<unsigned>;
 
-Solution	ASearch(Node & src);
+Solution	ASearch(Node & src, IHeuristic * h);
 
 #endif

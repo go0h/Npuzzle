@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:06:09 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/17 20:16:29 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/18 14:12:50 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ public:
 	bool		operator==(Node const & n) const;
 	bool		operator!=(Node const & n) const;
 	bool		operator<(Node const & n) const;
-	unsigned	getScore(bool again);
+	static unsigned getSide(void) { return side_; };
+	unsigned	getScore(void) const;
 	void 		printNode(void) const;
 	friend bool	up(Node & src);
 	friend bool	down(Node & src);
