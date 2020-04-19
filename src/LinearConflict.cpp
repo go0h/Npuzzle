@@ -6,16 +6,16 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/18 14:25:00 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/18 20:58:26 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/19 19:40:26 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Heuristic.h"
 #include <cstring>
 
-void	LinearConflict::init(size_t side, char order)
+void	LinearConflict::init(Node & src, Node & trg)
 {
-	Manhattan::init(side, order);
+	Manhattan::init(src, trg);
 	line = new int[side_];
 }
 

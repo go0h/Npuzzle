@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 13:07:28 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/18 20:54:16 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/19 19:39:57 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,18 @@ void		Manhattan::initialStates(CELL * field, int * colf, int * rowf)
 	}
 }
 
-void		Manhattan::init(size_t side, char order)
+void		Manhattan::init(Node & src, Node & trg)
 {
-	side_ = side;
-	length_ = side * side;
+	side_ = src.getSide();
+	length_ = side_ * side_;
 
-	order *= order;
-
-	target = genSample(side_);
+	if (trg)
+	{
+		target = new CELL[length_];
+		std::memcpy(target, trg.field, sizeof(CELL) * length_);
+	}
+	else
+		target = genSample(side_);
 
 	rowCur = new int[length_];
 	colCur = new int[length_];
@@ -84,6 +88,7 @@ void		Manhattan::init(size_t side, char order)
 
 	initialStates(target, colTrg, rowTrg);
 }
+
 
 Manhattan::~Manhattan()
 {

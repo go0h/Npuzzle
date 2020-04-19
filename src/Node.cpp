@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:17:23 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/18 14:12:08 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/19 22:10:54 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 #include "Node.h"
 #include "PuzzExcept.h"
 
-size_t Node::side_		= DEFAULT_SIZE;
-size_t Node::length_	= (DEFAULT_SIZE * DEFAULT_SIZE);
+size_t Node::side_		= 0;
+size_t Node::length_	= 0;
 
 Node::Node(void) { }
 
@@ -95,6 +95,11 @@ CELL Node::operator()(size_t i, size_t j) const
 	if (i >= side_ && j >= side_)
 		throw PuzzExcept(E_INDEX);
 	return field[i * side_ + j];
+}
+
+Node::operator bool(void)
+{
+	return field;
 }
 
 size_t		Node::getHash(void) const

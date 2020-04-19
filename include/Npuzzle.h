@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 19:51:21 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/17 21:34:13 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/19 22:22:26 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,22 @@ using HashTable			= std::unordered_map< Node, unsigned, hashNode >;
 using ItOpen 			= std::pair< typename PriorityQueue::iterator, \
 									typename std::set< Node >::iterator >;
 using Solution			= std::list<unsigned>;
+
+using SearchFunc		= Solution (*)(Node &, IHeuristic *);
+
+struct optArgs
+{
+	std::string src_file;
+	std::string trg_file;
+	std::string	heuristic;
+	std::string	searchfunc;
+};
+
+void		options(int argc, char ** argv, optArgs * opts);
+
+void		setOptions(optArgs * opts, IHeuristic ** h, SearchFunc * f);
+
+void 		printOptions(optArgs * opts);
 
 Solution	ASearch(Node & src, IHeuristic * h);
 

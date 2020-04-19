@@ -6,16 +6,15 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:06:09 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/18 14:12:50 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/19 22:10:43 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef NODE_H
 # define NODE_H
-#include <cstddef>
 
-#define DEFAULT_SIZE 4
-#define DEFAULT_LENGTH (DEFAULT_SIZE * DEFAULT_SIZE)
+#include <string>
+#include <cstddef>
 
 using CELL 		= unsigned;
 using t_move 	= unsigned char;
@@ -47,6 +46,7 @@ public:
 	bool		operator==(Node const & n) const;
 	bool		operator!=(Node const & n) const;
 	bool		operator<(Node const & n) const;
+	explicit	operator bool(void);
 	static unsigned getSide(void) { return side_; };
 	unsigned	getScore(void) const;
 	void 		printNode(void) const;
@@ -72,6 +72,6 @@ public:
 	}
 };
 
-Node		readPuzzle(char * filename);
+size_t		readPuzzle(std::string & filename, Node & node);
 
 #endif

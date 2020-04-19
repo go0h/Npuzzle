@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 19:50:58 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/17 20:11:38 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/19 22:13:12 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,11 @@ static bool fillField(std::ifstream & pfile, std::string & str, \
 	return order.size() == side * side;
 }
 
-Node		readPuzzle(char * filename)
+size_t		readPuzzle(std::string & filename, Node & node)
 {
 	std::string		str;
 	std::ifstream	pfile(filename);
-
-	size_t			side = DEFAULT_SIZE;
+	size_t			side = 0;
 
 	if (!pfile.is_open())
 		throw PuzzExcept(E_OPEN_FILE);
@@ -102,15 +101,19 @@ Node		readPuzzle(char * filename)
 	if (!(side = getFieldSize(pfile, str)))
 		throw PuzzExcept(E_SIDE);
 
-	Node	node(side);
-	if (!fillField(pfile, str, node, side))
+	if (node.getSide() && node.getSide() != side)
+		throw PuzzExcept(E_SAME_SIDE);
+
+	Node	temp(side);
+	if (!fillField(pfile, str, temp, side))
 		throw PuzzExcept(E_FIELD_COM);
 	skipComments(pfile, str);
 
 	if (!pfile.eof())
 		throw PuzzExcept(E_MAP);
 	pfile.close();
-	if (!solvable(node, side, side * side))
+	if (!solvable(temp, side, side * side))
 		throw PuzzExcept(E_UNSOLVBL);
-	return node;
+	node = temp;
+	return side;
 }
