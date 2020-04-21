@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 19:51:21 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/19 22:22:26 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/20 21:54:28 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ using ItOpen 			= std::pair< typename PriorityQueue::iterator, \
 									typename std::set< Node >::iterator >;
 using Solution			= std::list<unsigned>;
 
-using SearchFunc		= Solution (*)(Node &, IHeuristic *);
+using SearchFunc		= Solution (*)(Node &, IHeuristic &);
 
 struct optArgs
 {
@@ -46,6 +46,6 @@ void		setOptions(optArgs * opts, IHeuristic ** h, SearchFunc * f);
 
 void 		printOptions(optArgs * opts);
 
-Solution	ASearch(Node & src, IHeuristic * h);
+Solution	ASearch(Node & src, IHeuristic & h);
 
 #endif

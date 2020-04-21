@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:37:29 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/19 22:24:43 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/20 19:55:53 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ int main(int argc, char ** argv)
 		setOptions(&opts, &h, &searchFunc);
 
 		readPuzzle(opts.src_file, src);
-		if (trg)
+		if (opts.trg_file != "")
 			readPuzzle(opts.trg_file, trg);
 		h->init(src, trg);
 		src.printNode();
-		Solution solution = searchFunc(src, h);
+		Solution solution = searchFunc(src, *h);
 		if (solution.empty())
 			std::cout << "Empty\n";
 		std::cout << "Moves: " << solution.size() << std::endl;
@@ -41,5 +41,6 @@ int main(int argc, char ** argv)
 	} catch (...) {
 		std::cout << "Something go wrong" << std::endl;
 	}
+	delete h;
 	return EXIT_SUCCESS;
 }

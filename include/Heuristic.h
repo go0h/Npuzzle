@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/12 21:38:16 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/19 22:14:14 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/20 22:15:56 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ protected:
 	size_t side_	= 0;
 	size_t length_	= 0;
 public:
+	IHeuristic() {};
 	virtual ~IHeuristic() {};
 	virtual void		init(Node & src, Node & trg) = 0;
 	virtual unsigned	operator()(Node & src) = 0;
@@ -55,14 +56,15 @@ public:
 class LinearConflict : public Manhattan
 {
 protected:
-	int *	line = nullptr;		// количество конфликтов в ряду/колонке
+	int *	line_ = nullptr;		// количество конфликтов в ряду/колонке
 public:
 	LinearConflict(void) { };
 	~LinearConflict(void);
 	virtual void		init(Node & src, Node & trg);
 	virtual unsigned	operator()(Node & src);
-	void				countRowConflict(CELL * field, int row);
-	void				countColConflict(CELL * field, int row);
+	size_t				rowConflicts(CELL * field);
+	size_t				colConflicts(CELL * field);
+	size_t				Conflicts(CELL * field);
 };
 
 class OptimalH : public LinearConflict

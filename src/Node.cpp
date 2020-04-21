@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:17:23 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/19 22:10:54 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/21 14:04:01 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ bool Node::operator<(Node const & n) const
 {
 	if (score < n.score)
 		return true;
-	if (score == n.score)
-		return zero > n.zero;
+	if (score == n.score && zero > n.zero)
+		return true;
 	return false;
 }
 
@@ -119,24 +119,25 @@ unsigned		Node::getScore(void) const
 	return score;
 }
 
-// size_t hashNode::operator()(Node const & puzzle) const
-// {
-// 	size_t hash = 0;
-// 	for (size_t i = 0; i != g_length; ++i)
-// 	{
-// 		hash += puzzle.field[i] * (1ull << i);
-// 	}
-// 	return hash;
-// }
-
-
 /*
+size_t hashNode::operator()(Node const & puzzle) const
+{
+	size_t hash = 0;
+	for (size_t i = 0; i != g_length; ++i)
+	{
+		hash += puzzle.field[i] * (1ull << i);
+	}
+	return hash;
+}
+
 class CompareNode
 {
 public:
     bool operator() (Node const & n1, Node const & n2) const
     {
-		if (n1.score > n2.score)
+		if (n1.score < n2.score)
+			return true;
+		if (n1.score == n2.score && n1.zero > n2.zero)
 			return true;
 		return false;
     }

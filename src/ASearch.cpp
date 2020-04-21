@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 17:46:34 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/18 14:09:30 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/20 22:12:28 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,7 @@ extern move_func		g_move[];
 #define DEPTH			first
 #define STATE			second
 
-using Desk				= std::pair< unsigned, Node >;
-using PriorityQueue		= std::map< unsigned, std::set< Node > >;
-using HashTable			= std::unordered_map< Node, unsigned, hashNode >;
-using ItOpen 			= std::pair< typename PriorityQueue::iterator, \
-									typename std::set< Node >::iterator >;
-
-static void		undo(Node & node, size_t i)
+inline static void		undo(Node & node, size_t i)
 {
 	node.move = NONE;
 	if (i % 2 == 0)
@@ -32,7 +26,7 @@ static void		undo(Node & node, size_t i)
 		g_move[i + 1](node);
 }
 
-static Solution	GenerateMoves(Node & src, Node & target,HashTable & close)
+static Solution	GenerateMoves(Node & src, Node & target, HashTable & close)
 {
 	Solution	moves;
 
@@ -47,7 +41,7 @@ static Solution	GenerateMoves(Node & src, Node & target,HashTable & close)
 	return moves;
 }
 
-static Desk &	getFirstDesk(PriorityQueue & open, Desk & desk)
+inline static Desk &	getFirstDesk(PriorityQueue & open, Desk & desk)
 {
 	auto it = open.begin();
 	desk.STATE = *(it->second.begin());
@@ -59,9 +53,10 @@ static Desk &	getFirstDesk(PriorityQueue & open, Desk & desk)
 	return desk;
 }
 
-static bool		inOpen(PriorityQueue & open, Desk & desk, ItOpen & it)
+inline static bool		inOpen(PriorityQueue & open, Desk & desk, ItOpen & it)
 {
-	for (auto i = open.begin(); i != open.end(); ++i)
+	auto i = open.lower_bound(desk.STATE.score + desk.DEPTH);
+	for (; i != open.end(); ++i)
 	{
 		auto deskIt = i->second.find(desk.STATE);
 		if (deskIt != i->second.end() && *deskIt == desk.STATE)
@@ -74,7 +69,7 @@ static bool		inOpen(PriorityQueue & open, Desk & desk, ItOpen & it)
 	return false;
 }
 
-Solution		ASearch(Node & src, IHeuristic * h)
+Solution		ASearch(Node & src, IHeuristic & getScore)
 {
 	HashTable		close;
 	PriorityQueue	open;
@@ -83,14 +78,14 @@ Solution		ASearch(Node & src, IHeuristic * h)
 	unsigned		depth, score;
 
 	close.reserve(1000000);
-	if (!h->operator()(src))
+	if (!getScore(src))
 		return Solution();
 	open[src.getScore()].insert(src);
 
 	while (!open.empty())
 	{
 		desk = getFirstDesk(open, desk);
-		if (!desk.STATE.score)
+		if (!desk.STATE.getScore())
 			break;
 		close.emplace(desk.STATE, desk.DEPTH);
 		depth = desk.DEPTH + 1;
@@ -100,7 +95,7 @@ Solution		ASearch(Node & src, IHeuristic * h)
 			if (g_move[i](desk.STATE))
 			{
 				auto closeIt = close.find(desk.STATE);
-				score = h->operator()(desk.STATE) + depth;
+				score = getScore(desk.STATE) + depth;
 				if (closeIt == close.end())
 				{
 					bool exist = inOpen(open, desk, openIt);

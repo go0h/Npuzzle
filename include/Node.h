@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:06:09 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/19 22:10:43 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/20 22:11:10 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ enum {
 class Node
 {
 public:
-	unsigned		zero = 0;
+	CELL			zero = 0;
 	unsigned		score = 0;
 	t_move			move = NONE;
 	CELL *			field = nullptr;
