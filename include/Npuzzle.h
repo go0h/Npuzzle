@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 19:51:21 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/20 21:54:28 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/21 15:21:02 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,7 @@ void		setOptions(optArgs * opts, IHeuristic ** h, SearchFunc * f);
 void 		printOptions(optArgs * opts);
 
 Solution	ASearch(Node & src, IHeuristic & h);
+
+Solution	IDASearch(Node & root, IHeuristic & h);
 
 #endif

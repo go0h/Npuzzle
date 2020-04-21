@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/19 14:02:22 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/20 19:49:01 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/21 16:43:08 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 void options(int argc, char ** argv, optArgs * opts)
 {
-	char shortOpt[] = "h:t:H:a";
+	char shortOpt[] = "a:h:t:H:";
 	static struct option longOpt[] = {
 		{"help", 0, 0, 'h'},
 		{"target", 1, 0, 't'},
@@ -45,15 +45,16 @@ void options(int argc, char ** argv, optArgs * opts)
 		else if (c == 'H')
 		{
 			opts->heuristic = optarg;
-			if (opts->heuristic != "M" && opts->heuristic != "LC"
+			if (opts->heuristic != "M" && opts->heuristic != "LC" \
 			&& opts->heuristic != "OPT")
 				throw PuzzExcept(true);
 		}
 		else if (c == 'a')
 			opts->searchfunc = optarg;
+		else
+			throw PuzzExcept(USAGE);
 	}
 }
-
 
 void	setOptions(optArgs * opts, IHeuristic ** h, SearchFunc * f)
 {
@@ -67,7 +68,7 @@ void	setOptions(optArgs * opts, IHeuristic ** h, SearchFunc * f)
 	if (opts->searchfunc == "A")
 		*f = &ASearch;
 	else if (opts->searchfunc == "IDA")
-		*f = &ASearch; // because it is not made
+		*f = &IDASearch;
 }
 
 void printOptions(optArgs * opts)
