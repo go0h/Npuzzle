@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 19:50:58 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/21 16:15:25 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/22 17:22:40 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include "Node.h"
 #include "PuzzExcept.h"
 
-static bool solvable(Node const & puzzle, size_t side, size_t length)
+static bool 	solvable(Node const & puzzle, size_t side, size_t length)
 {
 	size_t	sum = 0;
 
@@ -36,7 +36,7 @@ static bool solvable(Node const & puzzle, size_t side, size_t length)
 	return (sum + ((puzzle.zero / side) + 1)) % 2 == 0;
 }
 
-static void	skipComments(std::ifstream & pfile, std::string & str)
+static void		skipComments(std::ifstream & pfile, std::string & str)
 {
 	while (!pfile.eof())
 	{
@@ -46,9 +46,9 @@ static void	skipComments(std::ifstream & pfile, std::string & str)
 	}
 }
 
-static CELL	getFieldSize(std::ifstream & pfile, std::string & str)
+static size_t	getFieldSize(std::ifstream & pfile, std::string & str)
 {
-	CELL		size = 0;
+	size_t	size = 0;
 
 	skipComments(pfile, str);
 	std::istringstream strStream(str);
@@ -59,18 +59,20 @@ static CELL	getFieldSize(std::ifstream & pfile, std::string & str)
 	return size;
 }
 
-static bool fillField(std::ifstream & pfile, std::string & str, \
+static bool		fillField(std::ifstream & pfile, std::string & str, \
 					Node & puzzle, size_t side)
 {
-	std::unordered_set<CELL> order;
+	std::unordered_set<t_tile> order;
 	order.reserve(side * side);
+	int n;
 
 	for (size_t i = 0; i != side && !pfile.eof(); ++i)
 	{
 		std::istringstream strStream(str);
 		for (size_t j = 0; j != side && !strStream.eof(); ++j)
 		{
-			strStream >> puzzle(i, j);
+			strStream >> n;
+			puzzle(i, j) = n;
 			if (strStream.fail())
 				return false;
 			if (puzzle(i, j) == 0)
@@ -89,7 +91,7 @@ static bool fillField(std::ifstream & pfile, std::string & str, \
 	return order.size() == side * side;
 }
 
-size_t		readPuzzle(std::string & filename, Node & node)
+size_t			readPuzzle(std::string & filename, Node & node)
 {
 	std::string		str;
 	std::ifstream	pfile(filename);

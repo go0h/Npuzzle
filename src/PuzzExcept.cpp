@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/02 18:03:13 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/19 20:45:15 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/22 17:22:40 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ PuzzExcept::PuzzExcept(int usage)
 		error_ += "\t-h, --help\t\t\tdisplay this help and exit\n\n";
 		error_ += "\t-t, --target <target_file>\tfinal state of puzzle\n\n";
 		error_ += "\t-H, --heuristic heuristic_method:\n";
-		error_ += "\t   [M]   - only Manhattan distance between cells\n";
+		error_ += "\t   [M]   - only Manhattan distance between t_tiles\n";
 		error_ += "\t   [LC]  - Manhattan distance and Linear conflicts\n";
 		error_ += "\t   [OPT] - Optimal (M + LC + Corners + Last move)\n\n";
 		error_ += "\t-a, --algo algorithm:\n";

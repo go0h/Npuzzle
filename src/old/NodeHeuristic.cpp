@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 13:07:28 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/17 20:11:00 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/22 17:22:40 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 size_t g_side = DEFAULT_SIZE;
 
-unsigned lastMove(CELL * field, size_t side, size_t length)
+unsigned lastMove(t_tile * field, size_t side, size_t length)
 {
 	unsigned score = 0;
 
@@ -52,7 +52,7 @@ void		printField(int * field)
 	printf("\n");
 }
 
-void		initialStates(CELL * field, int * colCon, int * rowCon, size_t length)
+void		initialStates(t_tile * field, int * colCon, int * rowCon, size_t length)
 {
 	for (size_t i = 0; i != length; ++i)
 	{
@@ -69,7 +69,7 @@ void		initialStates(CELL * field, int * colCon, int * rowCon, size_t length)
 	}
 }
 
-unsigned	corners(CELL * field, size_t side)
+unsigned	corners(t_tile * field, size_t side)
 {
 	unsigned score = 0;
 
@@ -87,7 +87,7 @@ unsigned	corners(CELL * field, size_t side)
 }
 
 
-void		countRowConflict(CELL * field, int row,
+void		countRowConflict(t_tile * field, int row,
 			int * rowCon, int * colCon, int * line)
 {
 	unsigned a, b;
@@ -95,7 +95,7 @@ void		countRowConflict(CELL * field, int row,
 	std::memset(line, 0, sizeof(int) * g_side);
 	for (size_t j = 0; j != g_side; ++j)
 	{
-		// determie number of tiles in row i,
+		// determie number of t_tiles in row i,
 		// with which field[i, j] is conflict
 		a = row * g_side + j;
 		if (rowCon[a] == row && field[a])
@@ -115,7 +115,7 @@ void		countRowConflict(CELL * field, int row,
 	}
 }
 
-void		countColConflict(CELL * field, int col,
+void		countColConflict(t_tile * field, int col,
 			int * rowCon, int * colCon, int * line)
 {
 	unsigned a, b;
@@ -123,7 +123,7 @@ void		countColConflict(CELL * field, int col,
 	std::memset(line, 0, sizeof(int) * g_side);
 	for (size_t j = 0; j != g_side; ++j)
 	{
-		// determie number of tiles in row i,
+		// determie number of t_tiles in row i,
 		// with which field[i, j] is conflict
 		a = g_side * j + col;
 		if (colCon[a] == col && field[a])
@@ -155,7 +155,7 @@ size_t		find_max(int * line, size_t side)
 	return max;
 }
 
-unsigned 	linearConflict2(CELL * field, int * rowCon, int * colCon, int * line)
+unsigned 	linearConflict2(t_tile * field, int * rowCon, int * colCon, int * line)
 {
 	unsigned	score = 0;
 	int			a, b;

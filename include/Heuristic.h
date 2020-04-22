@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/12 21:38:16 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/20 22:15:56 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/22 17:22:40 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ protected:
 	int *	colCur = nullptr;	// номер колонки в которой должна быть ячейка
 
 	//конечное состояние
-	CELL *	target = nullptr;
+	t_tile *	target = nullptr;
 	// номера рядов и колонок для конечного состояния пазла
 	int *	rowTrg = nullptr;	// номер ряда в котором должна быть ячейка
 	int *	colTrg = nullptr;	// номер колонки в которой должна быть ячейка
 
-	virtual	void		initialStates(CELL * field, int * col, int * row);
+	virtual	void		initialStates(t_tile * field, int * col, int * row);
 public:
 	Manhattan(void) { }
 	virtual ~Manhattan();
@@ -62,9 +62,9 @@ public:
 	~LinearConflict(void);
 	virtual void		init(Node & src, Node & trg);
 	virtual unsigned	operator()(Node & src);
-	size_t				rowConflicts(CELL * field);
-	size_t				colConflicts(CELL * field);
-	size_t				Conflicts(CELL * field);
+	size_t				rowConflicts(t_tile * field);
+	size_t				colConflicts(t_tile * field);
+	size_t				Conflicts(t_tile * field);
 };
 
 class OptimalH : public LinearConflict

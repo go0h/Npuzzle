@@ -6,24 +6,24 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 14:16:28 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/17 18:20:42 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/22 17:22:40 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Node.h"
 #include "Npuzzle.h"
 
-static void swap(CELL & a, CELL & b)
+static void swap(t_tile & a, t_tile & b)
 {
-	CELL temp = a;
+	t_tile temp = a;
 	a = b;
 	b = temp;
 }
 
 bool up(Node & puzzle)
 {
-	CELL x = puzzle.zero % Node::side_;
-	CELL y = puzzle.zero / Node::side_;
+	t_tile x = puzzle.zero % Node::side_;
+	t_tile y = puzzle.zero / Node::side_;
 
 	if (y > 0 && puzzle.move != DOWN)
 	{
@@ -37,8 +37,8 @@ bool up(Node & puzzle)
 
 bool down(Node & puzzle)
 {
-	CELL x = puzzle.zero % Node::side_;
-	CELL y = puzzle.zero / Node::side_;
+	t_tile x = puzzle.zero % Node::side_;
+	t_tile y = puzzle.zero / Node::side_;
 
 	if (y < Node::side_ - 1 && puzzle.move != UP)
 	{
@@ -52,8 +52,8 @@ bool down(Node & puzzle)
 
 bool left(Node & puzzle)
 {
-	CELL x = puzzle.zero % Node::side_;
-	CELL y = puzzle.zero / Node::side_;
+	t_tile x = puzzle.zero % Node::side_;
+	t_tile y = puzzle.zero / Node::side_;
 
 	if (x > 0 && puzzle.move != RIGHT)
 	{
@@ -67,8 +67,8 @@ bool left(Node & puzzle)
 
 bool right(Node & puzzle)
 {
-	CELL x = puzzle.zero % Node::side_;
-	CELL y = puzzle.zero / Node::side_;
+	t_tile x = puzzle.zero % Node::side_;
+	t_tile y = puzzle.zero / Node::side_;
 
 	if (x < Node::side_ - 1 && puzzle.move != LEFT)
 	{

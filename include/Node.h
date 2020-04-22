@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:06:09 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/20 22:11:10 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/22 17:23:23 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 #include <string>
 #include <cstddef>
 
-using CELL 		= unsigned;
-using t_move 	= unsigned char;
+using t_tile	= unsigned char;
+using t_move	= unsigned char;
 
 enum {
 	NONE,
@@ -30,19 +30,19 @@ enum {
 class Node
 {
 public:
-	CELL			zero = 0;
+	t_tile			zero = 0;
 	unsigned		score = 0;
 	t_move			move = NONE;
-	CELL *			field = nullptr;
+	t_tile *		field = nullptr;
 	Node(void);
-	Node(CELL side);								//constructor
+	Node(t_tile side);								//constructor
 	Node(Node const & src);							//copy constructor
 	Node(Node && src);								//move constructor
 	~Node();										//destructor
 	Node &		operator=(Node const & src);
 	Node &		operator=(Node && src);
-	CELL &		operator()(size_t i, size_t j);
-	CELL 		operator()(size_t i, size_t j) const;
+	t_tile &	operator()(size_t i, size_t j);
+	t_tile 		operator()(size_t i, size_t j) const;
 	bool		operator==(Node const & n) const;
 	bool		operator!=(Node const & n) const;
 	bool		operator<(Node const & n) const;

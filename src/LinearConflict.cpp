@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/18 14:25:00 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/20 22:28:11 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/22 17:22:40 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ inline size_t		find_max(int * line, size_t & side)
 	return max;
 }
 
-size_t		LinearConflict::rowConflicts(CELL * field)
+size_t		LinearConflict::rowConflicts(t_tile * field)
 {
 	unsigned	a, b;
 	size_t		score = 0;
@@ -47,7 +47,7 @@ size_t		LinearConflict::rowConflicts(CELL * field)
 		std::memset(line_, 0, sizeof(int) * side_);
 		for (size_t j = 0; j != side_ - 1; ++j)
 		{
-			// determie number of tiles in row i,
+			// determie number of t_tiles in row i,
 			// with which field[i, j] is conflict
 			a = field[row * side_ + j];
 			if (rowTrg[a] == row && a)
@@ -70,7 +70,7 @@ size_t		LinearConflict::rowConflicts(CELL * field)
 	return score;
 }
 
-size_t		LinearConflict::colConflicts(CELL * field)
+size_t		LinearConflict::colConflicts(t_tile * field)
 {
 	unsigned	a, b;
 	size_t		score = 0;
@@ -80,7 +80,7 @@ size_t		LinearConflict::colConflicts(CELL * field)
 		std::memset(line_, 0, sizeof(int) * side_);
 		for (size_t j = 0; j != side_ - 1; ++j)
 		{
-			// determie number of tiles in row i,
+			// determie number of t_tiles in row i,
 			// with which field[i, j] is conflict
 			a = field[side_ * j + col];
 			if (colTrg[a] == col && a)

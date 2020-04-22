@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/18 20:45:00 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/20 17:43:13 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/22 17:22:40 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void 		OptimalH::init(Node & src, Node & trg)
 
 unsigned	OptimalH::operator()(Node & src)
 {
-	CELL * field = src.field;
+	t_tile * field = src.field;
 	unsigned score = LinearConflict::operator()(src);
 
 	// CORNERS

@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 13:07:28 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/19 19:39:57 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/22 17:22:40 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "Heuristic.h"
 #include "PuzzExcept.h"
 
-void		printField(int * field, size_t side)
+void		printField(t_tile * field, size_t side)
 {
 	for (size_t i = 0; i != side; ++i)
 	{
@@ -27,11 +27,11 @@ void		printField(int * field, size_t side)
 	printf("\n");
 }
 
-CELL * 		genSample(size_t side)
+t_tile * 		Classic(size_t side)
 {
-	CELL * field = new CELL[side * side];
+	t_tile * field = new t_tile[side * side];
 
-	for (CELL i = 0; i != (side * side); ++i)
+	for (t_tile i = 0; i != (side * side); ++i)
 	{
 		field[i] = i + 1;
 	}
@@ -39,7 +39,36 @@ CELL * 		genSample(size_t side)
 	return field;
 }
 
-void		Manhattan::initialStates(CELL * field, int * colf, int * rowf)
+t_tile *		Snail(int side)
+{
+	t_tile * field = new t_tile[side * side];
+	int i = 0;
+	int col, row;
+	int count = 1;
+
+	while (i < side / 2)
+	{
+		// left -> right
+		for (col = i, row = i; col < side - i; ++col)
+			field[row * side + col] = count++ % (side * side);
+
+		// top -> bottom
+		for (row = row + 1, col = col - 1; row < side - i; ++row)
+			field[row * side + col] = count++ % (side * side);
+
+		// right -> left
+		for (col = col - 1, row = row - 1; col >= i; --col)
+			field[row * side + col] = count++ % (side * side);
+
+		// bottom -> top
+		for (row = row - 1, col = col + 1; row > i; --row)
+			field[row * side + col] = count++ % (side * side);
+		++i;
+	}
+	return field;
+}
+
+void		Manhattan::initialStates(t_tile * field, int * colf, int * rowf)
 {
 /*
 	for (size_t i = 0; i != length_; ++i)
@@ -56,7 +85,7 @@ void		Manhattan::initialStates(CELL * field, int * colf, int * rowf)
 		}
 	}
 */
-	CELL m = 0;
+	t_tile m = 0;
 	for (size_t row = 0; row < side_; ++row)
 	{
 		for (size_t col = 0; col < side_; ++col)
@@ -75,11 +104,11 @@ void		Manhattan::init(Node & src, Node & trg)
 
 	if (trg)
 	{
-		target = new CELL[length_];
-		std::memcpy(target, trg.field, sizeof(CELL) * length_);
+		target = new t_tile[length_];
+		std::memcpy(target, trg.field, sizeof(t_tile) * length_);
 	}
 	else
-		target = genSample(side_);
+		target = Snail(side_);
 
 	rowCur = new int[length_];
 	colCur = new int[length_];

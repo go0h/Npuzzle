@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:17:23 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/21 14:04:01 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/22 17:22:40 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ size_t Node::length_	= 0;
 
 Node::Node(void) { }
 
-Node::Node(CELL side)
+Node::Node(t_tile side)
 {
 	side_ = side;
 	length_ = side * side;
-	field = new CELL[side * side];
+	field = new t_tile[side * side];
 }
 
 Node::Node(Node const & src)
@@ -33,8 +33,8 @@ Node::Node(Node const & src)
 	score(src.score),
 	move(src.move)
 {
-	field = new CELL[length_];
-	memcpy(field, src.field, sizeof(CELL) * length_);
+	field = new t_tile[length_];
+	memcpy(field, src.field, sizeof(t_tile) * length_);
 }
 
 Node::Node(Node && src)
@@ -66,7 +66,7 @@ Node &	Node::operator=(Node && src)
 
 bool Node::operator==(Node const & n) const
 {
-	return !std::memcmp(field, n.field, sizeof(CELL) * length_);
+	return !std::memcmp(field, n.field, sizeof(t_tile) * length_);
 }
 
 bool Node::operator!=(Node const & n) const
@@ -83,14 +83,14 @@ bool Node::operator<(Node const & n) const
 	return false;
 }
 
-CELL & Node::operator()(size_t i, size_t j)
+t_tile & Node::operator()(size_t i, size_t j)
 {
 	if (i >= side_ && j >= side_)
 		throw PuzzExcept(E_INDEX);
 	return field[i * side_ + j];
 }
 
-CELL Node::operator()(size_t i, size_t j) const
+t_tile Node::operator()(size_t i, size_t j) const
 {
 	if (i >= side_ && j >= side_)
 		throw PuzzExcept(E_INDEX);

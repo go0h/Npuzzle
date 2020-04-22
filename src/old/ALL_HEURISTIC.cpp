@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 13:07:28 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/18 20:06:02 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/22 17:22:40 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void		printField(int * field, size_t side)
 	printf("\n");
 }
 
-unsigned lastMove(CELL * field, size_t g_side, size_t g_length)
+unsigned lastMove(t_tile * field, size_t g_side, size_t g_length)
 {
 	unsigned score = 0;
 
@@ -51,7 +51,7 @@ unsigned lastMove(CELL * field, size_t g_side, size_t g_length)
 #define LD (g_side * g_side - g_side)
 
 
-unsigned	corners(CELL * field, size_t g_side)
+unsigned	corners(t_tile * field, size_t g_side)
 {
 	unsigned score = 0;
 
@@ -68,7 +68,7 @@ unsigned	corners(CELL * field, size_t g_side)
 	return score;
 }
 
-unsigned	rowConflict(CELL * field, size_t g_side)
+unsigned	rowConflict(t_tile * field, size_t g_side)
 {
 	unsigned score = 0;
 
@@ -91,7 +91,7 @@ unsigned	rowConflict(CELL * field, size_t g_side)
 	return score;
 }
 
-unsigned	colConflict(CELL * field, size_t g_side)
+unsigned	colConflict(t_tile * field, size_t g_side)
 {
 	unsigned score = 0;
 
@@ -114,7 +114,7 @@ unsigned	colConflict(CELL * field, size_t g_side)
 	return score;
 }
 
-unsigned	linearConflict(CELL * field, int * rowCon, int * colCon, int * line, size_t g_side)
+unsigned	linearConflict(t_tile * field, int * rowCon, int * colCon, int * line, size_t g_side)
 {
 	unsigned score = 0, lineScore, count;
 
@@ -174,7 +174,7 @@ unsigned	linearConflict(CELL * field, int * rowCon, int * colCon, int * line, si
 	return score;
 }
 
-void		countRowConflict(CELL * field, int row,
+void		countRowConflict(t_tile * field, int row,
 			int * rowCon, int * colCon, int * line, size_t g_side)
 {
 	unsigned a, b;
@@ -182,7 +182,7 @@ void		countRowConflict(CELL * field, int row,
 	std::memset(line, 0, sizeof(int) * g_side);
 	for (size_t j = 0; j != g_side; ++j)
 	{
-		// determie number of tiles in row i,
+		// determie number of t_tiles in row i,
 		// with which field[i, j] is conflict
 		a = row * g_side + j;
 		if (rowCon[a] == row && field[a])
@@ -202,7 +202,7 @@ void		countRowConflict(CELL * field, int row,
 	}
 }
 
-void		countColConflict(CELL * field, int col,
+void		countColConflict(t_tile * field, int col,
 			int * rowCon, int * colCon, int * line, size_t g_side)
 {
 	unsigned a, b;
@@ -210,7 +210,7 @@ void		countColConflict(CELL * field, int col,
 	std::memset(line, 0, sizeof(int) * g_side);
 	for (size_t j = 0; j != g_side; ++j)
 	{
-		// determie number of tiles in row i,
+		// determie number of t_tiles in row i,
 		// with which field[i, j] is conflict
 		a = g_side * j + col;
 		if (colCon[a] == col && field[a])
@@ -242,7 +242,7 @@ size_t		find_max(int * line, size_t & side)
 	return max;
 }
 
-unsigned 	Manhattan::linearConflict2(CELL * field)
+unsigned 	Manhattan::linearConflict2(t_tile * field)
 {
 	unsigned	score = 0;
 	int			a, b;
