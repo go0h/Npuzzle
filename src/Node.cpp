@@ -6,13 +6,11 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:17:23 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/23 19:03:57 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/23 21:38:45 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cstring>
-#include <iostream>
-#include <functional>
 
 #include "Node.h"
 #include "PuzzExcept.h"
@@ -78,7 +76,7 @@ bool Node::operator<(Node const & n) const
 {
 	if (score < n.score)
 		return true;
-	if (score == n.score && zero > n.zero)
+	if ( !(score - n.score) && zero > n.zero)
 		return true;
 	return false;
 }

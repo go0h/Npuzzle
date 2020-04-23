@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/12 21:38:16 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/23 19:37:09 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/23 21:30:18 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,14 @@ public:
 class LinearConflict : public Manhattan
 {
 protected:
-	unsigned *	line_ = nullptr;		// количество конфликтов в ряду/колонке
+	unsigned *	line_ = nullptr;	// количество конфликтов в ряду/колонке
 public:
 	LinearConflict(void) { };
 	~LinearConflict(void);
 	virtual void		init(Node & src, Node & trg);
 	virtual unsigned	operator()(Node & src);
-	unsigned				rowConflicts(t_tile * field);
-	unsigned				colConflicts(t_tile * field);
+	unsigned			rowConflicts(t_tile * field);
+	unsigned			colConflicts(t_tile * field);
 };
 
 class OptimalH : public LinearConflict

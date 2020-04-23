@@ -6,11 +6,15 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 17:46:34 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/23 18:10:58 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/23 21:52:50 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Npuzzle.h"
+
+#include <unordered_map>
+#include <map>
+#include <set>
 
 #define COST		1
 #define DEPTH		first
@@ -24,13 +28,13 @@ using HashTable		= std::unordered_map< Node, unsigned, hashNode >;
 using ItOpen 		= std::pair< typename PriorityQueue::iterator, \
 								typename std::set< Node >::iterator >;
 
-inline static void		undo(Node & node, size_t i)
+inline void		undo(Node & node, size_t i)
 {
 	node.move = NONE;
-	if (i % 2 == 0)
-		g_move[i - 1](node);
-	else
+	if (i & 1)				// i % 2 == 1
 		g_move[i + 1](node);
+	else
+		g_move[i - 1](node);
 }
 
 static Solution			GenerateMoves(Node & src, Node & target,
@@ -84,6 +88,7 @@ Solution				ASearch(Node & src, IHeuristic & getScore)
 	ItOpen			openIt;
 	unsigned		depth, score;
 
+	close.reserve(1000000);
 	if (!getScore(src))
 		return Solution();
 	open[src.getScore()].insert(src);

@@ -6,12 +6,11 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 14:16:28 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/22 17:22:40 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/23 21:39:46 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Node.h"
-#include "Npuzzle.h"
 
 static void swap(t_tile & a, t_tile & b)
 {

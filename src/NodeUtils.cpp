@@ -6,15 +6,10 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/02 18:27:54 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/21 14:13:18 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/23 21:31:33 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <set>
-#include <iostream>
-
-#include "Node.h"
-#include "PuzzExcept.h"
 #include "Npuzzle.h"
 
 extern move_func	g_move[];;

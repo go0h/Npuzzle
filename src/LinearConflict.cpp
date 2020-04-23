@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/18 14:25:00 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/23 19:44:31 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/23 20:28:09 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ unsigned		LinearConflict::rowConflicts(t_tile * field)
 			// determie number of t_tiles in row i,
 			// with which field[i, j] is conflict
 			a = field[row * side_ + j];
-			if (rowTrg[a] == row && a)
+			if ( !(rowTrg[a] - row) && a)
 			{
-				for (size_t k = j + 1; k < side_; ++k)
+				for (size_t k = j + 1; k != side_; ++k)
 				{
 					b = field[row * side_ + k];
-					if (b && rowTrg[b] == row && colTrg[a] > colTrg[b])
+					if (b && !(rowTrg[b] - row) && colTrg[a] > colTrg[b])
 					{
 						line_[j] += 1;
 						line_[k] += 1;
@@ -82,12 +82,12 @@ unsigned		LinearConflict::colConflicts(t_tile * field)
 			// determie number of t_tiles in row i,
 			// with which field[i, j] is conflict
 			a = field[side_ * j + col];
-			if (colTrg[a] == col && a)
+			if ( !(colTrg[a] - col) && a) // colTrg[a] == col
 			{
-				for (size_t k = j + 1; k < side_; ++k)
+				for (size_t k = j + 1; k != side_; ++k)
 				{
 					b = field[side_ * k + col];
-					if (b && colTrg[b] == col && rowTrg[a] > rowTrg[b])
+					if (b && !(colTrg[b] - col) && rowTrg[a] > rowTrg[b])
 					{
 						line_[j] += 1;
 						line_[k] += 1;

@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 13:07:28 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/23 19:28:26 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/23 20:35:35 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ t_tile *		Snail(int side)
 inline void		Manhattan::initialStates(t_tile * field, unsigned * colf, unsigned * rowf)
 {
 	unsigned m = 0;
-	for (unsigned row = 0; row < side_; ++row)
+	for (unsigned row = 0; row != side_; ++row)
 	{
-		for (unsigned col = 0; col < side_; ++col)
+		for (unsigned col = 0; col != side_; ++col)
 		{
 			rowf[field[m]] = row;
 			colf[field[m]] = col;

@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 14:13:30 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/23 15:11:38 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/23 21:51:02 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 #include "PuzzExcept.h"
 #include <algorithm>
 
-#define COST 1
-
 using PathCont		= std::list< Node >;
+
 extern move_func	g_move[];
 
 /*
@@ -53,15 +52,6 @@ return min
 end function
 **
 */
-
-inline static void		undo(Node & node, size_t i)
-{
-	node.move = NONE;
-	if (i % 2 == 0)
-		g_move[i - 1](node);
-	else
-		g_move[i + 1](node);
-}
 
 static Solution	GenerateMoves(PathCont & path)
 {

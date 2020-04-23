@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 19:51:21 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/23 14:08:59 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/23 21:51:17 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,12 @@
 
 #include <cstddef>
 #include <iostream>
-#include <unordered_map>
 #include <list>
-#include <map>
-#include <set>
 
-#include "Heuristic.h"
 #include "Node.h"
+#include "Heuristic.h"
+
+#define COST 1
 
 using Solution			= std::list<unsigned>;
 using SearchFunc		= Solution (*)(Node &, IHeuristic &);
@@ -43,6 +42,8 @@ Solution	ASearch(Node & src, IHeuristic & h);
 Solution	IDASearch(Node & root, IHeuristic & h);
 
 Solution	GreedySearch(Node & src, IHeuristic & getScore);
+
+void		undo(Node & node, size_t i);
 
 void 		printOptions(optArgs * opts);
 

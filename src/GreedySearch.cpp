@@ -6,13 +6,15 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 17:46:34 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/23 14:38:59 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/23 21:51:25 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Npuzzle.h"
-#include <queue>
 #include <unordered_set>
+#include <map>
+#include <set>
+
+#include "Npuzzle.h"
 
 #define DEPTH		first
 #define STATE		second
@@ -22,15 +24,6 @@ extern move_func	g_move[];
 using Desk			= std::pair< unsigned, Node >;
 using PriorityQueue	= std::map< size_t, std::set <Node> >;
 using HashTable		= std::unordered_set< Node, hashNode >;
-
-inline static void		undo(Node & node, size_t i)
-{
-	node.move = NONE;
-	if (i % 2 == 0)
-		g_move[i - 1](node);
-	else
-		g_move[i + 1](node);
-}
 
 static Solution			GenerateMoves(Node & src, Node & target,
 									HashTable & close)

@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:06:09 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/23 19:19:31 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/23 21:44:31 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,15 +70,6 @@ public:
 	{
 		return puzzle.getHash();
 	}
-};
-
-class CompareNode
-{
-public:
-    bool operator() (Node const & n1, Node const & n2) const
-    {
-		return n2 < n1;
-    }
 };
 
 size_t		readPuzzle(std::string & filename, Node & node);

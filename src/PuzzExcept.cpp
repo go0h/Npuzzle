@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/02 18:03:13 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/22 17:22:40 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/23 21:42:18 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ PuzzExcept::PuzzExcept(int usage)
 		error_ += "\t-a, --algo algorithm:\n";
 		error_ += "\t   [A]   - for A* algorithm\n";
 		error_ += "\t   [IDA] - for Iterative A* algorithm\n";
+		error_ += "\t   [G]   - for Greedy algorithm\n";
 	}
 }
 
