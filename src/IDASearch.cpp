@@ -6,13 +6,15 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 14:13:30 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/21 20:52:06 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/23 15:11:38 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Npuzzle.h"
 #include "PuzzExcept.h"
 #include <algorithm>
+
+#define COST 1
 
 using PathCont		= std::list< Node >;
 extern move_func	g_move[];
@@ -68,6 +70,7 @@ static Solution	GenerateMoves(PathCont & path)
 	(*path.rbegin()).printNode();
 	for (auto it = path.rbegin(); it != path.rend(); ++it)
 		moves.push_front((*it).move);
+	moves.pop_front();
 	return moves;
 }
 
@@ -90,7 +93,7 @@ size_t search(Node src, size_t depth, size_t bound,
 			if (it == path.end())
 			{
 				path.push_back(src);
-				t = search(src, depth + 1, bound, h, path);
+				t = search(src, depth + COST, bound, h, path);
 				if (!t)
 					return t;
 				if (t < min)

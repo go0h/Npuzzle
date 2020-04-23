@@ -6,12 +6,13 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:17:23 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/22 17:22:40 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/23 19:03:57 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cstring>
 #include <iostream>
+#include <functional>
 
 #include "Node.h"
 #include "PuzzExcept.h"
@@ -21,19 +22,18 @@ size_t Node::length_	= 0;
 
 Node::Node(void) { }
 
-Node::Node(t_tile side)
+Node::Node(t_tile side) : field(new t_tile[side * side])
 {
 	side_ = side;
 	length_ = side * side;
-	field = new t_tile[side * side];
 }
 
 Node::Node(Node const & src)
-	: zero(src.zero),
+	: field(new t_tile[length_]),
 	score(src.score),
+	zero(src.zero),
 	move(src.move)
 {
-	field = new t_tile[length_];
 	memcpy(field, src.field, sizeof(t_tile) * length_);
 }
 
@@ -119,7 +119,36 @@ unsigned		Node::getScore(void) const
 	return score;
 }
 
+
+
 /*
+size_t		Node::getHash(void) const
+{
+	std::string str;
+	std::hash<std::string> hs;
+	str.reserve(length_ + 1);
+
+	for (size_t i = 0; i != length_; ++i)
+	{
+		str += field[i] + ' ';
+	}
+	return hs(str);
+}
+
+class CompareNode
+{
+public:
+    bool operator() (Node const & n1, Node const & n2) const
+    {
+		if (n1.score > n2.score)
+			return true;
+		if (n1.score == n2.score && n1.zero < n2.zero)
+			return true;
+		return false;
+    }
+};
+
+
 size_t hashNode::operator()(Node const & puzzle) const
 {
 	size_t hash = 0;

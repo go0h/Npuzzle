@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 19:51:21 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/21 15:21:02 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/23 14:08:59 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,7 @@
 #include "Heuristic.h"
 #include "Node.h"
 
-using Desk				= std::pair< unsigned, Node >;
-using PriorityQueue		= std::map< unsigned, std::set< Node > >;
-using HashTable			= std::unordered_map< Node, unsigned, hashNode >;
-using ItOpen 			= std::pair< typename PriorityQueue::iterator, \
-									typename std::set< Node >::iterator >;
 using Solution			= std::list<unsigned>;
-
 using SearchFunc		= Solution (*)(Node &, IHeuristic &);
 
 struct optArgs
@@ -44,10 +38,14 @@ void		options(int argc, char ** argv, optArgs * opts);
 
 void		setOptions(optArgs * opts, IHeuristic ** h, SearchFunc * f);
 
-void 		printOptions(optArgs * opts);
-
 Solution	ASearch(Node & src, IHeuristic & h);
 
 Solution	IDASearch(Node & root, IHeuristic & h);
+
+Solution	GreedySearch(Node & src, IHeuristic & getScore);
+
+void 		printOptions(optArgs * opts);
+
+bool 		checkSolution(Node & src, Node & target, Solution & moves);
 
 #endif

@@ -9,7 +9,7 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/debug/Npuzzle",
-			"args": ["tests/f4_1"],
+			"args": ["tests/f4_6", "-a", "G"],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],

@@ -22,7 +22,8 @@ set(SOURCE
 	${SOURCE_DIR}/LinearConflict.cpp
 	${SOURCE_DIR}/OptimalH.cpp
 	${SOURCE_DIR}/ASearch.cpp
-	${SOURCE_DIR}/IDASearch.cpp)
+	${SOURCE_DIR}/IDASearch.cpp
+	${SOURCE_DIR}/GreedySearch.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE})
 

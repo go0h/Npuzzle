@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 13:07:28 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/22 17:22:40 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/23 19:28:26 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,27 +68,12 @@ t_tile *		Snail(int side)
 	return field;
 }
 
-void		Manhattan::initialStates(t_tile * field, int * colf, int * rowf)
+inline void		Manhattan::initialStates(t_tile * field, unsigned * colf, unsigned * rowf)
 {
-/*
-	for (size_t i = 0; i != length_; ++i)
+	unsigned m = 0;
+	for (unsigned row = 0; row < side_; ++row)
 	{
-		if (field[i])
-		{
-			row[i] = (field[i] - 1) / side_;
-			col[i] = (field[i] - 1) % side_;
-		}
-		else
-		{
-			row[i] = 0;
-			col[i] = 0;
-		}
-	}
-*/
-	t_tile m = 0;
-	for (size_t row = 0; row < side_; ++row)
-	{
-		for (size_t col = 0; col < side_; ++col)
+		for (unsigned col = 0; col < side_; ++col)
 		{
 			rowf[field[m]] = row;
 			colf[field[m]] = col;
@@ -110,10 +95,10 @@ void		Manhattan::init(Node & src, Node & trg)
 	else
 		target = Snail(side_);
 
-	rowCur = new int[length_];
-	colCur = new int[length_];
-	rowTrg = new int[length_];
-	colTrg = new int[length_];
+	rowCur = new unsigned[length_];
+	colCur = new unsigned[length_];
+	rowTrg = new unsigned[length_];
+	colTrg = new unsigned[length_];
 
 	initialStates(target, colTrg, rowTrg);
 }
@@ -133,10 +118,10 @@ unsigned	Manhattan::operator()(Node & src)
 	src.score = 0;
 
 	initialStates(src.field, colCur, rowCur);
-	for (size_t i = 1; i != length_; ++i)
+	for (unsigned i = 1; i != length_; ++i)
 	{
-		src.score += std::abs(rowTrg[i] - rowCur[i]);
-		src.score += std::abs(colTrg[i] - colCur[i]);
+		src.score += std::abs((int)rowTrg[i] - (int)rowCur[i]);
+		src.score += std::abs((int)colTrg[i] - (int)colCur[i]);
 	}
 	return src.score;
 }

@@ -6,16 +6,23 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 17:46:34 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/20 22:12:28 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/23 18:10:58 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Npuzzle.h"
 
-extern move_func		g_move[];
+#define COST		1
+#define DEPTH		first
+#define STATE		second
 
-#define DEPTH			first
-#define STATE			second
+extern move_func	g_move[];
+
+using Desk			= std::pair< unsigned, Node >;
+using PriorityQueue	= std::map< unsigned, std::set< Node > >;
+using HashTable		= std::unordered_map< Node, unsigned, hashNode >;
+using ItOpen 		= std::pair< typename PriorityQueue::iterator, \
+								typename std::set< Node >::iterator >;
 
 inline static void		undo(Node & node, size_t i)
 {
@@ -26,17 +33,17 @@ inline static void		undo(Node & node, size_t i)
 		g_move[i + 1](node);
 }
 
-static Solution	GenerateMoves(Node & src, Node & target, HashTable & close)
+static Solution			GenerateMoves(Node & src, Node & target,
+									HashTable & close)
 {
 	Solution	moves;
 
 	target.printNode();
-	moves.push_front(target.move);
 	while (target != src)
 	{
+		moves.push_front(target.move);
 		undo(target, target.move);
 		target = close.find(target)->first;
-		moves.push_front(target.move);
 	}
 	return moves;
 }
@@ -69,7 +76,7 @@ inline static bool		inOpen(PriorityQueue & open, Desk & desk, ItOpen & it)
 	return false;
 }
 
-Solution		ASearch(Node & src, IHeuristic & getScore)
+Solution				ASearch(Node & src, IHeuristic & getScore)
 {
 	HashTable		close;
 	PriorityQueue	open;
@@ -77,18 +84,16 @@ Solution		ASearch(Node & src, IHeuristic & getScore)
 	ItOpen			openIt;
 	unsigned		depth, score;
 
-	close.reserve(1000000);
 	if (!getScore(src))
 		return Solution();
 	open[src.getScore()].insert(src);
-
 	while (!open.empty())
 	{
 		desk = getFirstDesk(open, desk);
 		if (!desk.STATE.getScore())
 			break;
 		close.emplace(desk.STATE, desk.DEPTH);
-		depth = desk.DEPTH + 1;
+		depth = desk.DEPTH + COST;
 
 		for (size_t i = UP; i <= LEFT; ++i)
 		{

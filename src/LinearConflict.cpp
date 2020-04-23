@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/18 14:25:00 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/22 17:22:40 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/23 19:44:31 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void	LinearConflict::init(Node & src, Node & trg)
 {
 	Manhattan::init(src, trg);
-	line_ = new int[side_];
+	line_ = new unsigned[side_];
 }
 
 LinearConflict::~LinearConflict()
@@ -24,7 +24,7 @@ LinearConflict::~LinearConflict()
 	delete [] line_;
 }
 
-inline size_t		find_max(int * line, size_t & side)
+inline size_t		find_max(unsigned * line, size_t & side)
 {
 	size_t max = 0;
 
@@ -36,15 +36,15 @@ inline size_t		find_max(int * line, size_t & side)
 	return max;
 }
 
-size_t		LinearConflict::rowConflicts(t_tile * field)
+unsigned		LinearConflict::rowConflicts(t_tile * field)
 {
 	unsigned	a, b;
-	size_t		score = 0;
+	unsigned	score = 0;
 
 	// for each row in state
-	for (int row = 0; row != (int)side_; ++row)
+	for (size_t row = 0; row != side_; ++row)
 	{
-		std::memset(line_, 0, sizeof(int) * side_);
+		std::memset(line_, 0, sizeof(unsigned) * side_);
 		for (size_t j = 0; j != side_ - 1; ++j)
 		{
 			// determie number of t_tiles in row i,
@@ -63,21 +63,20 @@ size_t		LinearConflict::rowConflicts(t_tile * field)
 				}
 			}
 		}
-
 		a = find_max(line_, side_);
 		score = score + line_[a] + (line_[a] & 1);
 	}
 	return score;
 }
 
-size_t		LinearConflict::colConflicts(t_tile * field)
+unsigned		LinearConflict::colConflicts(t_tile * field)
 {
 	unsigned	a, b;
-	size_t		score = 0;
+	unsigned	score = 0;
 	// for each column in state
-	for (int col = 0; col != (int)side_; ++col)
+	for (size_t col = 0; col != side_; ++col)
 	{
-		std::memset(line_, 0, sizeof(int) * side_);
+		std::memset(line_, 0, sizeof(unsigned) * side_);
 		for (size_t j = 0; j != side_ - 1; ++j)
 		{
 			// determie number of t_tiles in row i,

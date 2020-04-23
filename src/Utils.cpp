@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/19 14:02:22 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/21 16:43:08 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/23 14:09:57 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 #include "Npuzzle.h"
 #include "PuzzExcept.h"
+
+extern move_func		g_move[];
 
 void options(int argc, char ** argv, optArgs * opts)
 {
@@ -64,11 +66,17 @@ void	setOptions(optArgs * opts, IHeuristic ** h, SearchFunc * f)
 		*h = new LinearConflict();
 	else if (opts->heuristic == "OPT")
 		*h = new OptimalH();
+	else
+		throw PuzzExcept(USAGE);
 
 	if (opts->searchfunc == "A")
 		*f = &ASearch;
 	else if (opts->searchfunc == "IDA")
 		*f = &IDASearch;
+	else if (opts->searchfunc == "G")
+		*f = &GreedySearch;
+	else
+		throw PuzzExcept(USAGE);
 }
 
 void printOptions(optArgs * opts)
@@ -78,4 +86,15 @@ void printOptions(optArgs * opts)
 		std::cout << "Trg_file:		" << opts->trg_file << std::endl;
 	std::cout << "Heuristic:	" << opts->heuristic << std::endl;
 	std::cout << "Search func:	" << opts->searchfunc << std::endl;
+}
+
+bool checkSolution(Node & src, Node & target, Solution & moves)
+{
+	for (auto i = moves.begin(); i != moves.end(); ++i)
+	{
+		g_move[*i](src);
+		if (src == target)
+			return true;
+	}
+	return false;
 }
