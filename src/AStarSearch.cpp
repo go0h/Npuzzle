@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ASearch.cpp                                        :+:      :+:    :+:   */
+/*   AStarSearch.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 17:46:34 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/23 21:52:50 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/24 11:50:49 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <map>
 #include <set>
 
-#define COST		1
 #define DEPTH		first
 #define STATE		second
 
@@ -28,7 +27,7 @@ using HashTable		= std::unordered_map< Node, unsigned, hashNode >;
 using ItOpen 		= std::pair< typename PriorityQueue::iterator, \
 								typename std::set< Node >::iterator >;
 
-inline void		undo(Node & node, size_t i)
+inline void				undo(Node & node, size_t i)
 {
 	node.move = NONE;
 	if (i & 1)				// i % 2 == 1
@@ -37,17 +36,15 @@ inline void		undo(Node & node, size_t i)
 		g_move[i - 1](node);
 }
 
-static Solution			GenerateMoves(Node & src, Node & target,
-									HashTable & close)
+static Solution			GenerateMoves(Node & src, Node & trg, HashTable & close)
 {
 	Solution	moves;
 
-	target.printNode();
-	while (target != src)
+	while (trg != src)
 	{
-		moves.push_front(target.move);
-		undo(target, target.move);
-		target = close.find(target)->first;
+		moves.push_front(trg.move);
+		undo(trg, trg.move);
+		trg = close.find(trg)->first;
 	}
 	return moves;
 }
@@ -80,7 +77,7 @@ inline static bool		inOpen(PriorityQueue & open, Desk & desk, ItOpen & it)
 	return false;
 }
 
-Solution				ASearch(Node & src, IHeuristic & getScore)
+Solution				AStarSearch(Node & src, IHeuristic & h, marks & bench)
 {
 	HashTable		close;
 	PriorityQueue	open;
@@ -88,8 +85,9 @@ Solution				ASearch(Node & src, IHeuristic & getScore)
 	ItOpen			openIt;
 	unsigned		depth, score;
 
+	bench.func = __func__;
 	close.reserve(1000000);
-	if (!getScore(src))
+	if (!h(src))
 		return Solution();
 	open[src.getScore()].insert(src);
 	while (!open.empty())
@@ -105,7 +103,7 @@ Solution				ASearch(Node & src, IHeuristic & getScore)
 			if (g_move[i](desk.STATE))
 			{
 				auto closeIt = close.find(desk.STATE);
-				score = getScore(desk.STATE) + depth;
+				score = h(desk.STATE) + depth;
 				if (closeIt == close.end())
 				{
 					bool exist = inOpen(open, desk, openIt);
@@ -116,6 +114,7 @@ Solution				ASearch(Node & src, IHeuristic & getScore)
 							open[openIt.first->DEPTH].erase(openIt.second);
 							if (open[openIt.first->DEPTH].empty())
 								open.erase(openIt.first);
+							bench.compl_size--;
 						}
 						open[score].insert(desk.STATE);
 					}
@@ -125,11 +124,13 @@ Solution				ASearch(Node & src, IHeuristic & getScore)
 					close.erase(closeIt);
 					open[score].insert(desk.STATE);
 				}
+				bench.compl_size++;
 				undo(desk.STATE, i);
 			}
 		}
 	}
-	printf("States in open:  %lu\n", open.size());
-	printf("States in close: %lu\n", close.size());
+	bench.compl_size += close.size();
+	bench.compl_time = close.size();
+	bench.t2 = std::chrono::system_clock::now();
 	return GenerateMoves(src, desk.STATE, close);
 }

@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 17:46:34 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/23 21:51:25 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/24 10:19:27 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +25,20 @@ using Desk			= std::pair< unsigned, Node >;
 using PriorityQueue	= std::map< size_t, std::set <Node> >;
 using HashTable		= std::unordered_set< Node, hashNode >;
 
-static Solution			GenerateMoves(Node & src, Node & target,
-									HashTable & close)
+static Solution		GenerateMoves(Node & src, Node & trg, HashTable & close)
 {
 	Solution	moves;
 
-	target.printNode();
-	while (target != src)
+	while (trg != src)
 	{
-		moves.push_front(target.move);
-		undo(target, target.move);
-		target = *close.find(target);
+		moves.push_front(trg.move);
+		undo(trg, trg.move);
+		trg = *close.find(trg);
 	}
 	return moves;
 }
 
-inline static void getFirst(PriorityQueue & open, Node & state)
+inline static void	getFirst(PriorityQueue & open, Node & state)
 {
 	auto it = open.begin();
 	state = *(it->second.begin());
@@ -49,14 +47,15 @@ inline static void getFirst(PriorityQueue & open, Node & state)
 		open.erase(it);
 }
 
-Solution				GreedySearch(Node & src, IHeuristic & getScore)
+Solution			GreedySearch(Node & src, IHeuristic & h, marks & bench)
 {
 	HashTable		close;
 	PriorityQueue	open;
 	Node			state = src;
 	size_t			score = 0;
 
-	if (!getScore(state))
+	bench.func = __func__;
+	if (!h(state))
 		return Solution();
 	open[state.getScore()].insert(state);
 	while (!open.empty())
@@ -69,14 +68,17 @@ Solution				GreedySearch(Node & src, IHeuristic & getScore)
 		{
 			if (g_move[i](state))
 			{
-				score = getScore(state);
+				score = h(state);
 				if (close.find(state) == close.end())
+				{
 					open[score].insert(state);
+					bench.compl_size++;
+				}
 				undo(state, i);
 			}
 		}
 	}
-	printf("States in open:  %lu\n", open.size());
-	printf("States in close: %lu\n", close.size());
+	bench.compl_time += close.size();
+	bench.t2 = std::chrono::system_clock::now();
 	return GenerateMoves(src, state, close);
 }

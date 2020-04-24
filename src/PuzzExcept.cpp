@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/02 18:03:13 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/23 21:42:18 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/24 11:49:03 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ PuzzExcept::PuzzExcept(int usage)
 		error_ += "Usage: ./Npuzzle puzzle_file [OPTION]... [FILE]...\n\n";
 		error_ += "\t-h, --help\t\t\tdisplay this help and exit\n\n";
 		error_ += "\t-t, --target <target_file>\tfinal state of puzzle\n\n";
+		error_ += "\t-p, --print\t\t\tprint moves\n\n";
 		error_ += "\t-H, --heuristic heuristic_method:\n";
-		error_ += "\t   [M]   - only Manhattan distance between t_tiles\n";
+		error_ += "\t   [M]   - only Manhattan distance between tiles\n";
 		error_ += "\t   [LC]  - Manhattan distance and Linear conflicts\n";
 		error_ += "\t   [OPT] - Optimal (M + LC + Corners + Last move)\n\n";
 		error_ += "\t-a, --algo algorithm:\n";
@@ -34,7 +35,6 @@ PuzzExcept::PuzzExcept(int usage)
 		error_ += "\t   [G]   - for Greedy algorithm\n";
 	}
 }
-
 
 std::string PuzzExcept::what() noexcept
 {

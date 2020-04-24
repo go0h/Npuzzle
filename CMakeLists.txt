@@ -15,14 +15,13 @@ set(SOURCE
 	${SOURCE_DIR}/Utils.cpp
 	${SOURCE_DIR}/Node.cpp
 	${SOURCE_DIR}/NodeMove.cpp
-	${SOURCE_DIR}/NodeUtils.cpp
 	${SOURCE_DIR}/PuzzExcept.cpp
 	${SOURCE_DIR}/ReadPuzzle.cpp
 	${SOURCE_DIR}/Manhattan.cpp
 	${SOURCE_DIR}/LinearConflict.cpp
 	${SOURCE_DIR}/OptimalH.cpp
-	${SOURCE_DIR}/ASearch.cpp
-	${SOURCE_DIR}/IDASearch.cpp
+	${SOURCE_DIR}/AStarSearch.cpp
+	${SOURCE_DIR}/IDAStarSearch.cpp
 	${SOURCE_DIR}/GreedySearch.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE})

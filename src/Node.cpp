@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:17:23 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/23 21:38:45 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/24 11:48:22 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 #include "Node.h"
 #include "PuzzExcept.h"
+
+extern move_func	g_move[];;
 
 size_t Node::side_		= 0;
 size_t Node::length_	= 0;
@@ -62,17 +64,17 @@ Node &	Node::operator=(Node && src)
 	return (*this);
 }
 
-bool Node::operator==(Node const & n) const
+bool	Node::operator==(Node const & n) const
 {
 	return !std::memcmp(field, n.field, sizeof(t_tile) * length_);
 }
 
-bool Node::operator!=(Node const & n) const
+bool	Node::operator!=(Node const & n) const
 {
 	return !(*this == n);
 }
 
-bool Node::operator<(Node const & n) const
+bool	Node::operator<(Node const & n) const
 {
 	if (score < n.score)
 		return true;
@@ -81,14 +83,14 @@ bool Node::operator<(Node const & n) const
 	return false;
 }
 
-t_tile & Node::operator()(size_t i, size_t j)
+t_tile &	Node::operator()(size_t i, size_t j)
 {
 	if (i >= side_ && j >= side_)
 		throw PuzzExcept(E_INDEX);
 	return field[i * side_ + j];
 }
 
-t_tile Node::operator()(size_t i, size_t j) const
+t_tile		Node::operator()(size_t i, size_t j) const
 {
 	if (i >= side_ && j >= side_)
 		throw PuzzExcept(E_INDEX);
@@ -112,12 +114,29 @@ size_t		Node::getHash(void) const
 	return hash;
 }
 
-unsigned		Node::getScore(void) const
+unsigned	Node::getScore(void) const
 {
 	return score;
 }
 
+void		Node::swap(Node & src)
+{
+	std::swap(zero, src.zero);
+	std::swap(move, src.move);
+	std::swap(score, src.score);
+	std::swap(field, src.field);
+}
 
+void		Node::printNode(void) const
+{
+	for (size_t i = 0; i != side_; ++i)
+	{
+		for (size_t j = 0; j != side_; ++j)
+			printf("%-3u ", (*this)(i, j));
+		printf("\n");
+	}
+	printf("\n");
+}
 
 /*
 size_t		Node::getHash(void) const

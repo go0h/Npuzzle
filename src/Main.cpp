@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:37:29 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/23 21:26:22 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/24 11:19:27 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,23 @@
 int main(int argc, char ** argv)
 {
 	optArgs			opts;
+	marks			bench;
 	Node			src, trg;
 	IHeuristic * 	h = nullptr;
 	SearchFunc		searchFunc = nullptr;
 
 	try {
 		options(argc, argv, &opts);
-		// printOptions(&opts);
 		setOptions(&opts, &h, &searchFunc);
 
 		readPuzzle(opts.src_file, src);
 		if (opts.trg_file != "")
 			readPuzzle(opts.trg_file, trg);
 		h->init(src, trg);
-		src.printNode();
-		Solution solution = searchFunc(src, *h);
-		// if (solution.empty())
-		// 	std::cout << "Empty\n";
-		// if (trg && !checkSolution(src, trg, solution))
-		// 	std::cout << "Bad moves!" << std::endl;
-		std::cout << "Moves: " << solution.size() << std::endl;
+		bench.t1 = std::chrono::system_clock::now();
+		Solution solution = searchFunc(src, *h, bench);
+		printMoves(src, solution, opts.printpath);
+		printBenchmarks(bench, *h, solution.size());
 	} catch (PuzzExcept & err) {
 		std::cerr << err.what() << std::endl;
 	} catch (...) {

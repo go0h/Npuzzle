@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 13:07:28 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/23 20:35:35 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/24 11:51:35 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 #include "Heuristic.h"
 #include "PuzzExcept.h"
 
-void		printField(t_tile * field, size_t side)
+/*
+static void			printField(t_tile * field, size_t side)
 {
 	for (size_t i = 0; i != side; ++i)
 	{
@@ -27,7 +28,7 @@ void		printField(t_tile * field, size_t side)
 	printf("\n");
 }
 
-t_tile * 		Classic(size_t side)
+static t_tile *		Classic(size_t side)
 {
 	t_tile * field = new t_tile[side * side];
 
@@ -38,8 +39,9 @@ t_tile * 		Classic(size_t side)
 	field[side * side - 1] = 0;
 	return field;
 }
+*/
 
-t_tile *		Snail(int side)
+static t_tile *	Snail(int side)
 {
 	t_tile * field = new t_tile[side * side];
 	int i = 0;

@@ -6,14 +6,14 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/18 14:25:00 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/23 20:28:09 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/24 11:46:17 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Heuristic.h"
 #include <cstring>
 
-void	LinearConflict::init(Node & src, Node & trg)
+void			LinearConflict::init(Node & src, Node & trg)
 {
 	Manhattan::init(src, trg);
 	line_ = new unsigned[side_];
@@ -24,7 +24,7 @@ LinearConflict::~LinearConflict()
 	delete [] line_;
 }
 
-inline size_t		find_max(unsigned * line, size_t & side)
+inline size_t	find_max(unsigned * line, size_t & side)
 {
 	size_t max = 0;
 
@@ -101,7 +101,7 @@ unsigned		LinearConflict::colConflicts(t_tile * field)
 	return score;
 }
 
-unsigned	LinearConflict::operator()(Node & src)
+unsigned		LinearConflict::operator()(Node & src)
 {
 	unsigned	score = Manhattan::operator()(src);
 	score += (2 * rowConflicts(src.field));

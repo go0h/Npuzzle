@@ -6,26 +6,31 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/19 14:02:22 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/23 14:09:57 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/24 11:49:17 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <getopt.h>
 #include <cstring>
+#include <typeinfo>
 
 #include "Npuzzle.h"
 #include "PuzzExcept.h"
 
-extern move_func		g_move[];
+extern move_func	g_move[];
 
-void options(int argc, char ** argv, optArgs * opts)
+using	std::cout;
+using	std::endl;
+
+void	options(int argc, char ** argv, optArgs * opts)
 {
-	char shortOpt[] = "a:h:t:H:";
-	static struct option longOpt[] = {
+	char shortOpt[] = "a:hpt:H:";
+	struct option longOpt[] = {
 		{"help", 0, 0, 'h'},
 		{"target", 1, 0, 't'},
 		{"heurisctic", 1, 0, 'H'},
 		{"algo", 1, 0, 'a'},
+		{"print", 0, 0, 'p'},
 		{0, 0, 0, 0}
 	};
 	int optidx, c = 0;
@@ -34,8 +39,6 @@ void options(int argc, char ** argv, optArgs * opts)
 		throw PuzzExcept(USAGE);
 
 	opts->src_file = argv[1];
-	opts->searchfunc = "A";
-	opts->heuristic = "OPT";
 	while(true)
 	{
 		if ((c = getopt_long(argc, argv, shortOpt, longOpt, &optidx)) == -1)
@@ -53,6 +56,8 @@ void options(int argc, char ** argv, optArgs * opts)
 		}
 		else if (c == 'a')
 			opts->searchfunc = optarg;
+		else if (c == 'p')
+			opts->printpath = true;
 		else
 			throw PuzzExcept(USAGE);
 	}
@@ -70,31 +75,47 @@ void	setOptions(optArgs * opts, IHeuristic ** h, SearchFunc * f)
 		throw PuzzExcept(USAGE);
 
 	if (opts->searchfunc == "A")
-		*f = &ASearch;
+		*f = &AStarSearch;
 	else if (opts->searchfunc == "IDA")
-		*f = &IDASearch;
+		*f = &IDAStarSearch;
 	else if (opts->searchfunc == "G")
 		*f = &GreedySearch;
 	else
 		throw PuzzExcept(USAGE);
 }
 
-void printOptions(optArgs * opts)
+void 	printMoves(Node & src, Solution & movSet, bool printmoves)
 {
-	std::cout << "Src_file:		" << opts->src_file << std::endl;
-	if (opts->trg_file != "")
-		std::cout << "Trg_file:		" << opts->trg_file << std::endl;
-	std::cout << "Heuristic:	" << opts->heuristic << std::endl;
-	std::cout << "Search func:	" << opts->searchfunc << std::endl;
+	unsigned i = 1;
+
+	cout << "Start state:" << endl;
+	src.printNode();
+	for (auto it = movSet.begin(); it != std::prev(movSet.end()); ++i, ++it)
+	{
+		g_move[*it](src);
+		if (printmoves)
+		{
+			cout << "Step #" << i << endl;
+			src.printNode();
+		}
+	}
+	g_move[*std::prev(movSet.end())](src);
+	cout << "Final state:" << endl;
+	src.printNode();
 }
 
-bool checkSolution(Node & src, Node & target, Solution & moves)
+void	printBenchmarks(marks & bench, IHeuristic & h, size_t moves)
 {
-	for (auto i = moves.begin(); i != moves.end(); ++i)
-	{
-		g_move[*i](src);
-		if (src == target)
-			return true;
-	}
-	return false;
+	cout.setf(std::ios::fixed);
+	cout.precision(5);
+	double seconds = std::chrono::duration_cast<std::chrono::milliseconds>
+		(bench.t2 - bench.t1).count() / 1000.0;
+
+	cout << "Heuristic:       " << typeid(h).name() << endl;
+	cout << "Search function: " << bench.func << std::endl;
+	cout << "Time:            " << seconds << " sec" <<  endl;
+	cout << "Time per node:   " << seconds / bench.compl_size << " sec" << endl;
+	cout << "Time complexity: " << bench.compl_time << endl;
+	cout << "Size complexity: " << bench.compl_size << endl;
+	cout << "Moves:           " << moves << endl;
 }

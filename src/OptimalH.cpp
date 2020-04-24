@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/18 20:45:00 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/22 17:22:40 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/24 11:48:56 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #define BOTTOM_LEFT (length_ - side_)
 #define BOTTOM_RIGHT (length_ - 1)
 
-void 		OptimalH::init(Node & src, Node & trg)
+void		OptimalH::init(Node & src, Node & trg)
 {
 	LinearConflict::init(src, trg);
 }

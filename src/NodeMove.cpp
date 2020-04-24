@@ -6,20 +6,20 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 14:16:28 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/23 21:39:46 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/04/24 11:48:43 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Node.h"
 
-static void swap(t_tile & a, t_tile & b)
+static void	swap(t_tile & a, t_tile & b)
 {
 	t_tile temp = a;
 	a = b;
 	b = temp;
 }
 
-bool up(Node & puzzle)
+bool		up(Node & puzzle)
 {
 	t_tile x = puzzle.zero % Node::side_;
 	t_tile y = puzzle.zero / Node::side_;
@@ -34,7 +34,7 @@ bool up(Node & puzzle)
 	return false;
 }
 
-bool down(Node & puzzle)
+bool		down(Node & puzzle)
 {
 	t_tile x = puzzle.zero % Node::side_;
 	t_tile y = puzzle.zero / Node::side_;
@@ -49,7 +49,7 @@ bool down(Node & puzzle)
 	return false;
 }
 
-bool left(Node & puzzle)
+bool		left(Node & puzzle)
 {
 	t_tile x = puzzle.zero % Node::side_;
 	t_tile y = puzzle.zero / Node::side_;
@@ -64,7 +64,7 @@ bool left(Node & puzzle)
 	return false;
 }
 
-bool right(Node & puzzle)
+bool		right(Node & puzzle)
 {
 	t_tile x = puzzle.zero % Node::side_;
 	t_tile y = puzzle.zero / Node::side_;
