@@ -6,13 +6,14 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/19 14:02:22 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/24 11:49:17 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/05/10 15:14:56 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <getopt.h>
 #include <cstring>
 #include <typeinfo>
+#include <unordered_map>
 
 #include "Npuzzle.h"
 #include "PuzzExcept.h"
@@ -63,23 +64,27 @@ void	options(int argc, char ** argv, optArgs * opts)
 	}
 }
 
-void	setOptions(optArgs * opts, IHeuristic ** h, SearchFunc * f)
+void	setOptions(optArgs * opts, HeurPtr & h, SearchFunc * f)
 {
-	if (opts->heuristic == "M")
-		*h = new Manhattan();
-	else if (opts->heuristic == "LC")
-		*h = new LinearConflict();
-	else if (opts->heuristic == "OPT")
-		*h = new OptimalH();
+	std::unordered_map<std::string, SearchFunc> funcMap = {
+		{"A", &AStarSearch},
+		{"IDA", &IDAStarSearch},
+		{"G", &GreedySearch}
+	};
+	std::unordered_map< std::string, HeurPtr > heurMap =
+	{
+		{"M", std::shared_ptr<IHeuristic>(new Manhattan())},
+		{"LC", std::shared_ptr<IHeuristic>(new LinearConflict())},
+		{"OPT", std::shared_ptr<IHeuristic>(new OptimalH())}
+	};
+
+	if (heurMap.find(opts->heuristic) != heurMap.end())
+		h = heurMap[opts->heuristic];
 	else
 		throw PuzzExcept(USAGE);
 
-	if (opts->searchfunc == "A")
-		*f = &AStarSearch;
-	else if (opts->searchfunc == "IDA")
-		*f = &IDAStarSearch;
-	else if (opts->searchfunc == "G")
-		*f = &GreedySearch;
+	if (funcMap.find(opts->searchfunc) != funcMap.end())
+		*f = funcMap[opts->searchfunc];
 	else
 		throw PuzzExcept(USAGE);
 }

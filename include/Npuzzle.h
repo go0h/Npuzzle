@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 19:51:21 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/24 11:50:39 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/05/10 15:14:23 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <chrono>
 #include <iostream>
 #include <list>
+#include <memory>
 
 #include "Node.h"
 #include "Heuristic.h"
@@ -51,12 +52,14 @@ struct marks
 	std::string func;
 };
 
+using HeurPtr			= std::shared_ptr<IHeuristic>;
+
 using Solution			= std::list<unsigned>;
 using SearchFunc		= Solution (*)(Node &, IHeuristic &, marks &);
 
 void		options(int argc, char ** argv, optArgs * opts);
 
-void		setOptions(optArgs * opts, IHeuristic ** h, SearchFunc * f);
+void		setOptions(optArgs * opts, HeurPtr & h, SearchFunc * f);
 
 Solution	AStarSearch(Node & src, IHeuristic & h, marks & bench);
 

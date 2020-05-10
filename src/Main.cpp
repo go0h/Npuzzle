@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:37:29 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/24 11:19:27 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/05/10 15:11:22 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ int main(int argc, char ** argv)
 	optArgs			opts;
 	marks			bench;
 	Node			src, trg;
-	IHeuristic * 	h = nullptr;
+	HeurPtr			h;
 	SearchFunc		searchFunc = nullptr;
 
 	try {
 		options(argc, argv, &opts);
-		setOptions(&opts, &h, &searchFunc);
+		setOptions(&opts, h, &searchFunc);
 
 		readPuzzle(opts.src_file, src);
 		if (opts.trg_file != "")
@@ -38,6 +38,5 @@ int main(int argc, char ** argv)
 	} catch (...) {
 		std::cerr << "Something go wrong" << std::endl;
 	}
-	delete h;
 	return EXIT_SUCCESS;
 }
