@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 19:50:58 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/22 17:22:40 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/05/31 22:34:12 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,6 @@
 
 #include "Node.h"
 #include "PuzzExcept.h"
-
-static bool 	solvable(Node const & puzzle, size_t side, size_t length)
-{
-	size_t	sum = 0;
-
-	for (size_t i = 0; i != length; ++i)
-	{
-		for (size_t j = i + 1; j != length; ++j)
-		{
-			if (puzzle.field[i] && puzzle.field[j])
-			{
-				if (puzzle.field[i] > puzzle.field[j])
-					sum++;
-			}
-		}
-	}
-	return (sum + ((puzzle.zero / side) + 1)) % 2 == 0;
-}
 
 static void		skipComments(std::ifstream & pfile, std::string & str)
 {
@@ -64,15 +46,13 @@ static bool		fillField(std::ifstream & pfile, std::string & str, \
 {
 	std::unordered_set<t_tile> order;
 	order.reserve(side * side);
-	int n;
 
 	for (size_t i = 0; i != side && !pfile.eof(); ++i)
 	{
 		std::istringstream strStream(str);
 		for (size_t j = 0; j != side && !strStream.eof(); ++j)
 		{
-			strStream >> n;
-			puzzle(i, j) = n;
+			strStream >> puzzle(i, j);
 			if (strStream.fail())
 				return false;
 			if (puzzle(i, j) == 0)
@@ -114,8 +94,6 @@ size_t			readPuzzle(std::string & filename, Node & node)
 	if (!pfile.eof())
 		throw PuzzExcept(E_MAP);
 	pfile.close();
-	if (!solvable(temp, side, side * side))
-		throw PuzzExcept(E_UNSOLVBL);
 	node = temp;
 	return side;
 }

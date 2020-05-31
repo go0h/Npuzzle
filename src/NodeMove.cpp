@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 14:16:28 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/24 11:48:43 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/05/31 22:52:35 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,4 @@ bool		right(Node & puzzle)
 	return false;
 }
 
-move_func 		g_move[] = {nullptr, &up, &down, &right, &left};
+move_func	g_move[] = {nullptr, &up, &down, &right, &left};

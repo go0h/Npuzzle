@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 17:46:34 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/24 11:50:49 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/05/31 20:14:28 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ using HashTable		= std::unordered_map< Node, unsigned, hashNode >;
 using ItOpen 		= std::pair< typename PriorityQueue::iterator, \
 								typename std::set< Node >::iterator >;
 
-inline void				undo(Node & node, size_t i)
+void				undo(Node & node, size_t i)
 {
 	node.move = NONE;
 	if (i & 1)				// i % 2 == 1

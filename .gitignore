@@ -89,6 +89,7 @@ CTestTestfile.cmake
 _deps
 build/*
 debug/*
+obj/*
 
 ### CMake Patch ###
 # External projects

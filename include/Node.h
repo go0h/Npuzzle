@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:06:09 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/23 21:44:31 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/06/01 00:02:37 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,21 @@ enum {
 	LEFT
 };
 
+/*
+**	NODE
+**
+**	field - board state
+**	(1D array, use as 2D array Node(i,j) == field(i * side + j)
+**
+**	score - heuristic score
+**	zero - position of empty tile in board state
+**	move - last move applied to the board
+**
+**	up, down, left, right - moves tile in pos zero
+**	In success returt true, else false
+**
+*/
+
 class Node
 {
 public:
@@ -35,10 +50,10 @@ public:
 	t_tile			zero = 0;
 	t_move			move = NONE;
 	Node(void);
-	Node(t_tile side);								//constructor
-	Node(Node const & src);							//copy constructor
-	Node(Node && src);								//move constructor
-	~Node();										//destructor
+	Node(t_tile side);
+	Node(Node const & src);
+	Node(Node && src);
+	~Node();
 	Node &			operator=(Node const & src);
 	Node &			operator=(Node && src);
 	t_tile &		operator()(size_t i, size_t j);
@@ -64,6 +79,11 @@ private:
 
 using move_func = bool (*)(Node &);
 
+/*
+**	HASHNODE
+**	for STL's unordered_map/unordered_set
+*/
+
 class hashNode {
 public:
 	size_t operator()(Node const & puzzle) const
@@ -72,6 +92,28 @@ public:
 	}
 };
 
+/*
+**	Read puzzle from filename to Node
+**	On succes return side of Puzzle
+**	On error throw Exception
+*/
+
 size_t		readPuzzle(std::string & filename, Node & node);
+
+/*
+**	Generate snail board state. Example for side == 3:
+**		1 2 3
+**		8 0	4
+**		7 6 5
+*/
+
+Node		snail(int side);
+
+/*
+**	Checks if it possible solve the puzzle
+**	from source board state to target
+*/
+
+bool 		solvable(Node & src, Node & trg);
 
 #endif

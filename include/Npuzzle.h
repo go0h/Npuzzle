@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 19:51:21 by astripeb          #+#    #+#             */
-/*   Updated: 2020/05/10 15:14:23 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/05/31 23:55:46 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,24 @@ struct optArgs
 	bool		printpath = false;
 };
 
+/*
+**	MARKS
+**	compl_time - Total number of states ever selected in the "opened" set
+**	compl_size - Maximum number of states ever represented in memory
+**	at the same timeduring the search
+**
+**	t1 - start time
+**	t2 - end time
+**
+**	func - search func name
+*/
+
 struct marks
 {
-	// Total number of states ever selected in the "opened" set
 	size_t compl_time = 0;
-
-	// Maximum number of states ever represented in memory
-	// at the same timeduring the search
 	size_t compl_size = 0;
-
-	// start time
 	std::chrono::time_point<std::chrono::system_clock> t1;
-
-	// end time
 	std::chrono::time_point<std::chrono::system_clock> t2;
-
-	// search func name
 	std::string func;
 };
 

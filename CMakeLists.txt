@@ -14,6 +14,7 @@ set(SOURCE
 	${SOURCE_DIR}/Main.cpp
 	${SOURCE_DIR}/Utils.cpp
 	${SOURCE_DIR}/Node.cpp
+	${SOURCE_DIR}/NodeUtils.cpp
 	${SOURCE_DIR}/NodeMove.cpp
 	${SOURCE_DIR}/PuzzExcept.cpp
 	${SOURCE_DIR}/ReadPuzzle.cpp

@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/12 21:38:16 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/23 21:30:18 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/05/31 20:36:31 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@
 
 /*
 ** BASE CLASS FOR ALL HEURISTICS
+**
+**	side if puzzle board
+**	length = side * side
+**	operator "()" return the score of heuristic
 */
 
 class IHeuristic
@@ -31,18 +35,26 @@ public:
 	virtual unsigned	operator()(Node & src) = 0;
 };
 
+/*
+**	MANHATTAN
+**	count manhattan distance for each tile
+**
+**	rowCur[i] - tile's row in current state
+**	rowCur[i] - tile's column in current state
+**
+**	target - target boarg
+**	rowTrg[i] - tile's row in target state
+**	rowTrg[i] - tile's column in target state
+*/
+
 class Manhattan : public IHeuristic
 {
 protected:
-	// номера рядов и колонок для текущего состояния пазла
-	unsigned *	rowCur = nullptr;	// номер ряда в котором должна быть ячейка
-	unsigned *	colCur = nullptr;	// номер колонки в которой должна быть ячейка
-
-	//конечное состояние
+	unsigned *	rowCur = nullptr;
+	unsigned *	colCur = nullptr;
 	t_tile *	target = nullptr;
-	// номера рядов и колонок для конечного состояния пазла
-	unsigned *	rowTrg = nullptr;	// номер ряда в котором должна быть ячейка
-	unsigned *	colTrg = nullptr;	// номер колонки в которой должна быть ячейка
+	unsigned *	rowTrg = nullptr;
+	unsigned *	colTrg = nullptr;
 
 	virtual	void		initialStates(t_tile * field, unsigned * col, unsigned * row);
 public:
@@ -52,19 +64,33 @@ public:
 	virtual unsigned	operator()(Node & src);
 };
 
+/*
+**	LINEAR CONFLICT HEURISTIC addition to Manhattan heuristic
+**	count each pair in row or column, who stands in their row or column,
+**	but not in his position
+**
+**	line - conflicts in row/column
+*/
 
 class LinearConflict : public Manhattan
 {
 protected:
 	unsigned *	line_ = nullptr;	// количество конфликтов в ряду/колонке
+	unsigned			rowConflicts(t_tile * field);
+	unsigned			colConflicts(t_tile * field);
 public:
 	LinearConflict(void) { };
 	~LinearConflict(void);
 	virtual void		init(Node & src, Node & trg);
 	virtual unsigned	operator()(Node & src);
-	unsigned			rowConflicts(t_tile * field);
-	unsigned			colConflicts(t_tile * field);
 };
+
+/*
+**	OPTIMAL HEURISTIC
+**	Include linear conflict, Manhattan distance,
+**	and two new heuristics:
+**	CORNERS CONFLICT HEURISTIC and LAST MOVE
+*/
 
 class OptimalH : public LinearConflict
 {

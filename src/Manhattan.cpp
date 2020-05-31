@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 13:07:28 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/24 11:51:35 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/05/31 23:06:24 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include <cstring>
 
 #include "Heuristic.h"
-#include "PuzzExcept.h"
 
 /*
 static void			printField(t_tile * field, size_t side)
@@ -41,35 +40,6 @@ static t_tile *		Classic(size_t side)
 }
 */
 
-static t_tile *	Snail(int side)
-{
-	t_tile * field = new t_tile[side * side];
-	int i = 0;
-	int col, row;
-	int count = 1;
-
-	while (i < side / 2)
-	{
-		// left -> right
-		for (col = i, row = i; col < side - i; ++col)
-			field[row * side + col] = count++ % (side * side);
-
-		// top -> bottom
-		for (row = row + 1, col = col - 1; row < side - i; ++row)
-			field[row * side + col] = count++ % (side * side);
-
-		// right -> left
-		for (col = col - 1, row = row - 1; col >= i; --col)
-			field[row * side + col] = count++ % (side * side);
-
-		// bottom -> top
-		for (row = row - 1, col = col + 1; row > i; --row)
-			field[row * side + col] = count++ % (side * side);
-		++i;
-	}
-	return field;
-}
-
 inline void		Manhattan::initialStates(t_tile * field, unsigned * colf, unsigned * rowf)
 {
 	unsigned m = 0;
@@ -89,13 +59,13 @@ void		Manhattan::init(Node & src, Node & trg)
 	side_ = src.getSide();
 	length_ = side_ * side_;
 
-	if (trg)
-	{
-		target = new t_tile[length_];
-		std::memcpy(target, trg.field, sizeof(t_tile) * length_);
+	target = new t_tile[length_];
+	for (size_t row = 0; row != side_; ++row) {
+		for (size_t col = 0; col != side_; ++col)
+		{
+			target[row * side_ + col] = trg(row, col);
+		}
 	}
-	else
-		target = Snail(side_);
 
 	rowCur = new unsigned[length_];
 	colCur = new unsigned[length_];

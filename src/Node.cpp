@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:17:23 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/24 11:48:22 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/05/31 22:49:19 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,23 +102,6 @@ Node::operator bool(void)
 	return field;
 }
 
-size_t		Node::getHash(void) const
-{
-	size_t hash = 0;
-	size_t pow = 31;
-	for (size_t i = 0; i != length_; ++i)
-	{
-		hash = hash + (field[i] * pow);
-		pow *= 31;
-	}
-	return hash;
-}
-
-unsigned	Node::getScore(void) const
-{
-	return score;
-}
-
 void		Node::swap(Node & src)
 {
 	std::swap(zero, src.zero);
@@ -126,80 +109,3 @@ void		Node::swap(Node & src)
 	std::swap(score, src.score);
 	std::swap(field, src.field);
 }
-
-void		Node::printNode(void) const
-{
-	for (size_t i = 0; i != side_; ++i)
-	{
-		for (size_t j = 0; j != side_; ++j)
-			printf("%-3u ", (*this)(i, j));
-		printf("\n");
-	}
-	printf("\n");
-}
-
-/*
-size_t		Node::getHash(void) const
-{
-	std::string str;
-	std::hash<std::string> hs;
-	str.reserve(length_ + 1);
-
-	for (size_t i = 0; i != length_; ++i)
-	{
-		str += field[i] + ' ';
-	}
-	return hs(str);
-}
-
-class CompareNode
-{
-public:
-    bool operator() (Node const & n1, Node const & n2) const
-    {
-		if (n1.score > n2.score)
-			return true;
-		if (n1.score == n2.score && n1.zero < n2.zero)
-			return true;
-		return false;
-    }
-};
-
-
-size_t hashNode::operator()(Node const & puzzle) const
-{
-	size_t hash = 0;
-	for (size_t i = 0; i != g_length; ++i)
-	{
-		hash += puzzle.field[i] * (1ull << i);
-	}
-	return hash;
-}
-
-class CompareNode
-{
-public:
-    bool operator() (Node const & n1, Node const & n2) const
-    {
-		if (n1.score < n2.score)
-			return true;
-		if (n1.score == n2.score && n1.zero > n2.zero)
-			return true;
-		return false;
-    }
-};
-
-class EqualNode
-{
-public:
-    bool operator() (Node const & n1, Node const & n2) const
-    {
-		for (size_t i = 0; i != g_length; ++i)
-		{
-			if (n1.field[i] != n2.field[i])
-				return false;
-		}
-		return true;
-    }
-};
-*/
