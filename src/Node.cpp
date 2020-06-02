@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:17:23 by astripeb          #+#    #+#             */
-/*   Updated: 2020/06/02 10:02:46 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/06/02 14:15:18 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@ extern move_func	g_move[];;
 
 size_t Node::side_		= 0;
 size_t Node::length_	= 0;
+
+/*
+** CONSTRUCTORS AND DESTRUCTORS
+*/
 
 Node::Node(void) { }
 
@@ -47,6 +51,10 @@ Node::~Node()
 {
 	delete [] field;
 }
+
+/*
+** OPERATORS
+*/
 
 Node &	Node::operator=(Node const & src)
 {
@@ -103,6 +111,47 @@ Node::operator bool(void)
 	return field;
 }
 
+/*
+** SETTERS AND GETTERS
+*/
+
+unsigned	Node::getScore(void) const { return score; }
+
+t_tile		Node::getZero(void) const { return zero; }
+
+t_move		Node::getMove(void) const { return move; }
+
+t_move &	Node::getMove(void) { return move; }
+
+t_tile *	Node::getField(void) const { return field; }
+
+void		Node::setZero()
+{
+	for (size_t i = 0; i < length_; ++i)
+	{
+		if (field[i] == 0)
+		{
+			zero = i;
+			break ;
+		}
+	}
+}
+
+/*
+** UTILS METHODS
+*/
+
+void		Node::printNode(void) const
+{
+	for (size_t i = 0; i != side_; ++i)
+	{
+		for (size_t j = 0; j != side_; ++j)
+			printf("%-3u ", (*this)(i, j));
+		printf("\n");
+	}
+	printf("\n");
+}
+
 void		Node::swap(Node & src)
 {
 	std::swap(zero, src.zero);
@@ -121,20 +170,4 @@ size_t		Node::getHash(void) const
 		pow *= 31;
 	}
 	return hash;
-}
-
-unsigned	Node::getScore(void) const
-{
-	return score;
-}
-
-void		Node::printNode(void) const
-{
-	for (size_t i = 0; i != side_; ++i)
-	{
-		for (size_t j = 0; j != side_; ++j)
-			printf("%-3u ", (*this)(i, j));
-		printf("\n");
-	}
-	printf("\n");
 }

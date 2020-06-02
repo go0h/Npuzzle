@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 17:46:34 by astripeb          #+#    #+#             */
-/*   Updated: 2020/06/01 23:07:01 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/06/02 14:11:05 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ using ItOpen 		= std::pair< typename PriorityQueue::iterator, \
 
 void				undo(Node & node, size_t i)
 {
-	node.move = NONE;
-	if (i & 1)				// i % 2 == 1
+	node.getMove() = NONE;
+	if (i & 1)
 		g_move[i + 1](node);
 	else
 		g_move[i - 1](node);
@@ -42,8 +42,8 @@ static Solution			GenerateMoves(Node & src, Node & trg, HashTable & close)
 
 	while (trg != src)
 	{
-		moves.push_front(trg.move);
-		undo(trg, trg.move);
+		moves.push_front(trg.getMove());
+		undo(trg, trg.getMove());
 		trg = close.find(trg)->first;
 	}
 	return moves;
@@ -63,7 +63,7 @@ inline static Desk &	getFirstDesk(PriorityQueue & open, Desk & desk)
 
 inline static bool		inOpen(PriorityQueue & open, Desk & desk, ItOpen & it)
 {
-	auto i = open.lower_bound(desk.STATE.score + desk.DEPTH);
+	auto i = open.lower_bound(desk.STATE.getScore() + desk.DEPTH);
 	for (; i != open.end(); ++i)
 	{
 		auto deskIt = i->second.find(desk.STATE);

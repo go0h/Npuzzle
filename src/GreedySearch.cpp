@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 17:46:34 by astripeb          #+#    #+#             */
-/*   Updated: 2020/06/02 10:52:30 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/06/02 13:53:33 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ static Solution		GenerateMoves(Node & src, Node & trg, HashTable & close)
 
 	while (trg != src)
 	{
-		moves.push_front(trg.move);
-		undo(trg, trg.move);
+		moves.push_front(trg.getMove());
+		undo(trg, trg.getMove());
 		trg = *close.find(trg);
 	}
 	return moves;

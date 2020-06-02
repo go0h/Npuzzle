@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/21 14:13:30 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/24 11:45:58 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/06/02 13:53:14 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static Solution	GenerateMoves(PathCont & path)
 	Solution	moves;
 
 	for (auto it = path.rbegin(); it != path.rend(); ++it)
-		moves.push_front((*it).move);
+		moves.push_front((*it).getMove());
 	moves.pop_front();
 	return moves;
 }

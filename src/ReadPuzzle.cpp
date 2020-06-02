@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 19:50:58 by astripeb          #+#    #+#             */
-/*   Updated: 2020/05/31 22:34:12 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/06/02 14:20:23 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ static bool		fillField(std::ifstream & pfile, std::string & str, \
 			strStream >> puzzle(i, j);
 			if (strStream.fail())
 				return false;
-			if (puzzle(i, j) == 0)
-				puzzle.zero = i * side + j;
 			order.insert(puzzle(i, j));
 		}
 		if (!strStream.eof() && (strStream >> str) && str[0] != '#')
@@ -80,7 +78,7 @@ size_t			readPuzzle(std::string & filename, Node & node)
 	if (!pfile.is_open())
 		throw PuzzExcept(E_OPEN_FILE);
 
-	if (!(side = getFieldSize(pfile, str)))
+	if ((side = getFieldSize(pfile, str)) < 3)
 		throw PuzzExcept(E_SIDE);
 
 	if (node.getSide() && node.getSide() != side)
@@ -95,5 +93,6 @@ size_t			readPuzzle(std::string & filename, Node & node)
 		throw PuzzExcept(E_MAP);
 	pfile.close();
 	node = temp;
+	node.setZero();
 	return side;
 }
