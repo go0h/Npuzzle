@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:37:29 by astripeb          #+#    #+#             */
-/*   Updated: 2020/06/01 00:01:35 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/06/02 10:51:46 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ int main(int argc, char ** argv)
 		readPuzzle(opts.src_file, src);
 		if (opts.trg_file != "")
 			readPuzzle(opts.trg_file, trg);
-		else
-			trg = snail(src.getSide());
+
 		h->init(src, trg);
 		bench.t1 = std::chrono::system_clock::now();
 		Solution solution = searchFunc(src, *h, bench);
+
 		printMoves(src, solution, opts.printpath);
 		printBenchmarks(bench, *h, solution.size());
 	} catch (PuzzExcept & err) {

@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/19 14:02:22 by astripeb          #+#    #+#             */
-/*   Updated: 2020/05/10 15:14:56 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/06/01 22:59:19 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,8 @@ void 	printMoves(Node & src, Solution & movSet, bool printmoves)
 			src.printNode();
 		}
 	}
-	g_move[*std::prev(movSet.end())](src);
+	if (movSet.size())
+		g_move[*std::prev(movSet.end())](src);
 	cout << "Final state:" << endl;
 	src.printNode();
 }

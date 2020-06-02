@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 17:46:34 by astripeb          #+#    #+#             */
-/*   Updated: 2020/04/24 10:19:27 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/06/02 10:52:30 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,7 @@ Solution			GreedySearch(Node & src, IHeuristic & h, marks & bench)
 	size_t			score = 0;
 
 	bench.func = __func__;
-	if (!h(state))
-		return Solution();
-	open[state.getScore()].insert(state);
+	open[h(state)].insert(state);
 	while (!open.empty())
 	{
 		getFirst(open, state);

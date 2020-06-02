@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:17:23 by astripeb          #+#    #+#             */
-/*   Updated: 2020/05/31 22:49:19 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/06/02 10:02:46 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ Node::Node(t_tile side) : field(new t_tile[side * side])
 {
 	side_ = side;
 	length_ = side * side;
+	memset(field, 0, sizeof(t_tile) * length_);
 }
 
 Node::Node(Node const & src)
@@ -108,4 +109,32 @@ void		Node::swap(Node & src)
 	std::swap(move, src.move);
 	std::swap(score, src.score);
 	std::swap(field, src.field);
+}
+
+size_t		Node::getHash(void) const
+{
+	size_t hash = 0;
+	size_t pow = 31;
+	for (size_t i = 0; i != length_; ++i)
+	{
+		hash = hash + (field[i] * pow);
+		pow *= 31;
+	}
+	return hash;
+}
+
+unsigned	Node::getScore(void) const
+{
+	return score;
+}
+
+void		Node::printNode(void) const
+{
+	for (size_t i = 0; i != side_; ++i)
+	{
+		for (size_t j = 0; j != side_; ++j)
+			printf("%-3u ", (*this)(i, j));
+		printf("\n");
+	}
+	printf("\n");
 }

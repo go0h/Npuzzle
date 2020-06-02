@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:06:09 by astripeb          #+#    #+#             */
-/*   Updated: 2020/06/01 00:02:37 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/06/01 23:10:57 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,21 +99,5 @@ public:
 */
 
 size_t		readPuzzle(std::string & filename, Node & node);
-
-/*
-**	Generate snail board state. Example for side == 3:
-**		1 2 3
-**		8 0	4
-**		7 6 5
-*/
-
-Node		snail(int side);
-
-/*
-**	Checks if it possible solve the puzzle
-**	from source board state to target
-*/
-
-bool 		solvable(Node & src, Node & trg);
 
 #endif

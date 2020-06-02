@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/03 17:46:34 by astripeb          #+#    #+#             */
-/*   Updated: 2020/05/31 20:14:28 by astripeb         ###   ########.fr       */
+/*   Updated: 2020/06/01 23:07:01 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,7 @@ Solution				AStarSearch(Node & src, IHeuristic & h, marks & bench)
 
 	bench.func = __func__;
 	close.reserve(1000000);
-	if (!h(src))
-		return Solution();
-	open[src.getScore()].insert(src);
+	open[h(src)].insert(src);
 	while (!open.empty())
 	{
 		desk = getFirstDesk(open, desk);
