@@ -15,7 +15,7 @@
 #include "Node.h"
 #include "PuzzExcept.h"
 
-extern move_func	g_move[];;
+extern move_func	g_move[];
 
 size_t Node::side_		= 0;
 size_t Node::length_	= 0;
@@ -23,8 +23,6 @@ size_t Node::length_	= 0;
 /*
 ** CONSTRUCTORS AND DESTRUCTORS
 */
-
-Node::Node(void) { }
 
 Node::Node(t_tile side) : field(new t_tile[side * side])
 {
@@ -42,7 +40,7 @@ Node::Node(Node const & src)
 	memcpy(field, src.field, sizeof(t_tile) * length_);
 }
 
-Node::Node(Node && src)
+Node::Node(Node && src) noexcept
 {
 	*this = std::move(src);
 }
@@ -65,7 +63,7 @@ Node &	Node::operator=(Node const & src)
 	return *this;
 }
 
-Node &	Node::operator=(Node && src)
+Node &	Node::operator=(Node && src) noexcept
 {
 	if (this == &src)
 		return *this;
@@ -106,7 +104,7 @@ t_tile		Node::operator()(size_t i, size_t j) const
 	return field[i * side_ + j];
 }
 
-Node::operator bool(void)
+Node::operator bool()
 {
 	return field;
 }
@@ -115,15 +113,15 @@ Node::operator bool(void)
 ** SETTERS AND GETTERS
 */
 
-unsigned	Node::getScore(void) const { return score; }
+unsigned	Node::getScore() const { return score; }
 
-t_tile		Node::getZero(void) const { return zero; }
+t_tile		Node::getZero() const { return zero; }
 
-t_move		Node::getMove(void) const { return move; }
+t_move		Node::getMove() const { return move; }
 
-t_move &	Node::getMove(void) { return move; }
+t_move &	Node::getMove() { return move; }
 
-t_tile *	Node::getField(void) const { return field; }
+t_tile *	Node::getField() const { return field; }
 
 void		Node::setZero()
 {
@@ -141,7 +139,7 @@ void		Node::setZero()
 ** UTILS METHODS
 */
 
-void		Node::printNode(void) const
+void		Node::printNode() const
 {
 	for (size_t i = 0; i != side_; ++i)
 	{
@@ -160,7 +158,7 @@ void		Node::swap(Node & src)
 	std::swap(field, src.field);
 }
 
-size_t		Node::getHash(void) const
+size_t		Node::getHash() const
 {
 	size_t hash = 0;
 	size_t pow = 31;

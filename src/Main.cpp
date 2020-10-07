@@ -26,14 +26,14 @@ int main(int argc, char ** argv)
 		setOptions(&opts, h, &searchFunc);
 
 		readPuzzle(opts.src_file, src);
-		if (opts.trg_file != "")
+		if (!opts.trg_file.empty())
 			readPuzzle(opts.trg_file, trg);
 
 		h->init(src, trg);
 		bench.t1 = std::chrono::system_clock::now();
 		Solution solution = searchFunc(src, *h, bench);
 
-		printMoves(src, solution, opts.printpath);
+		printMoves(src, solution, opts.printPath);
 		printBenchmarks(bench, *h, solution.size());
 	} catch (PuzzExcept & err) {
 		std::cerr << err.what() << std::endl;

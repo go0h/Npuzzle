@@ -64,7 +64,7 @@ static Node		snail(int side)
 	return board;
 }
 
-static bool 	invers(t_tile * field, size_t side)
+static bool 	calcInversion(const t_tile * field, size_t side)
 {
 	size_t inversion = 0;
 	size_t length = side * side;
@@ -80,11 +80,11 @@ static bool 	invers(t_tile * field, size_t side)
 				++inversion;
 		}
 	}
-	zero = (length - zero - 1) / side + ((side / 2) & 1);
-	if (side & 1)
-		return !(inversion & 1);
+	zero = (length - zero - 1) / side + ((side / 2) & 1U);
+	if (side & 1U)
+		return !(inversion & 1U);
 	else
-		return (zero & 1) ^ (inversion & 1);
+		return (zero & 1U) ^ (inversion & 1U);
 }
 
 /*
@@ -102,21 +102,21 @@ static bool		solvable(Node src, Node trg)
 	while (down(src) || right(src)) ;
 	while (down(trg) || right(trg)) ;
 
-	bool inv1 = invers(src.getField(), src.getSide());
-	bool inv2 = invers(trg.getField(), src.getSide());
+	bool inv1 = calcInversion(src.getField(), Node::getSide());
+	bool inv2 = calcInversion(trg.getField(), Node::getSide());
 	return  inv1 == inv2;
 }
 
-void			Manhattan::initialStates(t_tile * field, unsigned * colf,
-				unsigned * rowf)
+void			Manhattan::initialStates(t_tile * field, unsigned * columnFields,
+				unsigned * rowFields)
 {
 	unsigned m = 0;
 	for (unsigned row = 0; row != side_; ++row)
 	{
 		for (unsigned col = 0; col != side_; ++col)
 		{
-			rowf[field[m]] = row;
-			colf[field[m]] = col;
+			rowFields[field[m]] = row;
+			columnFields[field[m]] = col;
 			++m;
 		}
 	}
@@ -124,7 +124,7 @@ void			Manhattan::initialStates(t_tile * field, unsigned * colf,
 
 void			Manhattan::init(Node & src, Node & trg)
 {
-	side_ = src.getSide();
+	side_ = Node::getSide();
 	length_ = side_ * side_;
 	target = new t_tile[length_];
 	memset(target, 0, sizeof(t_tile) * length_);

@@ -30,7 +30,7 @@ using ItOpen 		= std::pair< typename PriorityQueue::iterator, \
 void				undo(Node & node, size_t i)
 {
 	node.getMove() = NONE;
-	if (i & 1)
+	if (i & 1U)
 		g_move[i + 1](node);
 	else
 		g_move[i - 1](node);
@@ -112,7 +112,7 @@ Solution				AStarSearch(Node & src, IHeuristic & h, marks & bench)
 							open[openIt.first->DEPTH].erase(openIt.second);
 							if (open[openIt.first->DEPTH].empty())
 								open.erase(openIt.first);
-							bench.compl_size--;
+							bench.sizeComplexity--;
 						}
 						open[score].insert(desk.STATE);
 					}
@@ -122,13 +122,13 @@ Solution				AStarSearch(Node & src, IHeuristic & h, marks & bench)
 					close.erase(closeIt);
 					open[score].insert(desk.STATE);
 				}
-				bench.compl_size++;
+				bench.sizeComplexity++;
 				undo(desk.STATE, i);
 			}
 		}
 	}
-	bench.compl_size += close.size();
-	bench.compl_time = close.size();
+	bench.sizeComplexity += close.size();
+	bench.timeComplexity = close.size();
 	bench.t2 = std::chrono::system_clock::now();
 	return GenerateMoves(src, desk.STATE, close);
 }

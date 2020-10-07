@@ -18,36 +18,36 @@
 #include "Node.h"
 #include "PuzzExcept.h"
 
-static void		skipComments(std::ifstream & pfile, std::string & str)
+static void		skipComments(std::ifstream & puzzleFile, std::string & str)
 {
-	while (!pfile.eof())
+	while (!puzzleFile.eof())
 	{
-		getline(pfile, str, '\n');
+		getline(puzzleFile, str, '\n');
 		if (str[0] != '#')
 			break ;
 	}
 }
 
-static size_t	getFieldSize(std::ifstream & pfile, std::string & str)
+static size_t	getFieldSize(std::ifstream & puzzleFile, std::string & str)
 {
 	size_t	size = 0;
 
-	skipComments(pfile, str);
+	skipComments(puzzleFile, str);
 	std::istringstream strStream(str);
 	strStream >> size;
 	if (strStream.fail() || (!strStream.eof() && (strStream >> str) && str[0] != '#'))
 		return 0;
-	skipComments(pfile, str);
+	skipComments(puzzleFile, str);
 	return size;
 }
 
-static bool		fillField(std::ifstream & pfile, std::string & str, \
+static bool		fillField(std::ifstream & puzzleFile, std::string & str, \
 					Node & puzzle, size_t side)
 {
 	std::unordered_set<t_tile> order;
 	order.reserve(side * side);
 
-	for (size_t i = 0; i != side && !pfile.eof(); ++i)
+	for (size_t i = 0; i != side && !puzzleFile.eof(); ++i)
 	{
 		std::istringstream strStream(str);
 		for (size_t j = 0; j != side && !strStream.eof(); ++j)
@@ -59,7 +59,7 @@ static bool		fillField(std::ifstream & pfile, std::string & str, \
 		}
 		if (!strStream.eof() && (strStream >> str) && str[0] != '#')
 			return false;
-		getline(pfile, str, '\n');
+		getline(puzzleFile, str, '\n');
 	}
 	for (size_t i = 0; i != side * side; ++i)
 	{
@@ -72,26 +72,26 @@ static bool		fillField(std::ifstream & pfile, std::string & str, \
 size_t			readPuzzle(std::string & filename, Node & node)
 {
 	std::string		str;
-	std::ifstream	pfile(filename);
-	size_t			side = 0;
+	std::ifstream	puzzleFile(filename);
+	size_t			side;
 
-	if (!pfile.is_open())
+	if (!puzzleFile.is_open())
 		throw PuzzExcept(E_OPEN_FILE);
 
-	if ((side = getFieldSize(pfile, str)) < 3)
+	if ((side = getFieldSize(puzzleFile, str)) < 3)
 		throw PuzzExcept(E_SIDE);
 
-	if (node.getSide() && node.getSide() != side)
+	if (Node::getSide() && Node::getSide() != side)
 		throw PuzzExcept(E_SAME_SIDE);
 
 	Node	temp(side);
-	if (!fillField(pfile, str, temp, side))
+	if (!fillField(puzzleFile, str, temp, side))
 		throw PuzzExcept(E_FIELD_COM);
-	skipComments(pfile, str);
+	skipComments(puzzleFile, str);
 
-	if (!pfile.eof())
+	if (!puzzleFile.eof())
 		throw PuzzExcept(E_MAP);
-	pfile.close();
+	puzzleFile.close();
 	node = temp;
 	node.setZero();
 	return side;

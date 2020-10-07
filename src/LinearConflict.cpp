@@ -24,7 +24,7 @@ LinearConflict::~LinearConflict()
 	delete [] line_;
 }
 
-inline size_t	find_max(unsigned * line, size_t & side)
+inline size_t	find_max(const unsigned * line, size_t & side)
 {
 	size_t max = 0;
 
@@ -36,7 +36,7 @@ inline size_t	find_max(unsigned * line, size_t & side)
 	return max;
 }
 
-unsigned		LinearConflict::rowConflicts(t_tile * field)
+unsigned		LinearConflict::rowConflicts(const t_tile * field)
 {
 	unsigned	a, b;
 	unsigned	score = 0;
@@ -47,7 +47,7 @@ unsigned		LinearConflict::rowConflicts(t_tile * field)
 		std::memset(line_, 0, sizeof(unsigned) * side_);
 		for (size_t j = 0; j != side_ - 1; ++j)
 		{
-			// determie number of t_tiles in row i,
+			// determine number of t_tiles in row i,
 			// with which field[i, j] is conflict
 			a = field[row * side_ + j];
 			if ( !(rowTrg[a] - row) && a)
@@ -64,12 +64,12 @@ unsigned		LinearConflict::rowConflicts(t_tile * field)
 			}
 		}
 		a = find_max(line_, side_);
-		score = score + line_[a] + (line_[a] & 1);
+		score = score + line_[a] + (line_[a] & 1U);
 	}
 	return score;
 }
 
-unsigned		LinearConflict::colConflicts(t_tile * field)
+unsigned		LinearConflict::colConflicts(const t_tile * field)
 {
 	unsigned	a, b;
 	unsigned	score = 0;
@@ -79,7 +79,7 @@ unsigned		LinearConflict::colConflicts(t_tile * field)
 		std::memset(line_, 0, sizeof(unsigned) * side_);
 		for (size_t j = 0; j != side_ - 1; ++j)
 		{
-			// determie number of t_tiles in row i,
+			// determine number of t_tiles in row i,
 			// with which field[i, j] is conflict
 			a = field[side_ * j + col];
 			if ( !(colTrg[a] - col) && a) // colTrg[a] == col
@@ -96,7 +96,7 @@ unsigned		LinearConflict::colConflicts(t_tile * field)
 			}
 		}
 		a = find_max(line_, side_);
-		score = score + line_[a] + (line_[a] & 1); //n  & (d - 1)
+		score = score + line_[a] + (line_[a] & 1U); //n  & (d - 1)
 	}
 	return score;
 }

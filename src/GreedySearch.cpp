@@ -52,7 +52,7 @@ Solution			GreedySearch(Node & src, IHeuristic & h, marks & bench)
 	HashTable		close;
 	PriorityQueue	open;
 	Node			state = src;
-	size_t			score = 0;
+	size_t			score;
 
 	bench.func = __func__;
 	open[h(state)].insert(state);
@@ -70,13 +70,13 @@ Solution			GreedySearch(Node & src, IHeuristic & h, marks & bench)
 				if (close.find(state) == close.end())
 				{
 					open[score].insert(state);
-					bench.compl_size++;
+					bench.sizeComplexity++;
 				}
 				undo(state, i);
 			}
 		}
 	}
-	bench.compl_time += close.size();
+	bench.timeComplexity += close.size();
 	bench.t2 = std::chrono::system_clock::now();
 	return GenerateMoves(src, state, close);
 }

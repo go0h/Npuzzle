@@ -31,7 +31,7 @@ static Solution	GenerateMoves(PathCont & path)
 static size_t 	search(Node src, size_t depth, size_t bound,
 			IHeuristic & h, PathCont & path, marks & bench)
 {
-	size_t t = 0;
+	size_t t;
 	size_t f = depth + h(src);
 	if (f > bound)
 		return f;
@@ -48,8 +48,8 @@ static size_t 	search(Node src, size_t depth, size_t bound,
 			{
 				path.push_back(src);
 				t = search(src, depth + COST, bound, h, path, bench);
-				bench.compl_time++;
-				bench.compl_size = std::max(path.size(), bench.compl_size);
+				bench.timeComplexity++;
+				bench.sizeComplexity = std::max(path.size(), bench.sizeComplexity);
 				if (!t)
 					return t;
 				if (t < min)
@@ -64,7 +64,7 @@ static size_t 	search(Node src, size_t depth, size_t bound,
 
 Solution		IDAStarSearch(Node & root, IHeuristic & h, marks & bench)
 {
-	size_t t = 0;
+	size_t t;
 	size_t bound = h(root);
 	PathCont path;
 

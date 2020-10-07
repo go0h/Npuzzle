@@ -29,8 +29,8 @@ protected:
 	size_t side_	= 0;
 	size_t length_	= 0;
 public:
-	IHeuristic() {};
-	virtual ~IHeuristic() {};
+	IHeuristic() = default;
+	virtual ~IHeuristic() = default;
 	virtual void		init(Node & src, Node & trg) = 0;
 	virtual unsigned	operator()(Node & src) = 0;
 };
@@ -42,7 +42,7 @@ public:
 **	rowCur[i] - tile's row in current state
 **	rowCur[i] - tile's column in current state
 **
-**	target - target boarg
+**	target - target board
 **	rowTrg[i] - tile's row in target state
 **	rowTrg[i] - tile's column in target state
 */
@@ -56,12 +56,12 @@ protected:
 	unsigned *	rowTrg = nullptr;
 	unsigned *	colTrg = nullptr;
 
-	virtual	void		initialStates(t_tile * field, unsigned * col, unsigned * row);
+	virtual	void		initialStates(t_tile * field, unsigned * columnFields, unsigned * rowFields);
 public:
-	Manhattan(void) { }
-	virtual ~Manhattan();
-	virtual void		init(Node & src, Node & trg);
-	virtual unsigned	operator()(Node & src);
+	Manhattan() = default;
+	~Manhattan() override;
+	void		init(Node & src, Node & trg) override;
+	unsigned	operator()(Node & src) override;
 };
 
 /*
@@ -76,13 +76,13 @@ class LinearConflict : public Manhattan
 {
 protected:
 	unsigned *	line_ = nullptr;	// количество конфликтов в ряду/колонке
-	unsigned			rowConflicts(t_tile * field);
-	unsigned			colConflicts(t_tile * field);
+	unsigned			rowConflicts(const t_tile * field);
+	unsigned			colConflicts(const t_tile * field);
 public:
-	LinearConflict(void) { };
-	~LinearConflict(void);
-	virtual void		init(Node & src, Node & trg);
-	virtual unsigned	operator()(Node & src);
+	LinearConflict() = default;;
+	~LinearConflict() override;
+	void		init(Node & src, Node & trg) override;
+	unsigned	operator()(Node & src) override;
 };
 
 /*
@@ -95,10 +95,10 @@ public:
 class OptimalH : public LinearConflict
 {
 public:
-	OptimalH(void) { };
-	virtual ~OptimalH() { };
-	virtual void		init(Node & src, Node & trg);
-	virtual unsigned	operator()(Node & src);
+	OptimalH() = default;;
+	~OptimalH() override = default;;
+	void		init(Node & src, Node & trg) override;
+	unsigned	operator()(Node & src) override;
 };
 
 #endif

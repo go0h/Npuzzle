@@ -29,15 +29,15 @@ struct optArgs
 	std::string src_file;
 	std::string trg_file;
 	std::string	heuristic = "OPT";
-	std::string	searchfunc = "A";
-	bool		printpath = false;
+	std::string	searchFunc = "A";
+	bool		printPath = false;
 };
 
 /*
 **	MARKS
-**	compl_time - Total number of states ever selected in the "opened" set
-**	compl_size - Maximum number of states ever represented in memory
-**	at the same timeduring the search
+**	timeComplexity - Total number of states ever selected in the "opened" set
+**	sizeComplexity - Maximum number of states ever represented in memory
+**	at the same time during the search
 **
 **	t1 - start time
 **	t2 - end time
@@ -47,8 +47,8 @@ struct optArgs
 
 struct marks
 {
-	size_t compl_time = 0;
-	size_t compl_size = 0;
+	size_t timeComplexity = 0;
+	size_t sizeComplexity = 0;
 	std::chrono::time_point<std::chrono::system_clock> t1;
 	std::chrono::time_point<std::chrono::system_clock> t2;
 	std::string func;
@@ -71,7 +71,7 @@ Solution	GreedySearch(Node & src, IHeuristic & h, marks & bench);
 
 void		undo(Node & node, size_t i);
 
-void 		printMoves(Node & src, Solution & movSet, bool printmoves);
+void 		printMoves(Node & src, Solution & movSet, bool printMove);
 
 void 		printBenchmarks(marks & bench, IHeuristic & h, size_t moves);
 

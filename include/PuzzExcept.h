@@ -32,8 +32,8 @@ class PuzzExcept : public std::exception
 private:
 	std::string error_;
 public:
-	PuzzExcept(int usage);
-	PuzzExcept(const std::string & err);
+	explicit PuzzExcept(int usage);
+	explicit PuzzExcept(const std::string & err);
 	std::string what() noexcept;
 };
 

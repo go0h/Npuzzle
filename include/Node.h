@@ -42,7 +42,7 @@ enum {
 **	move - last move applied to the board
 **
 **	up, down, left, right - moves tile in pos zero
-**	In success returt true, else false
+**	In success return true, else false
 **
 */
 
@@ -59,36 +59,36 @@ public:
 	/*
 	** CONSTRUCTORS AND DESTRUCTORS
 	*/
-	Node(void);
-	Node(t_tile side);
+	Node() = default;
+	explicit Node(t_tile side);
 	Node(Node const & src);
-	Node(Node && src);
+	Node(Node && src) noexcept ;
 	~Node();
 
 	/*
 	** OPERATORS
 	*/
 	Node &			operator=(Node const & src);
-	Node &			operator=(Node && src);
+	Node &			operator=(Node && src) noexcept ;
 	t_tile &		operator()(size_t i, size_t j);
 	t_tile 			operator()(size_t i, size_t j) const;
 	bool			operator==(Node const & n) const;
 	bool			operator!=(Node const & n) const;
 	bool			operator<(Node const & n) const;
-	explicit		operator bool(void);
+	explicit		operator bool();
 
 	/*
 	** SETTERS AND GETTERS
 	*/
-	unsigned		getScore(void) const;
-	t_tile			getZero(void) const;
-	t_move			getMove(void) const;
-	t_move &		getMove(void);
-	t_tile *		getField(void) const;
-	static unsigned	getSide(void) { return side_; };
+	unsigned		getScore() const;
+	t_tile			getZero() const;
+	t_move			getMove() const;
+	t_move &		getMove();
+	t_tile *		getField() const;
+	static unsigned	getSide() { return side_; };
 	void			setZero();
-	void 			printNode(void) const;
-	size_t			getHash(void) const;
+	void 			printNode() const;
+	size_t			getHash() const;
 private:
 	friend class	Manhattan;
 	friend class	LinearConflict;
@@ -117,7 +117,7 @@ public:
 
 /*
 **	Read puzzle from filename to Node
-**	On succes return side of Puzzle
+**	On success return side of Puzzle
 **	On error throw Exception
 */
 
