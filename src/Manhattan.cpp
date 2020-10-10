@@ -12,22 +12,13 @@
 
 #include <cmath>
 #include <cstring>
+#include <vector>
+#include <random>
 
 #include "Heuristic.h"
 #include "PuzzExcept.h"
 
-/*
-static void			printField(t_tile * field, size_t side)
-{
-	for (size_t i = 0; i != side; ++i)
-	{
-		for (size_t j = 0; j != side; ++j)
-			printf("%-3u ", field[i * side + j]);
-		printf("\n");
-	}
-	printf("\n");
-}
-*/
+extern move_func	g_move[];
 
 /*
 **	Generate snail board state. Example for side == 3:
@@ -62,6 +53,31 @@ static Node		snail(int side)
 	}
 	board.setZero();
 	return board;
+}
+
+Node		createRandomNode(Node randomNode)
+{
+	int side = (int) Node::getSide();
+	std::random_device rd;
+	std::uniform_int_distribution<int> dist(1, 4);
+	std::vector<t_move> positions = std::vector<t_move>();
+
+	for (size_t i = 0; i < 10000; ++i)
+	{
+		int pos = (int) randomNode.getZero();
+		if (pos / side > 0)
+			positions.push_back(UP);
+		if (pos / side < side - 1)
+			positions.push_back(DOWN);
+		if (pos % side > 0)
+			positions.push_back(LEFT);
+		if (pos % side < side - 1)
+			positions.push_back(RIGHT);
+		g_move[dist(rd)](randomNode);
+		positions.clear();
+	}
+	randomNode.getMove() = NONE;
+	return randomNode;
 }
 
 static bool 	calcInversion(const t_tile * field, size_t side)
@@ -124,13 +140,15 @@ void			Manhattan::initialStates(t_tile * field, unsigned * columnFields,
 
 void			Manhattan::init(Node & src, Node & trg)
 {
-	side_ = Node::getSide();
+	side_ = Node::getSide() == 0 ? 4 : Node::getSide();
 	length_ = side_ * side_;
 	target = new t_tile[length_];
 	memset(target, 0, sizeof(t_tile) * length_);
 
 	if (!trg)
 		trg = snail(side_);
+	if (!src)
+		src = createRandomNode(trg);
 
 	if (!solvable(src, trg))
 		throw PuzzExcept(E_UNSOLVBL);

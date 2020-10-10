@@ -47,7 +47,7 @@ static bool		fillField(std::ifstream & puzzleFile, std::string & str, \
 	std::unordered_set<t_tile> order;
 	order.reserve(side * side);
 
-	for (size_t i = 0; i != side && !puzzleFile.eof(); ++i)
+	for (size_t i = 0; i != side; ++i)
 	{
 		std::istringstream strStream(str);
 		for (size_t j = 0; j != side && !strStream.eof(); ++j)

@@ -12,6 +12,7 @@ git clone https://github.com/go0h/Npuzzle.git && cd Npuzzle && make
 Usage: ./Npuzzle puzzle_file [OPTION]... [FILE]...
 
 	-h, --help			display this help and exit
+    -s, --source <source_file>	start state of puzzle
 	-t, --target <target_file>	final state of puzzle
 	-p, --print			print moves
 	-H, --heuristic heuristic_method:

@@ -25,7 +25,8 @@ int main(int argc, char ** argv)
 		options(argc, argv, &opts);
 		setOptions(&opts, h, &searchFunc);
 
-		readPuzzle(opts.src_file, src);
+		if (!opts.src_file.empty())
+			readPuzzle(opts.src_file, src);
 		if (!opts.trg_file.empty())
 			readPuzzle(opts.trg_file, trg);
 

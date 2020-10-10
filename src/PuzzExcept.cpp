@@ -21,8 +21,9 @@ PuzzExcept::PuzzExcept(int usage)
 {
 	if (usage)
 	{
-		error_ += "Usage: ./Npuzzle puzzle_file [OPTION]... [FILE]...\n\n";
+		error_ += "Usage: ./Npuzzle [OPTION]... [FILE]...\n\n";
 		error_ += "\t-h, --help\t\t\tdisplay this help and exit\n\n";
+		error_ += "\t-s, --source <source_file>\tstart state of puzzle\n\n";
 		error_ += "\t-t, --target <target_file>\tfinal state of puzzle\n\n";
 		error_ += "\t-p, --print\t\t\tprint moves\n\n";
 		error_ += "\t-H, --heuristic heuristic_method:\n";

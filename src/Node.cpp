@@ -27,7 +27,7 @@ size_t Node::length_	= 0;
 Node::Node(t_tile side) : field(new t_tile[side * side])
 {
 	side_ = side;
-	length_ = side * side;
+	length_ = (size_t) side * side;
 	memset(field, 0, sizeof(t_tile) * length_);
 }
 

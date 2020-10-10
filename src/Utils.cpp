@@ -24,9 +24,10 @@ using	std::endl;
 
 void	options(int argc, char ** argv, optArgs * opts)
 {
-	char shortOpt[] = "a:hpt:H:";
+	char shortOpt[] = "a:hpt:s:H:";
 	struct option longOpt[] = {
 		{"help", 0, nullptr, 'h'},
+		{"source", 1, nullptr, 's'},
 		{"target", 1, nullptr, 't'},
 		{"heurisctic", 1, nullptr, 'H'},
 		{"algo", 1, nullptr, 'a'},
@@ -35,16 +36,14 @@ void	options(int argc, char ** argv, optArgs * opts)
 	};
 	int optIndex, c;
 
-	if (argc == 1)
-		throw PuzzExcept(USAGE);
-
-	opts->src_file = argv[1];
 	while(true)
 	{
 		if ((c = getopt_long(argc, argv, shortOpt, longOpt, &optIndex)) == -1)
 			break ;
 		if (c == 'h')
 			throw PuzzExcept(true);
+		else if (c == 's')
+			opts->src_file = optarg;
 		else if (c == 't')
 			opts->trg_file = optarg;
 		else if (c == 'H')

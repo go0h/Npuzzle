@@ -40,7 +40,7 @@ for (( i=0; i < $1; i++ ))
 do
 	python $GENERATOR $SOLVABLE $2 > test_file
 	FILE=$(head --lines 1 test_file | awk '{print $5}')
-	RES=$($PROG test_file -a G | awk '{print $2}')
+	RES=$($PROG -s test_file -a G | awk '{print $2}')
 
 	if [ -n "$RES" ] ; then
 		RES="solvable"
