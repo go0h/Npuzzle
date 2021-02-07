@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/07 21:24:54 by astripeb          #+#    #+#             */
-/*   Updated: 2021/02/07 23:06:38 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/07 23:13:51 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 #include <unordered_set>
 #include <map>
-#include <set>
+#include <list>
 
 #include "Npuzzle.h"
 
 extern move_func	g_move[];
 
-using PriorityQueue	= std::multiset< Node >;
+using PriorityQueue	= std::list< Node >;
 using HashTable		= std::unordered_set< Node, hashNode >;
 
 
@@ -42,14 +42,13 @@ Solution			UniformCostSearch(Node & src, IHeuristic & h, marks & bench)
 	HashTable		close;
 	PriorityQueue	open;
 	Node			state = src;
-	size_t			depth = 0;
 
 	bench.func = __func__;
-	open.insert(state);
+	open.push_back(state);
 	while (!open.empty())
 	{
-		state = *(open.begin());
-		open.erase(open.begin());
+		state = open.front();
+		open.pop_front();
 		if (!h(state))
 			break;
 		close.insert(state);
@@ -57,16 +56,14 @@ Solution			UniformCostSearch(Node & src, IHeuristic & h, marks & bench)
 		{
 			if (g_move[i](state))
 			{
-				state.setScore(depth);
 				if (close.find(state) == close.end())
 				{
-					open.insert(state);
+					open.push_back(state);
 					bench.sizeComplexity++;
 				}
 				undo(state, i);
 			}
 		}
-		depth += COST;
 	}
 	bench.timeComplexity += close.size();
 	bench.t2 = std::chrono::system_clock::now();
