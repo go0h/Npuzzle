@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:06:09 by astripeb          #+#    #+#             */
-/*   Updated: 2020/10/07 22:38:43 by aks              ###   ########.fr       */
+/*   Updated: 2021/02/07 21:49:26 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ public:
 	t_tile *		getField() const;
 	static unsigned	getSide() { return side_; };
 	void			setZero();
+	void			setScore(size_t score);
 	void 			printNode() const;
 	size_t			getHash() const;
 private:

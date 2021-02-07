@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 19:51:21 by astripeb          #+#    #+#             */
-/*   Updated: 2020/05/31 23:55:46 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/07 22:10:31 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ Solution	AStarSearch(Node & src, IHeuristic & h, marks & bench);
 Solution	IDAStarSearch(Node & src, IHeuristic & h, marks & bench);
 
 Solution	GreedySearch(Node & src, IHeuristic & h, marks & bench);
+
+Solution	UniformCostSearch(Node & src, IHeuristic & h, marks & bench);
 
 void		undo(Node & node, size_t i);
 

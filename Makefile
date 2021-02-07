@@ -6,7 +6,7 @@
 #    By: astripeb <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/31 20:08:29 by astripeb          #+#    #+#              #
-#    Updated: 2020/06/02 10:03:05 by astripeb         ###   ########.fr        #
+#    Updated: 2021/02/07 21:24:38 by astripeb         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,8 @@ OBJ_DIR			:= ./obj
 SRCS			:= Main.cpp Utils.cpp Node.cpp\
 				NodeMove.cpp PuzzExcept.cpp ReadPuzzle.cpp\
 				Manhattan.cpp LinearConflict.cpp OptimalH.cpp\
-				AStarSearch.cpp IDAStarSearch.cpp GreedySearch.cpp
+				AStarSearch.cpp IDAStarSearch.cpp GreedySearch.cpp\
+				UniformCostSearch.cpp
 
 OBJ				:= $(SRCS:.cpp=.o)
 

@@ -22,7 +22,8 @@ set(SOURCE
 	${SOURCE_DIR}/OptimalH.cpp
 	${SOURCE_DIR}/AStarSearch.cpp
 	${SOURCE_DIR}/IDAStarSearch.cpp
-	${SOURCE_DIR}/GreedySearch.cpp)
+	${SOURCE_DIR}/GreedySearch.cpp
+	${SOURCE_DIR}/UniformCostSearch.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE})
 

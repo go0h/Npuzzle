@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/19 14:02:22 by astripeb          #+#    #+#             */
-/*   Updated: 2020/06/01 22:59:19 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/07 22:10:17 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ void	setOptions(optArgs * opts, HeurPtr & h, SearchFunc * f)
 	std::unordered_map<std::string, SearchFunc> funcMap = {
 		{"A", &AStarSearch},
 		{"IDA", &IDAStarSearch},
-		{"G", &GreedySearch}
+		{"G", &GreedySearch},
+		{"UCS", &UniformCostSearch}
 	};
 	std::unordered_map< std::string, HeurPtr > heuristicMap =
 	{

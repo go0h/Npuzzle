@@ -6,7 +6,7 @@
 /*   By: astripeb <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/01 16:17:23 by astripeb          #+#    #+#             */
-/*   Updated: 2020/06/02 14:15:18 by astripeb         ###   ########.fr       */
+/*   Updated: 2021/02/07 21:49:49 by astripeb         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,8 @@ void		Node::setZero()
 		}
 	}
 }
+
+void		Node::setScore(size_t score) { this->score = score; }
 
 /*
 ** UTILS METHODS
